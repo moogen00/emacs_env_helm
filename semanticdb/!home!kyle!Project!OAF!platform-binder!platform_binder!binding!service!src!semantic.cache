@@ -1,0 +1,1803 @@
+;; Object semanticdb-project-database-file
+;; SEMANTICDB Tags save file
+(semanticdb-project-database-file "semanticdb-project-database-file"
+  :tables
+  (list
+    (semanticdb-table "semanticdb-table"
+      :major-mode c++-mode
+      :tags 
+        '( ("common/EtchRuntimeException.h" include nil nil [189 229])
+            ("BaseAdapterServer.h" include nil nil [230 260])
+            ("binding_platformbinder_Adapter" using (:type ("binding_platformbinder_Adapter" type
+                 (:prototype t
+                  :type "namespace")
+                  nil nil)) nil [262 309])
+            ("SendAppMessage" function
+               (:parent "BaseAdapterServer"
+                :arguments 
+                  ( ("command" variable (:type ("EtchInt32Ptr" type (:type "class") nil nil)) (reparse-symbol arg-sub-list) [627 648])
+                    ("wparam" variable (:type ("EtchInt32Ptr" type (:type "class") nil nil)) (reparse-symbol arg-sub-list) [649 669])
+                    ("lparam" variable (:type ("EtchLongPtr" type (:type "class") nil nil)) (reparse-symbol arg-sub-list) [670 689])
+                    ("data" variable (:type ("EtchNativeArrayBytePtr" type (:type "class") nil nil)) (reparse-symbol arg-sub-list) [690 718])
+                    ("user_data" variable (:type ("EtchNativeArrayBytePtr" type (:type "class") nil nil)) (reparse-symbol arg-sub-list) [719 752]))                  
+                :type ("AdapterServer::SendAppMessageAsyncResultPtr" type (:type "class") nil nil))
+                nil [549 940])
+            ("SendSysMessage" function
+               (:parent "BaseAdapterServer"
+                :arguments 
+                  ( ("command" variable (:type ("EtchInt32Ptr" type (:type "class") nil nil)) (reparse-symbol arg-sub-list) [1022 1043])
+                    ("wparam" variable (:type ("EtchInt32Ptr" type (:type "class") nil nil)) (reparse-symbol arg-sub-list) [1044 1064])
+                    ("lparam" variable (:type ("EtchLongPtr" type (:type "class") nil nil)) (reparse-symbol arg-sub-list) [1065 1084])
+                    ("data" variable (:type ("EtchNativeArrayBytePtr" type (:type "class") nil nil)) (reparse-symbol arg-sub-list) [1085 1113])
+                    ("user_data" variable (:type ("EtchNativeArrayBytePtr" type (:type "class") nil nil)) (reparse-symbol arg-sub-list) [1114 1147]))                  
+                :type ("AdapterServer::SendSysMessageAsyncResultPtr" type (:type "class") nil nil))
+                nil [944 1335])
+            ("RegisterService" function
+               (:parent "BaseAdapterServer"
+                :arguments 
+                  ( ("id" variable (:type ("EtchInt32Ptr" type (:type "class") nil nil)) (reparse-symbol arg-sub-list) [1419 1435]))                  
+                :type ("AdapterServer::RegisterServiceAsyncResultPtr" type (:type "class") nil nil))
+                nil [1339 1625])
+            ("RegisterServiceList" function
+               (:parent "BaseAdapterServer"
+                :arguments 
+                  ( ("list" variable (:type ("EtchInt32Ptr" type (:type "class") nil nil)) (reparse-symbol arg-sub-list) [1717 1735]))                  
+                :type ("AdapterServer::RegisterServiceListAsyncResultPtr" type (:type "class") nil nil))
+                nil [1629 1933])
+            ("SystemSendMessage" function
+               (:parent "BaseAdapterServer"
+                :arguments 
+                  ( ("command" variable (:type ("EtchInt32Ptr" type (:type "class") nil nil)) (reparse-symbol arg-sub-list) [2021 2042])
+                    ("wparam" variable (:type ("EtchInt32Ptr" type (:type "class") nil nil)) (reparse-symbol arg-sub-list) [2043 2063])
+                    ("lparam" variable (:type ("EtchLongPtr" type (:type "class") nil nil)) (reparse-symbol arg-sub-list) [2064 2083])
+                    ("data" variable (:type ("EtchNativeArrayBytePtr" type (:type "class") nil nil)) (reparse-symbol arg-sub-list) [2084 2112])
+                    ("user_data" variable (:type ("EtchNativeArrayBytePtr" type (:type "class") nil nil)) (reparse-symbol arg-sub-list) [2113 2146]))                  
+                :type ("AdapterServer::SystemSendMessageAsyncResultPtr" type (:type "class") nil nil))
+                nil [1937 2340])
+            ("SystemSendMessageFb" function
+               (:parent "BaseAdapterServer"
+                :arguments 
+                  ( ("command" variable (:type ("EtchInt32Ptr" type (:type "class") nil nil)) (reparse-symbol arg-sub-list) [2432 2453])
+                    ("data" variable (:type ("EtchNativeArrayBytePtr" type (:type "class") nil nil)) (reparse-symbol arg-sub-list) [2454 2482]))                  
+                :type ("AdapterServer::SystemSendMessageFbAsyncResultPtr" type (:type "class") nil nil))
+                nil [2344 2680])
+            ("CarHmiSendMessage" function
+               (:parent "BaseAdapterServer"
+                :arguments 
+                  ( ("command" variable (:type ("EtchInt32Ptr" type (:type "class") nil nil)) (reparse-symbol arg-sub-list) [2768 2789])
+                    ("wparam" variable (:type ("EtchInt32Ptr" type (:type "class") nil nil)) (reparse-symbol arg-sub-list) [2790 2810])
+                    ("lparam" variable (:type ("EtchLongPtr" type (:type "class") nil nil)) (reparse-symbol arg-sub-list) [2811 2830])
+                    ("data" variable (:type ("EtchNativeArrayBytePtr" type (:type "class") nil nil)) (reparse-symbol arg-sub-list) [2831 2859])
+                    ("user_data" variable (:type ("EtchNativeArrayBytePtr" type (:type "class") nil nil)) (reparse-symbol arg-sub-list) [2860 2893]))                  
+                :type ("AdapterServer::CarHmiSendMessageAsyncResultPtr" type (:type "class") nil nil))
+                nil [2684 3087])
+            ("OnData" function
+               (:parent "BaseAdapterServer"
+                :arguments 
+                  ( ("type" variable (:type ("EtchInt32Ptr" type (:type "class") nil nil)) (reparse-symbol arg-sub-list) [3153 3171])
+                    ("data" variable (:type ("EtchNativeArrayBytePtr" type (:type "class") nil nil)) (reparse-symbol arg-sub-list) [3172 3200]))                  
+                :type ("AdapterServer::OnDataAsyncResultPtr" type (:type "class") nil nil))
+                nil [3091 3372])
+            ("SendMessage" function
+               (:parent "BaseAdapterServer"
+                :arguments 
+                  ( ("data" variable (:type ("EtchNativeArrayBytePtr" type (:type "class") nil nil)) (reparse-symbol arg-sub-list) [3448 3476]))                  
+                :type ("AdapterServer::SendMessageAsyncResultPtr" type (:type "class") nil nil))
+                nil [3376 3658])
+            ("AudioSendMessage" function
+               (:parent "BaseAdapterServer"
+                :arguments 
+                  ( ("command" variable (:type ("EtchInt32Ptr" type (:type "class") nil nil)) (reparse-symbol arg-sub-list) [3744 3765])
+                    ("wparam" variable (:type ("EtchInt32Ptr" type (:type "class") nil nil)) (reparse-symbol arg-sub-list) [3766 3786])
+                    ("lparam" variable (:type ("EtchLongPtr" type (:type "class") nil nil)) (reparse-symbol arg-sub-list) [3787 3806])
+                    ("data" variable (:type ("EtchNativeArrayBytePtr" type (:type "class") nil nil)) (reparse-symbol arg-sub-list) [3807 3835])
+                    ("user_data" variable (:type ("EtchNativeArrayBytePtr" type (:type "class") nil nil)) (reparse-symbol arg-sub-list) [3836 3869]))                  
+                :type ("AdapterServer::AudioSendMessageAsyncResultPtr" type (:type "class") nil nil))
+                nil [3662 4061])
+            ("SpeechSendMessage" function
+               (:parent "BaseAdapterServer"
+                :arguments 
+                  ( ("command" variable (:type ("EtchInt32Ptr" type (:type "class") nil nil)) (reparse-symbol arg-sub-list) [4149 4170])
+                    ("data" variable (:type ("EtchNativeArrayBytePtr" type (:type "class") nil nil)) (reparse-symbol arg-sub-list) [4171 4199]))                  
+                :type ("AdapterServer::SpeechSendMessageAsyncResultPtr" type (:type "class") nil nil))
+                nil [4065 4393])
+            ("BluetoothSendMessage" function
+               (:parent "BaseAdapterServer"
+                :arguments 
+                  ( ("command" variable (:type ("EtchInt32Ptr" type (:type "class") nil nil)) (reparse-symbol arg-sub-list) [4487 4508])
+                    ("wparam" variable (:type ("EtchInt32Ptr" type (:type "class") nil nil)) (reparse-symbol arg-sub-list) [4509 4529])
+                    ("lparam" variable (:type ("EtchLongPtr" type (:type "class") nil nil)) (reparse-symbol arg-sub-list) [4530 4549])
+                    ("data" variable (:type ("EtchNativeArrayBytePtr" type (:type "class") nil nil)) (reparse-symbol arg-sub-list) [4550 4578])
+                    ("user_data" variable (:type ("EtchNativeArrayBytePtr" type (:type "class") nil nil)) (reparse-symbol arg-sub-list) [4579 4612]))                  
+                :type ("AdapterServer::BluetoothSendMessageAsyncResultPtr" type (:type "class") nil nil))
+                nil [4397 4812])
+            ("PIMSendMessage" function
+               (:parent "BaseAdapterServer"
+                :arguments 
+                  ( ("command" variable (:type ("EtchInt32Ptr" type (:type "class") nil nil)) (reparse-symbol arg-sub-list) [4894 4915])
+                    ("wparam" variable (:type ("EtchInt32Ptr" type (:type "class") nil nil)) (reparse-symbol arg-sub-list) [4916 4936])
+                    ("lparam" variable (:type ("EtchLongPtr" type (:type "class") nil nil)) (reparse-symbol arg-sub-list) [4937 4956])
+                    ("data" variable (:type ("EtchNativeArrayBytePtr" type (:type "class") nil nil)) (reparse-symbol arg-sub-list) [4957 4985])
+                    ("user_data" variable (:type ("EtchNativeArrayBytePtr" type (:type "class") nil nil)) (reparse-symbol arg-sub-list) [4986 5019]))                  
+                :type ("AdapterServer::PIMSendMessageAsyncResultPtr" type (:type "class") nil nil))
+                nil [4816 5207])
+            ("TelephonySendMessage" function
+               (:parent "BaseAdapterServer"
+                :arguments 
+                  ( ("command" variable (:type ("EtchInt32Ptr" type (:type "class") nil nil)) (reparse-symbol arg-sub-list) [5301 5322])
+                    ("wparam" variable (:type ("EtchInt32Ptr" type (:type "class") nil nil)) (reparse-symbol arg-sub-list) [5323 5343])
+                    ("lparam" variable (:type ("EtchLongPtr" type (:type "class") nil nil)) (reparse-symbol arg-sub-list) [5344 5363])
+                    ("data" variable (:type ("EtchNativeArrayBytePtr" type (:type "class") nil nil)) (reparse-symbol arg-sub-list) [5364 5392])
+                    ("user_data" variable (:type ("EtchNativeArrayBytePtr" type (:type "class") nil nil)) (reparse-symbol arg-sub-list) [5393 5426]))                  
+                :type ("AdapterServer::TelephonySendMessageAsyncResultPtr" type (:type "class") nil nil))
+                nil [5211 5626])
+            ("ContactSendMessage" function
+               (:parent "BaseAdapterServer"
+                :arguments 
+                  ( ("data" variable (:type ("EtchNativeArrayBytePtr" type (:type "class") nil nil)) (reparse-symbol arg-sub-list) [5716 5744]))                  
+                :type ("AdapterServer::ContactSendMessageAsyncResultPtr" type (:type "class") nil nil))
+                nil [5630 5940])
+            ("ProfileSendMessage" function
+               (:parent "BaseAdapterServer"
+                :arguments 
+                  ( ("command" variable (:type ("EtchInt32Ptr" type (:type "class") nil nil)) (reparse-symbol arg-sub-list) [6030 6051])
+                    ("wparam" variable (:type ("EtchInt32Ptr" type (:type "class") nil nil)) (reparse-symbol arg-sub-list) [6052 6072])
+                    ("lparam" variable (:type ("EtchLongPtr" type (:type "class") nil nil)) (reparse-symbol arg-sub-list) [6073 6092])
+                    ("data" variable (:type ("EtchNativeArrayBytePtr" type (:type "class") nil nil)) (reparse-symbol arg-sub-list) [6093 6121])
+                    ("user_data" variable (:type ("EtchNativeArrayBytePtr" type (:type "class") nil nil)) (reparse-symbol arg-sub-list) [6122 6155]))                  
+                :type ("AdapterServer::ProfileSendMessageAsyncResultPtr" type (:type "class") nil nil))
+                nil [5944 6351])
+            ("LifeCycleManagerSendMessage" function
+               (:parent "BaseAdapterServer"
+                :arguments 
+                  ( ("command" variable (:type ("EtchInt32Ptr" type (:type "class") nil nil)) (reparse-symbol arg-sub-list) [6459 6480])
+                    ("wparam" variable (:type ("EtchInt32Ptr" type (:type "class") nil nil)) (reparse-symbol arg-sub-list) [6481 6501])
+                    ("lparam" variable (:type ("EtchLongPtr" type (:type "class") nil nil)) (reparse-symbol arg-sub-list) [6502 6521])
+                    ("data" variable (:type ("EtchNativeArrayBytePtr" type (:type "class") nil nil)) (reparse-symbol arg-sub-list) [6522 6550])
+                    ("user_data" variable (:type ("EtchNativeArrayBytePtr" type (:type "class") nil nil)) (reparse-symbol arg-sub-list) [6551 6584]))                  
+                :type ("AdapterServer::LifeCycleManagerSendMessageAsyncResultPtr" type (:type "class") nil nil))
+                nil [6355 6798])
+            ("SotaSendMessage" function
+               (:parent "BaseAdapterServer"
+                :arguments 
+                  ( ("command" variable (:type ("EtchInt32Ptr" type (:type "class") nil nil)) (reparse-symbol arg-sub-list) [6882 6903])
+                    ("wparam" variable (:type ("EtchInt32Ptr" type (:type "class") nil nil)) (reparse-symbol arg-sub-list) [6904 6924])
+                    ("lparam" variable (:type ("EtchLongPtr" type (:type "class") nil nil)) (reparse-symbol arg-sub-list) [6925 6944])
+                    ("data" variable (:type ("EtchNativeArrayBytePtr" type (:type "class") nil nil)) (reparse-symbol arg-sub-list) [6945 6973])
+                    ("user_data" variable (:type ("EtchNativeArrayBytePtr" type (:type "class") nil nil)) (reparse-symbol arg-sub-list) [6974 7007]))                  
+                :type ("AdapterServer::SotaSendMessageAsyncResultPtr" type (:type "class") nil nil))
+                nil [6802 7197])
+            ("SnmSendMessage" function
+               (:parent "BaseAdapterServer"
+                :arguments 
+                  ( ("command" variable (:type ("EtchInt32Ptr" type (:type "class") nil nil)) (reparse-symbol arg-sub-list) [7279 7300])
+                    ("wparam" variable (:type ("EtchInt32Ptr" type (:type "class") nil nil)) (reparse-symbol arg-sub-list) [7301 7321])
+                    ("lparam" variable (:type ("EtchLongPtr" type (:type "class") nil nil)) (reparse-symbol arg-sub-list) [7322 7341])
+                    ("data" variable (:type ("EtchNativeArrayBytePtr" type (:type "class") nil nil)) (reparse-symbol arg-sub-list) [7342 7370])
+                    ("user_data" variable (:type ("EtchNativeArrayBytePtr" type (:type "class") nil nil)) (reparse-symbol arg-sub-list) [7371 7404]))                  
+                :type ("AdapterServer::SnmSendMessageAsyncResultPtr" type (:type "class") nil nil))
+                nil [7201 7592])
+            ("SnmSendMessageFb" function
+               (:parent "BaseAdapterServer"
+                :arguments 
+                  ( ("command" variable (:type ("EtchInt32Ptr" type (:type "class") nil nil)) (reparse-symbol arg-sub-list) [7678 7699])
+                    ("data" variable (:type ("EtchNativeArrayBytePtr" type (:type "class") nil nil)) (reparse-symbol arg-sub-list) [7700 7728]))                  
+                :type ("AdapterServer::SnmSendMessageFbAsyncResultPtr" type (:type "class") nil nil))
+                nil [7596 7920])
+            ("SendJsonData" function
+               (:parent "BaseAdapterServer"
+                :arguments 
+                  ( ("data" variable (:type ("EtchNativeArrayBytePtr" type (:type "class") nil nil)) (reparse-symbol arg-sub-list) [7998 8026]))                  
+                :type ("AdapterServer::SendJsonDataAsyncResultPtr" type (:type "class") nil nil))
+                nil [7924 8210])
+            ("ClusterSendMessage" function
+               (:parent "BaseAdapterServer"
+                :arguments 
+                  ( ("command" variable (:type ("EtchInt32Ptr" type (:type "class") nil nil)) (reparse-symbol arg-sub-list) [8300 8321])
+                    ("wparam" variable (:type ("EtchInt32Ptr" type (:type "class") nil nil)) (reparse-symbol arg-sub-list) [8322 8342])
+                    ("lparam" variable (:type ("EtchLongPtr" type (:type "class") nil nil)) (reparse-symbol arg-sub-list) [8343 8362])
+                    ("data" variable (:type ("EtchNativeArrayBytePtr" type (:type "class") nil nil)) (reparse-symbol arg-sub-list) [8363 8391])
+                    ("user_data" variable (:type ("EtchNativeArrayBytePtr" type (:type "class") nil nil)) (reparse-symbol arg-sub-list) [8392 8425]))                  
+                :type ("AdapterServer::ClusterSendMessageAsyncResultPtr" type (:type "class") nil nil))
+                nil [8214 8621])
+            ("PreferencesSendMessage" function
+               (:parent "BaseAdapterServer"
+                :arguments 
+                  ( ("command" variable (:type ("EtchInt32Ptr" type (:type "class") nil nil)) (reparse-symbol arg-sub-list) [8719 8740])
+                    ("wparam" variable (:type ("EtchInt32Ptr" type (:type "class") nil nil)) (reparse-symbol arg-sub-list) [8741 8761])
+                    ("lparam" variable (:type ("EtchLongPtr" type (:type "class") nil nil)) (reparse-symbol arg-sub-list) [8762 8781])
+                    ("data" variable (:type ("EtchNativeArrayBytePtr" type (:type "class") nil nil)) (reparse-symbol arg-sub-list) [8782 8810])
+                    ("user_data" variable (:type ("EtchNativeArrayBytePtr" type (:type "class") nil nil)) (reparse-symbol arg-sub-list) [8811 8844]))                  
+                :type ("AdapterServer::PreferencesSendMessageAsyncResultPtr" type (:type "class") nil nil))
+                nil [8625 9048])
+            ("SettingsSendMessage" function
+               (:parent "BaseAdapterServer"
+                :arguments 
+                  ( ("command" variable (:type ("EtchInt32Ptr" type (:type "class") nil nil)) (reparse-symbol arg-sub-list) [9140 9161])
+                    ("wparam" variable (:type ("EtchInt32Ptr" type (:type "class") nil nil)) (reparse-symbol arg-sub-list) [9162 9182])
+                    ("lparam" variable (:type ("EtchLongPtr" type (:type "class") nil nil)) (reparse-symbol arg-sub-list) [9183 9202])
+                    ("data" variable (:type ("EtchNativeArrayBytePtr" type (:type "class") nil nil)) (reparse-symbol arg-sub-list) [9203 9231])
+                    ("user_data" variable (:type ("EtchNativeArrayBytePtr" type (:type "class") nil nil)) (reparse-symbol arg-sub-list) [9232 9265]))                  
+                :type ("AdapterServer::SettingsSendMessageAsyncResultPtr" type (:type "class") nil nil))
+                nil [9052 9463])
+            ("FactoryResetSendMessage" function
+               (:parent "BaseAdapterServer"
+                :arguments 
+                  ( ("command" variable (:type ("EtchInt32Ptr" type (:type "class") nil nil)) (reparse-symbol arg-sub-list) [9563 9584])
+                    ("wparam" variable (:type ("EtchInt32Ptr" type (:type "class") nil nil)) (reparse-symbol arg-sub-list) [9585 9605])
+                    ("lparam" variable (:type ("EtchLongPtr" type (:type "class") nil nil)) (reparse-symbol arg-sub-list) [9606 9625])
+                    ("data" variable (:type ("EtchNativeArrayBytePtr" type (:type "class") nil nil)) (reparse-symbol arg-sub-list) [9626 9654])
+                    ("user_data" variable (:type ("EtchNativeArrayBytePtr" type (:type "class") nil nil)) (reparse-symbol arg-sub-list) [9655 9688]))                  
+                :type ("AdapterServer::FactoryResetSendMessageAsyncResultPtr" type (:type "class") nil nil))
+                nil [9467 9894])
+            ("MultimediaStateSendMessage" function
+               (:parent "BaseAdapterServer"
+                :arguments 
+                  ( ("command" variable (:type ("EtchInt32Ptr" type (:type "class") nil nil)) (reparse-symbol arg-sub-list) [10000 10021])
+                    ("wparam" variable (:type ("EtchInt32Ptr" type (:type "class") nil nil)) (reparse-symbol arg-sub-list) [10022 10042])
+                    ("lparam" variable (:type ("EtchLongPtr" type (:type "class") nil nil)) (reparse-symbol arg-sub-list) [10043 10062])
+                    ("data" variable (:type ("EtchNativeArrayBytePtr" type (:type "class") nil nil)) (reparse-symbol arg-sub-list) [10063 10091])
+                    ("user_data" variable (:type ("EtchNativeArrayBytePtr" type (:type "class") nil nil)) (reparse-symbol arg-sub-list) [10092 10125]))                  
+                :type ("AdapterServer::MultimediaStateSendMessageAsyncResultPtr" type (:type "class") nil nil))
+                nil [9898 10337])
+            ("NotifyErrorSendMessage" function
+               (:parent "BaseAdapterServer"
+                :arguments 
+                  ( ("command" variable (:type ("EtchInt32Ptr" type (:type "class") nil nil)) (reparse-symbol arg-sub-list) [10435 10456])
+                    ("wparam" variable (:type ("EtchInt32Ptr" type (:type "class") nil nil)) (reparse-symbol arg-sub-list) [10457 10477])
+                    ("lparam" variable (:type ("EtchLongPtr" type (:type "class") nil nil)) (reparse-symbol arg-sub-list) [10478 10497])
+                    ("data" variable (:type ("EtchNativeArrayBytePtr" type (:type "class") nil nil)) (reparse-symbol arg-sub-list) [10498 10526])
+                    ("user_data" variable (:type ("EtchNativeArrayBytePtr" type (:type "class") nil nil)) (reparse-symbol arg-sub-list) [10527 10560]))                  
+                :type ("AdapterServer::NotifyErrorSendMessageAsyncResultPtr" type (:type "class") nil nil))
+                nil [10341 10764]))          
+      :file "BaseAdapterServer.cpp"
+      :pointmax 10767
+      :fsize 10766
+      :lastmodtime '(23676 37589 902015 744000)
+      :unmatched-syntax nil)
+    (semanticdb-table "semanticdb-table"
+      :major-mode c++-mode
+      :tags 
+        '( ("ValueFactoryAdapter.h" include nil nil [172 204])
+            ("RemoteAdapterServer.h" include nil nil [205 237])
+            ("binding_platformbinder_Adapter" using (:type ("binding_platformbinder_Adapter" type
+                 (:prototype t
+                  :type "namespace")
+                  nil nil)) nil [239 286])
+            ("SendAppMessageAsyncResultRemote" function
+               (:constructor-flag t
+                :parent "RemoteAdapterServer::SendAppMessageAsyncResultRemote"
+                :arguments 
+                  ( ("base" variable
+                       (:pointer 1
+                        :type ("RemoteAdapterServer" type (:type "class") nil nil))
+                        (reparse-symbol arg-sub-list) [374 400])
+                    ("mailbox" variable (:type ("capu::SmartPointer" type
+                         (:template-specifier 
+                            ( ("EtchMailbox" type nil nil nil))                            
+                          :type "class")
+                          nil nil)) (reparse-symbol arg-sub-list) [401 441]))                  
+                :type ("SendAppMessageAsyncResultRemote" type (:type "class") nil nil))
+                nil [288 510])
+            ("SendAppMessageAsyncResultRemote" function
+               (:destructor-flag t
+                :parent "RemoteAdapterServer::SendAppMessageAsyncResultRemote"
+                :type "void")
+                nil [512 604])
+            ("mailboxStatus" function
+               (:parent "RemoteAdapterServer::SendAppMessageAsyncResultRemote"
+                :arguments 
+                  ( ("mb" variable
+                       (:pointer 1
+                        :type ("EtchMailbox" type (:type "class") nil nil))
+                        (reparse-symbol arg-sub-list) [684 700])
+                    ("state" variable
+                       (:pointer 1
+                        :type ("EtchObject" type (:type "class") nil nil))
+                        (reparse-symbol arg-sub-list) [701 719])
+                    ("closed" variable (:type ("capu::bool_t" type (:type "class") nil nil)) (reparse-symbol arg-sub-list) [720 740]))                  
+                :type ("status_t" type (:type "class") nil nil))
+                nil [607 762])
+            ("Begin" function
+               (:parent "RemoteAdapterServer::SendAppMessageAsyncResultRemote"
+                :arguments 
+                  ( ("base" variable
+                       (:pointer 1
+                        :type ("RemoteAdapterServer" type (:type "class") nil nil))
+                        (reparse-symbol arg-sub-list) [868 894])
+                    ("command" variable (:type ("EtchInt32Ptr" type (:type "class") nil nil)) (reparse-symbol arg-sub-list) [895 916])
+                    ("wparam" variable (:type ("EtchInt32Ptr" type (:type "class") nil nil)) (reparse-symbol arg-sub-list) [917 937])
+                    ("lparam" variable (:type ("EtchLongPtr" type (:type "class") nil nil)) (reparse-symbol arg-sub-list) [938 957])
+                    ("data" variable (:type ("EtchNativeArrayBytePtr" type (:type "class") nil nil)) (reparse-symbol arg-sub-list) [958 986])
+                    ("user_data" variable (:type ("EtchNativeArrayBytePtr" type (:type "class") nil nil)) (reparse-symbol arg-sub-list) [987 1020]))                  
+                :type ("AdapterServer::SendAppMessageAsyncResultPtr" type (:type "class") nil nil))
+                nil [764 2499])
+            ("SendSysMessageAsyncResultRemote" function
+               (:constructor-flag t
+                :parent "RemoteAdapterServer::SendSysMessageAsyncResultRemote"
+                :arguments 
+                  ( ("base" variable
+                       (:pointer 1
+                        :type ("RemoteAdapterServer" type (:type "class") nil nil))
+                        (reparse-symbol arg-sub-list) [2587 2613])
+                    ("mailbox" variable (:type ("capu::SmartPointer" type
+                         (:template-specifier 
+                            ( ("EtchMailbox" type nil nil nil))                            
+                          :type "class")
+                          nil nil)) (reparse-symbol arg-sub-list) [2614 2654]))                  
+                :type ("SendSysMessageAsyncResultRemote" type (:type "class") nil nil))
+                nil [2501 2723])
+            ("SendSysMessageAsyncResultRemote" function
+               (:destructor-flag t
+                :parent "RemoteAdapterServer::SendSysMessageAsyncResultRemote"
+                :type "void")
+                nil [2725 2817])
+            ("mailboxStatus" function
+               (:parent "RemoteAdapterServer::SendSysMessageAsyncResultRemote"
+                :arguments 
+                  ( ("mb" variable
+                       (:pointer 1
+                        :type ("EtchMailbox" type (:type "class") nil nil))
+                        (reparse-symbol arg-sub-list) [2897 2913])
+                    ("state" variable
+                       (:pointer 1
+                        :type ("EtchObject" type (:type "class") nil nil))
+                        (reparse-symbol arg-sub-list) [2914 2932])
+                    ("closed" variable (:type ("capu::bool_t" type (:type "class") nil nil)) (reparse-symbol arg-sub-list) [2933 2953]))                  
+                :type ("status_t" type (:type "class") nil nil))
+                nil [2820 2975])
+            ("Begin" function
+               (:parent "RemoteAdapterServer::SendSysMessageAsyncResultRemote"
+                :arguments 
+                  ( ("base" variable
+                       (:pointer 1
+                        :type ("RemoteAdapterServer" type (:type "class") nil nil))
+                        (reparse-symbol arg-sub-list) [3081 3107])
+                    ("command" variable (:type ("EtchInt32Ptr" type (:type "class") nil nil)) (reparse-symbol arg-sub-list) [3108 3129])
+                    ("wparam" variable (:type ("EtchInt32Ptr" type (:type "class") nil nil)) (reparse-symbol arg-sub-list) [3130 3150])
+                    ("lparam" variable (:type ("EtchLongPtr" type (:type "class") nil nil)) (reparse-symbol arg-sub-list) [3151 3170])
+                    ("data" variable (:type ("EtchNativeArrayBytePtr" type (:type "class") nil nil)) (reparse-symbol arg-sub-list) [3171 3199])
+                    ("user_data" variable (:type ("EtchNativeArrayBytePtr" type (:type "class") nil nil)) (reparse-symbol arg-sub-list) [3200 3233]))                  
+                :type ("AdapterServer::SendSysMessageAsyncResultPtr" type (:type "class") nil nil))
+                nil [2977 4712])
+            ("RegisterServiceAsyncResultRemote" function
+               (:constructor-flag t
+                :parent "RemoteAdapterServer::RegisterServiceAsyncResultRemote"
+                :arguments 
+                  ( ("base" variable
+                       (:pointer 1
+                        :type ("RemoteAdapterServer" type (:type "class") nil nil))
+                        (reparse-symbol arg-sub-list) [4802 4828])
+                    ("mailbox" variable (:type ("capu::SmartPointer" type
+                         (:template-specifier 
+                            ( ("EtchMailbox" type nil nil nil))                            
+                          :type "class")
+                          nil nil)) (reparse-symbol arg-sub-list) [4829 4869]))                  
+                :type ("RegisterServiceAsyncResultRemote" type (:type "class") nil nil))
+                nil [4714 4938])
+            ("RegisterServiceAsyncResultRemote" function
+               (:destructor-flag t
+                :parent "RemoteAdapterServer::RegisterServiceAsyncResultRemote"
+                :type "void")
+                nil [4940 5034])
+            ("mailboxStatus" function
+               (:parent "RemoteAdapterServer::RegisterServiceAsyncResultRemote"
+                :arguments 
+                  ( ("mb" variable
+                       (:pointer 1
+                        :type ("EtchMailbox" type (:type "class") nil nil))
+                        (reparse-symbol arg-sub-list) [5115 5131])
+                    ("state" variable
+                       (:pointer 1
+                        :type ("EtchObject" type (:type "class") nil nil))
+                        (reparse-symbol arg-sub-list) [5132 5150])
+                    ("closed" variable (:type ("capu::bool_t" type (:type "class") nil nil)) (reparse-symbol arg-sub-list) [5151 5171]))                  
+                :type ("status_t" type (:type "class") nil nil))
+                nil [5037 5193])
+            ("Begin" function
+               (:parent "RemoteAdapterServer::RegisterServiceAsyncResultRemote"
+                :arguments 
+                  ( ("base" variable
+                       (:pointer 1
+                        :type ("RemoteAdapterServer" type (:type "class") nil nil))
+                        (reparse-symbol arg-sub-list) [5301 5327])
+                    ("id" variable (:type ("EtchInt32Ptr" type (:type "class") nil nil)) (reparse-symbol arg-sub-list) [5328 5344]))                  
+                :type ("AdapterServer::RegisterServiceAsyncResultPtr" type (:type "class") nil nil))
+                nil [5195 6482])
+            ("RegisterServiceListAsyncResultRemote" function
+               (:constructor-flag t
+                :parent "RemoteAdapterServer::RegisterServiceListAsyncResultRemote"
+                :arguments 
+                  ( ("base" variable
+                       (:pointer 1
+                        :type ("RemoteAdapterServer" type (:type "class") nil nil))
+                        (reparse-symbol arg-sub-list) [6580 6606])
+                    ("mailbox" variable (:type ("capu::SmartPointer" type
+                         (:template-specifier 
+                            ( ("EtchMailbox" type nil nil nil))                            
+                          :type "class")
+                          nil nil)) (reparse-symbol arg-sub-list) [6607 6647]))                  
+                :type ("RegisterServiceListAsyncResultRemote" type (:type "class") nil nil))
+                nil [6484 6716])
+            ("RegisterServiceListAsyncResultRemote" function
+               (:destructor-flag t
+                :parent "RemoteAdapterServer::RegisterServiceListAsyncResultRemote"
+                :type "void")
+                nil [6718 6820])
+            ("mailboxStatus" function
+               (:parent "RemoteAdapterServer::RegisterServiceListAsyncResultRemote"
+                :arguments 
+                  ( ("mb" variable
+                       (:pointer 1
+                        :type ("EtchMailbox" type (:type "class") nil nil))
+                        (reparse-symbol arg-sub-list) [6905 6921])
+                    ("state" variable
+                       (:pointer 1
+                        :type ("EtchObject" type (:type "class") nil nil))
+                        (reparse-symbol arg-sub-list) [6922 6940])
+                    ("closed" variable (:type ("capu::bool_t" type (:type "class") nil nil)) (reparse-symbol arg-sub-list) [6941 6961]))                  
+                :type ("status_t" type (:type "class") nil nil))
+                nil [6823 6983])
+            ("Begin" function
+               (:parent "RemoteAdapterServer::RegisterServiceListAsyncResultRemote"
+                :arguments 
+                  ( ("base" variable
+                       (:pointer 1
+                        :type ("RemoteAdapterServer" type (:type "class") nil nil))
+                        (reparse-symbol arg-sub-list) [7099 7125])
+                    ("list" variable (:type ("EtchInt32Ptr" type (:type "class") nil nil)) (reparse-symbol arg-sub-list) [7126 7144]))                  
+                :type ("AdapterServer::RegisterServiceListAsyncResultPtr" type (:type "class") nil nil))
+                nil [6985 8314])
+            ("SystemSendMessageAsyncResultRemote" function
+               (:constructor-flag t
+                :parent "RemoteAdapterServer::SystemSendMessageAsyncResultRemote"
+                :arguments 
+                  ( ("base" variable
+                       (:pointer 1
+                        :type ("RemoteAdapterServer" type (:type "class") nil nil))
+                        (reparse-symbol arg-sub-list) [8408 8434])
+                    ("mailbox" variable (:type ("capu::SmartPointer" type
+                         (:template-specifier 
+                            ( ("EtchMailbox" type nil nil nil))                            
+                          :type "class")
+                          nil nil)) (reparse-symbol arg-sub-list) [8435 8475]))                  
+                :type ("SystemSendMessageAsyncResultRemote" type (:type "class") nil nil))
+                nil [8316 8544])
+            ("SystemSendMessageAsyncResultRemote" function
+               (:destructor-flag t
+                :parent "RemoteAdapterServer::SystemSendMessageAsyncResultRemote"
+                :type "void")
+                nil [8546 8644])
+            ("mailboxStatus" function
+               (:parent "RemoteAdapterServer::SystemSendMessageAsyncResultRemote"
+                :arguments 
+                  ( ("mb" variable
+                       (:pointer 1
+                        :type ("EtchMailbox" type (:type "class") nil nil))
+                        (reparse-symbol arg-sub-list) [8727 8743])
+                    ("state" variable
+                       (:pointer 1
+                        :type ("EtchObject" type (:type "class") nil nil))
+                        (reparse-symbol arg-sub-list) [8744 8762])
+                    ("closed" variable (:type ("capu::bool_t" type (:type "class") nil nil)) (reparse-symbol arg-sub-list) [8763 8783]))                  
+                :type ("status_t" type (:type "class") nil nil))
+                nil [8647 8805])
+            ("Begin" function
+               (:parent "RemoteAdapterServer::SystemSendMessageAsyncResultRemote"
+                :arguments 
+                  ( ("base" variable
+                       (:pointer 1
+                        :type ("RemoteAdapterServer" type (:type "class") nil nil))
+                        (reparse-symbol arg-sub-list) [8917 8943])
+                    ("command" variable (:type ("EtchInt32Ptr" type (:type "class") nil nil)) (reparse-symbol arg-sub-list) [8944 8965])
+                    ("wparam" variable (:type ("EtchInt32Ptr" type (:type "class") nil nil)) (reparse-symbol arg-sub-list) [8966 8986])
+                    ("lparam" variable (:type ("EtchLongPtr" type (:type "class") nil nil)) (reparse-symbol arg-sub-list) [8987 9006])
+                    ("data" variable (:type ("EtchNativeArrayBytePtr" type (:type "class") nil nil)) (reparse-symbol arg-sub-list) [9007 9035])
+                    ("user_data" variable (:type ("EtchNativeArrayBytePtr" type (:type "class") nil nil)) (reparse-symbol arg-sub-list) [9036 9069]))                  
+                :type ("AdapterServer::SystemSendMessageAsyncResultPtr" type (:type "class") nil nil))
+                nil [8807 10569])
+            ("SystemSendMessageFbAsyncResultRemote" function
+               (:constructor-flag t
+                :parent "RemoteAdapterServer::SystemSendMessageFbAsyncResultRemote"
+                :arguments 
+                  ( ("base" variable
+                       (:pointer 1
+                        :type ("RemoteAdapterServer" type (:type "class") nil nil))
+                        (reparse-symbol arg-sub-list) [10667 10693])
+                    ("mailbox" variable (:type ("capu::SmartPointer" type
+                         (:template-specifier 
+                            ( ("EtchMailbox" type nil nil nil))                            
+                          :type "class")
+                          nil nil)) (reparse-symbol arg-sub-list) [10694 10734]))                  
+                :type ("SystemSendMessageFbAsyncResultRemote" type (:type "class") nil nil))
+                nil [10571 10803])
+            ("SystemSendMessageFbAsyncResultRemote" function
+               (:destructor-flag t
+                :parent "RemoteAdapterServer::SystemSendMessageFbAsyncResultRemote"
+                :type "void")
+                nil [10805 10907])
+            ("mailboxStatus" function
+               (:parent "RemoteAdapterServer::SystemSendMessageFbAsyncResultRemote"
+                :arguments 
+                  ( ("mb" variable
+                       (:pointer 1
+                        :type ("EtchMailbox" type (:type "class") nil nil))
+                        (reparse-symbol arg-sub-list) [10992 11008])
+                    ("state" variable
+                       (:pointer 1
+                        :type ("EtchObject" type (:type "class") nil nil))
+                        (reparse-symbol arg-sub-list) [11009 11027])
+                    ("closed" variable (:type ("capu::bool_t" type (:type "class") nil nil)) (reparse-symbol arg-sub-list) [11028 11048]))                  
+                :type ("status_t" type (:type "class") nil nil))
+                nil [10910 11070])
+            ("Begin" function
+               (:parent "RemoteAdapterServer::SystemSendMessageFbAsyncResultRemote"
+                :arguments 
+                  ( ("base" variable
+                       (:pointer 1
+                        :type ("RemoteAdapterServer" type (:type "class") nil nil))
+                        (reparse-symbol arg-sub-list) [11186 11212])
+                    ("command" variable (:type ("EtchInt32Ptr" type (:type "class") nil nil)) (reparse-symbol arg-sub-list) [11213 11234])
+                    ("data" variable (:type ("EtchNativeArrayBytePtr" type (:type "class") nil nil)) (reparse-symbol arg-sub-list) [11235 11263]))                  
+                :type ("AdapterServer::SystemSendMessageFbAsyncResultPtr" type (:type "class") nil nil))
+                nil [11072 12519])
+            ("CarHmiSendMessageAsyncResultRemote" function
+               (:constructor-flag t
+                :parent "RemoteAdapterServer::CarHmiSendMessageAsyncResultRemote"
+                :arguments 
+                  ( ("base" variable
+                       (:pointer 1
+                        :type ("RemoteAdapterServer" type (:type "class") nil nil))
+                        (reparse-symbol arg-sub-list) [12613 12639])
+                    ("mailbox" variable (:type ("capu::SmartPointer" type
+                         (:template-specifier 
+                            ( ("EtchMailbox" type nil nil nil))                            
+                          :type "class")
+                          nil nil)) (reparse-symbol arg-sub-list) [12640 12680]))                  
+                :type ("CarHmiSendMessageAsyncResultRemote" type (:type "class") nil nil))
+                nil [12521 12749])
+            ("CarHmiSendMessageAsyncResultRemote" function
+               (:destructor-flag t
+                :parent "RemoteAdapterServer::CarHmiSendMessageAsyncResultRemote"
+                :type "void")
+                nil [12751 12849])
+            ("mailboxStatus" function
+               (:parent "RemoteAdapterServer::CarHmiSendMessageAsyncResultRemote"
+                :arguments 
+                  ( ("mb" variable
+                       (:pointer 1
+                        :type ("EtchMailbox" type (:type "class") nil nil))
+                        (reparse-symbol arg-sub-list) [12932 12948])
+                    ("state" variable
+                       (:pointer 1
+                        :type ("EtchObject" type (:type "class") nil nil))
+                        (reparse-symbol arg-sub-list) [12949 12967])
+                    ("closed" variable (:type ("capu::bool_t" type (:type "class") nil nil)) (reparse-symbol arg-sub-list) [12968 12988]))                  
+                :type ("status_t" type (:type "class") nil nil))
+                nil [12852 13010])
+            ("Begin" function
+               (:parent "RemoteAdapterServer::CarHmiSendMessageAsyncResultRemote"
+                :arguments 
+                  ( ("base" variable
+                       (:pointer 1
+                        :type ("RemoteAdapterServer" type (:type "class") nil nil))
+                        (reparse-symbol arg-sub-list) [13122 13148])
+                    ("command" variable (:type ("EtchInt32Ptr" type (:type "class") nil nil)) (reparse-symbol arg-sub-list) [13149 13170])
+                    ("wparam" variable (:type ("EtchInt32Ptr" type (:type "class") nil nil)) (reparse-symbol arg-sub-list) [13171 13191])
+                    ("lparam" variable (:type ("EtchLongPtr" type (:type "class") nil nil)) (reparse-symbol arg-sub-list) [13192 13211])
+                    ("data" variable (:type ("EtchNativeArrayBytePtr" type (:type "class") nil nil)) (reparse-symbol arg-sub-list) [13212 13240])
+                    ("user_data" variable (:type ("EtchNativeArrayBytePtr" type (:type "class") nil nil)) (reparse-symbol arg-sub-list) [13241 13274]))                  
+                :type ("AdapterServer::CarHmiSendMessageAsyncResultPtr" type (:type "class") nil nil))
+                nil [13012 14774])
+            ("OnDataAsyncResultRemote" function
+               (:constructor-flag t
+                :parent "RemoteAdapterServer::OnDataAsyncResultRemote"
+                :arguments 
+                  ( ("base" variable
+                       (:pointer 1
+                        :type ("RemoteAdapterServer" type (:type "class") nil nil))
+                        (reparse-symbol arg-sub-list) [14846 14872])
+                    ("mailbox" variable (:type ("capu::SmartPointer" type
+                         (:template-specifier 
+                            ( ("EtchMailbox" type nil nil nil))                            
+                          :type "class")
+                          nil nil)) (reparse-symbol arg-sub-list) [14873 14913]))                  
+                :type ("OnDataAsyncResultRemote" type (:type "class") nil nil))
+                nil [14776 14982])
+            ("OnDataAsyncResultRemote" function
+               (:destructor-flag t
+                :parent "RemoteAdapterServer::OnDataAsyncResultRemote"
+                :type "void")
+                nil [14984 15060])
+            ("mailboxStatus" function
+               (:parent "RemoteAdapterServer::OnDataAsyncResultRemote"
+                :arguments 
+                  ( ("mb" variable
+                       (:pointer 1
+                        :type ("EtchMailbox" type (:type "class") nil nil))
+                        (reparse-symbol arg-sub-list) [15132 15148])
+                    ("state" variable
+                       (:pointer 1
+                        :type ("EtchObject" type (:type "class") nil nil))
+                        (reparse-symbol arg-sub-list) [15149 15167])
+                    ("closed" variable (:type ("capu::bool_t" type (:type "class") nil nil)) (reparse-symbol arg-sub-list) [15168 15188]))                  
+                :type ("status_t" type (:type "class") nil nil))
+                nil [15063 15210])
+            ("Begin" function
+               (:parent "RemoteAdapterServer::OnDataAsyncResultRemote"
+                :arguments 
+                  ( ("base" variable
+                       (:pointer 1
+                        :type ("RemoteAdapterServer" type (:type "class") nil nil))
+                        (reparse-symbol arg-sub-list) [15300 15326])
+                    ("type" variable (:type ("EtchInt32Ptr" type (:type "class") nil nil)) (reparse-symbol arg-sub-list) [15327 15345])
+                    ("data" variable (:type ("EtchNativeArrayBytePtr" type (:type "class") nil nil)) (reparse-symbol arg-sub-list) [15346 15374]))                  
+                :type ("AdapterServer::OnDataAsyncResultPtr" type (:type "class") nil nil))
+                nil [15212 16533])
+            ("SendMessageAsyncResultRemote" function
+               (:constructor-flag t
+                :parent "RemoteAdapterServer::SendMessageAsyncResultRemote"
+                :arguments 
+                  ( ("base" variable
+                       (:pointer 1
+                        :type ("RemoteAdapterServer" type (:type "class") nil nil))
+                        (reparse-symbol arg-sub-list) [16615 16641])
+                    ("mailbox" variable (:type ("capu::SmartPointer" type
+                         (:template-specifier 
+                            ( ("EtchMailbox" type nil nil nil))                            
+                          :type "class")
+                          nil nil)) (reparse-symbol arg-sub-list) [16642 16682]))                  
+                :type ("SendMessageAsyncResultRemote" type (:type "class") nil nil))
+                nil [16535 16751])
+            ("SendMessageAsyncResultRemote" function
+               (:destructor-flag t
+                :parent "RemoteAdapterServer::SendMessageAsyncResultRemote"
+                :type "void")
+                nil [16753 16839])
+            ("mailboxStatus" function
+               (:parent "RemoteAdapterServer::SendMessageAsyncResultRemote"
+                :arguments 
+                  ( ("mb" variable
+                       (:pointer 1
+                        :type ("EtchMailbox" type (:type "class") nil nil))
+                        (reparse-symbol arg-sub-list) [16916 16932])
+                    ("state" variable
+                       (:pointer 1
+                        :type ("EtchObject" type (:type "class") nil nil))
+                        (reparse-symbol arg-sub-list) [16933 16951])
+                    ("closed" variable (:type ("capu::bool_t" type (:type "class") nil nil)) (reparse-symbol arg-sub-list) [16952 16972]))                  
+                :type ("status_t" type (:type "class") nil nil))
+                nil [16842 16994])
+            ("Begin" function
+               (:parent "RemoteAdapterServer::SendMessageAsyncResultRemote"
+                :arguments 
+                  ( ("base" variable
+                       (:pointer 1
+                        :type ("RemoteAdapterServer" type (:type "class") nil nil))
+                        (reparse-symbol arg-sub-list) [17094 17120])
+                    ("data" variable (:type ("EtchNativeArrayBytePtr" type (:type "class") nil nil)) (reparse-symbol arg-sub-list) [17121 17149]))                  
+                :type ("AdapterServer::SendMessageAsyncResultPtr" type (:type "class") nil nil))
+                nil [16996 18263])
+            ("AudioSendMessageAsyncResultRemote" function
+               (:constructor-flag t
+                :parent "RemoteAdapterServer::AudioSendMessageAsyncResultRemote"
+                :arguments 
+                  ( ("base" variable
+                       (:pointer 1
+                        :type ("RemoteAdapterServer" type (:type "class") nil nil))
+                        (reparse-symbol arg-sub-list) [18355 18381])
+                    ("mailbox" variable (:type ("capu::SmartPointer" type
+                         (:template-specifier 
+                            ( ("EtchMailbox" type nil nil nil))                            
+                          :type "class")
+                          nil nil)) (reparse-symbol arg-sub-list) [18382 18422]))                  
+                :type ("AudioSendMessageAsyncResultRemote" type (:type "class") nil nil))
+                nil [18265 18491])
+            ("AudioSendMessageAsyncResultRemote" function
+               (:destructor-flag t
+                :parent "RemoteAdapterServer::AudioSendMessageAsyncResultRemote"
+                :type "void")
+                nil [18493 18589])
+            ("mailboxStatus" function
+               (:parent "RemoteAdapterServer::AudioSendMessageAsyncResultRemote"
+                :arguments 
+                  ( ("mb" variable
+                       (:pointer 1
+                        :type ("EtchMailbox" type (:type "class") nil nil))
+                        (reparse-symbol arg-sub-list) [18671 18687])
+                    ("state" variable
+                       (:pointer 1
+                        :type ("EtchObject" type (:type "class") nil nil))
+                        (reparse-symbol arg-sub-list) [18688 18706])
+                    ("closed" variable (:type ("capu::bool_t" type (:type "class") nil nil)) (reparse-symbol arg-sub-list) [18707 18727]))                  
+                :type ("status_t" type (:type "class") nil nil))
+                nil [18592 18749])
+            ("Begin" function
+               (:parent "RemoteAdapterServer::AudioSendMessageAsyncResultRemote"
+                :arguments 
+                  ( ("base" variable
+                       (:pointer 1
+                        :type ("RemoteAdapterServer" type (:type "class") nil nil))
+                        (reparse-symbol arg-sub-list) [18859 18885])
+                    ("command" variable (:type ("EtchInt32Ptr" type (:type "class") nil nil)) (reparse-symbol arg-sub-list) [18886 18907])
+                    ("wparam" variable (:type ("EtchInt32Ptr" type (:type "class") nil nil)) (reparse-symbol arg-sub-list) [18908 18928])
+                    ("lparam" variable (:type ("EtchLongPtr" type (:type "class") nil nil)) (reparse-symbol arg-sub-list) [18929 18948])
+                    ("data" variable (:type ("EtchNativeArrayBytePtr" type (:type "class") nil nil)) (reparse-symbol arg-sub-list) [18949 18977])
+                    ("user_data" variable (:type ("EtchNativeArrayBytePtr" type (:type "class") nil nil)) (reparse-symbol arg-sub-list) [18978 19011]))                  
+                :type ("AdapterServer::AudioSendMessageAsyncResultPtr" type (:type "class") nil nil))
+                nil [18751 20504])
+            ("SpeechSendMessageAsyncResultRemote" function
+               (:constructor-flag t
+                :parent "RemoteAdapterServer::SpeechSendMessageAsyncResultRemote"
+                :arguments 
+                  ( ("base" variable
+                       (:pointer 1
+                        :type ("RemoteAdapterServer" type (:type "class") nil nil))
+                        (reparse-symbol arg-sub-list) [20598 20624])
+                    ("mailbox" variable (:type ("capu::SmartPointer" type
+                         (:template-specifier 
+                            ( ("EtchMailbox" type nil nil nil))                            
+                          :type "class")
+                          nil nil)) (reparse-symbol arg-sub-list) [20625 20665]))                  
+                :type ("SpeechSendMessageAsyncResultRemote" type (:type "class") nil nil))
+                nil [20506 20734])
+            ("SpeechSendMessageAsyncResultRemote" function
+               (:destructor-flag t
+                :parent "RemoteAdapterServer::SpeechSendMessageAsyncResultRemote"
+                :type "void")
+                nil [20736 20834])
+            ("mailboxStatus" function
+               (:parent "RemoteAdapterServer::SpeechSendMessageAsyncResultRemote"
+                :arguments 
+                  ( ("mb" variable
+                       (:pointer 1
+                        :type ("EtchMailbox" type (:type "class") nil nil))
+                        (reparse-symbol arg-sub-list) [20917 20933])
+                    ("state" variable
+                       (:pointer 1
+                        :type ("EtchObject" type (:type "class") nil nil))
+                        (reparse-symbol arg-sub-list) [20934 20952])
+                    ("closed" variable (:type ("capu::bool_t" type (:type "class") nil nil)) (reparse-symbol arg-sub-list) [20953 20973]))                  
+                :type ("status_t" type (:type "class") nil nil))
+                nil [20837 20995])
+            ("Begin" function
+               (:parent "RemoteAdapterServer::SpeechSendMessageAsyncResultRemote"
+                :arguments 
+                  ( ("base" variable
+                       (:pointer 1
+                        :type ("RemoteAdapterServer" type (:type "class") nil nil))
+                        (reparse-symbol arg-sub-list) [21107 21133])
+                    ("command" variable (:type ("EtchInt32Ptr" type (:type "class") nil nil)) (reparse-symbol arg-sub-list) [21134 21155])
+                    ("data" variable (:type ("EtchNativeArrayBytePtr" type (:type "class") nil nil)) (reparse-symbol arg-sub-list) [21156 21184]))                  
+                :type ("AdapterServer::SpeechSendMessageAsyncResultPtr" type (:type "class") nil nil))
+                nil [20997 22426])
+            ("BluetoothSendMessageAsyncResultRemote" function
+               (:constructor-flag t
+                :parent "RemoteAdapterServer::BluetoothSendMessageAsyncResultRemote"
+                :arguments 
+                  ( ("base" variable
+                       (:pointer 1
+                        :type ("RemoteAdapterServer" type (:type "class") nil nil))
+                        (reparse-symbol arg-sub-list) [22526 22552])
+                    ("mailbox" variable (:type ("capu::SmartPointer" type
+                         (:template-specifier 
+                            ( ("EtchMailbox" type nil nil nil))                            
+                          :type "class")
+                          nil nil)) (reparse-symbol arg-sub-list) [22553 22593]))                  
+                :type ("BluetoothSendMessageAsyncResultRemote" type (:type "class") nil nil))
+                nil [22428 22662])
+            ("BluetoothSendMessageAsyncResultRemote" function
+               (:destructor-flag t
+                :parent "RemoteAdapterServer::BluetoothSendMessageAsyncResultRemote"
+                :type "void")
+                nil [22664 22768])
+            ("mailboxStatus" function
+               (:parent "RemoteAdapterServer::BluetoothSendMessageAsyncResultRemote"
+                :arguments 
+                  ( ("mb" variable
+                       (:pointer 1
+                        :type ("EtchMailbox" type (:type "class") nil nil))
+                        (reparse-symbol arg-sub-list) [22854 22870])
+                    ("state" variable
+                       (:pointer 1
+                        :type ("EtchObject" type (:type "class") nil nil))
+                        (reparse-symbol arg-sub-list) [22871 22889])
+                    ("closed" variable (:type ("capu::bool_t" type (:type "class") nil nil)) (reparse-symbol arg-sub-list) [22890 22910]))                  
+                :type ("status_t" type (:type "class") nil nil))
+                nil [22771 22932])
+            ("Begin" function
+               (:parent "RemoteAdapterServer::BluetoothSendMessageAsyncResultRemote"
+                :arguments 
+                  ( ("base" variable
+                       (:pointer 1
+                        :type ("RemoteAdapterServer" type (:type "class") nil nil))
+                        (reparse-symbol arg-sub-list) [23050 23076])
+                    ("command" variable (:type ("EtchInt32Ptr" type (:type "class") nil nil)) (reparse-symbol arg-sub-list) [23077 23098])
+                    ("wparam" variable (:type ("EtchInt32Ptr" type (:type "class") nil nil)) (reparse-symbol arg-sub-list) [23099 23119])
+                    ("lparam" variable (:type ("EtchLongPtr" type (:type "class") nil nil)) (reparse-symbol arg-sub-list) [23120 23139])
+                    ("data" variable (:type ("EtchNativeArrayBytePtr" type (:type "class") nil nil)) (reparse-symbol arg-sub-list) [23140 23168])
+                    ("user_data" variable (:type ("EtchNativeArrayBytePtr" type (:type "class") nil nil)) (reparse-symbol arg-sub-list) [23169 23202]))                  
+                :type ("AdapterServer::BluetoothSendMessageAsyncResultPtr" type (:type "class") nil nil))
+                nil [22934 24723])
+            ("PIMSendMessageAsyncResultRemote" function
+               (:constructor-flag t
+                :parent "RemoteAdapterServer::PIMSendMessageAsyncResultRemote"
+                :arguments 
+                  ( ("base" variable
+                       (:pointer 1
+                        :type ("RemoteAdapterServer" type (:type "class") nil nil))
+                        (reparse-symbol arg-sub-list) [24811 24837])
+                    ("mailbox" variable (:type ("capu::SmartPointer" type
+                         (:template-specifier 
+                            ( ("EtchMailbox" type nil nil nil))                            
+                          :type "class")
+                          nil nil)) (reparse-symbol arg-sub-list) [24838 24878]))                  
+                :type ("PIMSendMessageAsyncResultRemote" type (:type "class") nil nil))
+                nil [24725 24947])
+            ("PIMSendMessageAsyncResultRemote" function
+               (:destructor-flag t
+                :parent "RemoteAdapterServer::PIMSendMessageAsyncResultRemote"
+                :type "void")
+                nil [24949 25041])
+            ("mailboxStatus" function
+               (:parent "RemoteAdapterServer::PIMSendMessageAsyncResultRemote"
+                :arguments 
+                  ( ("mb" variable
+                       (:pointer 1
+                        :type ("EtchMailbox" type (:type "class") nil nil))
+                        (reparse-symbol arg-sub-list) [25121 25137])
+                    ("state" variable
+                       (:pointer 1
+                        :type ("EtchObject" type (:type "class") nil nil))
+                        (reparse-symbol arg-sub-list) [25138 25156])
+                    ("closed" variable (:type ("capu::bool_t" type (:type "class") nil nil)) (reparse-symbol arg-sub-list) [25157 25177]))                  
+                :type ("status_t" type (:type "class") nil nil))
+                nil [25044 25199])
+            ("Begin" function
+               (:parent "RemoteAdapterServer::PIMSendMessageAsyncResultRemote"
+                :arguments 
+                  ( ("base" variable
+                       (:pointer 1
+                        :type ("RemoteAdapterServer" type (:type "class") nil nil))
+                        (reparse-symbol arg-sub-list) [25305 25331])
+                    ("command" variable (:type ("EtchInt32Ptr" type (:type "class") nil nil)) (reparse-symbol arg-sub-list) [25332 25353])
+                    ("wparam" variable (:type ("EtchInt32Ptr" type (:type "class") nil nil)) (reparse-symbol arg-sub-list) [25354 25374])
+                    ("lparam" variable (:type ("EtchLongPtr" type (:type "class") nil nil)) (reparse-symbol arg-sub-list) [25375 25394])
+                    ("data" variable (:type ("EtchNativeArrayBytePtr" type (:type "class") nil nil)) (reparse-symbol arg-sub-list) [25395 25423])
+                    ("user_data" variable (:type ("EtchNativeArrayBytePtr" type (:type "class") nil nil)) (reparse-symbol arg-sub-list) [25424 25457]))                  
+                :type ("AdapterServer::PIMSendMessageAsyncResultPtr" type (:type "class") nil nil))
+                nil [25201 26936])
+            ("TelephonySendMessageAsyncResultRemote" function
+               (:constructor-flag t
+                :parent "RemoteAdapterServer::TelephonySendMessageAsyncResultRemote"
+                :arguments 
+                  ( ("base" variable
+                       (:pointer 1
+                        :type ("RemoteAdapterServer" type (:type "class") nil nil))
+                        (reparse-symbol arg-sub-list) [27036 27062])
+                    ("mailbox" variable (:type ("capu::SmartPointer" type
+                         (:template-specifier 
+                            ( ("EtchMailbox" type nil nil nil))                            
+                          :type "class")
+                          nil nil)) (reparse-symbol arg-sub-list) [27063 27103]))                  
+                :type ("TelephonySendMessageAsyncResultRemote" type (:type "class") nil nil))
+                nil [26938 27172])
+            ("TelephonySendMessageAsyncResultRemote" function
+               (:destructor-flag t
+                :parent "RemoteAdapterServer::TelephonySendMessageAsyncResultRemote"
+                :type "void")
+                nil [27174 27278])
+            ("mailboxStatus" function
+               (:parent "RemoteAdapterServer::TelephonySendMessageAsyncResultRemote"
+                :arguments 
+                  ( ("mb" variable
+                       (:pointer 1
+                        :type ("EtchMailbox" type (:type "class") nil nil))
+                        (reparse-symbol arg-sub-list) [27364 27380])
+                    ("state" variable
+                       (:pointer 1
+                        :type ("EtchObject" type (:type "class") nil nil))
+                        (reparse-symbol arg-sub-list) [27381 27399])
+                    ("closed" variable (:type ("capu::bool_t" type (:type "class") nil nil)) (reparse-symbol arg-sub-list) [27400 27420]))                  
+                :type ("status_t" type (:type "class") nil nil))
+                nil [27281 27442])
+            ("Begin" function
+               (:parent "RemoteAdapterServer::TelephonySendMessageAsyncResultRemote"
+                :arguments 
+                  ( ("base" variable
+                       (:pointer 1
+                        :type ("RemoteAdapterServer" type (:type "class") nil nil))
+                        (reparse-symbol arg-sub-list) [27560 27586])
+                    ("command" variable (:type ("EtchInt32Ptr" type (:type "class") nil nil)) (reparse-symbol arg-sub-list) [27587 27608])
+                    ("wparam" variable (:type ("EtchInt32Ptr" type (:type "class") nil nil)) (reparse-symbol arg-sub-list) [27609 27629])
+                    ("lparam" variable (:type ("EtchLongPtr" type (:type "class") nil nil)) (reparse-symbol arg-sub-list) [27630 27649])
+                    ("data" variable (:type ("EtchNativeArrayBytePtr" type (:type "class") nil nil)) (reparse-symbol arg-sub-list) [27650 27678])
+                    ("user_data" variable (:type ("EtchNativeArrayBytePtr" type (:type "class") nil nil)) (reparse-symbol arg-sub-list) [27679 27712]))                  
+                :type ("AdapterServer::TelephonySendMessageAsyncResultPtr" type (:type "class") nil nil))
+                nil [27444 29233])
+            ("ContactSendMessageAsyncResultRemote" function
+               (:constructor-flag t
+                :parent "RemoteAdapterServer::ContactSendMessageAsyncResultRemote"
+                :arguments 
+                  ( ("base" variable
+                       (:pointer 1
+                        :type ("RemoteAdapterServer" type (:type "class") nil nil))
+                        (reparse-symbol arg-sub-list) [29329 29355])
+                    ("mailbox" variable (:type ("capu::SmartPointer" type
+                         (:template-specifier 
+                            ( ("EtchMailbox" type nil nil nil))                            
+                          :type "class")
+                          nil nil)) (reparse-symbol arg-sub-list) [29356 29396]))                  
+                :type ("ContactSendMessageAsyncResultRemote" type (:type "class") nil nil))
+                nil [29235 29465])
+            ("ContactSendMessageAsyncResultRemote" function
+               (:destructor-flag t
+                :parent "RemoteAdapterServer::ContactSendMessageAsyncResultRemote"
+                :type "void")
+                nil [29467 29567])
+            ("mailboxStatus" function
+               (:parent "RemoteAdapterServer::ContactSendMessageAsyncResultRemote"
+                :arguments 
+                  ( ("mb" variable
+                       (:pointer 1
+                        :type ("EtchMailbox" type (:type "class") nil nil))
+                        (reparse-symbol arg-sub-list) [29651 29667])
+                    ("state" variable
+                       (:pointer 1
+                        :type ("EtchObject" type (:type "class") nil nil))
+                        (reparse-symbol arg-sub-list) [29668 29686])
+                    ("closed" variable (:type ("capu::bool_t" type (:type "class") nil nil)) (reparse-symbol arg-sub-list) [29687 29707]))                  
+                :type ("status_t" type (:type "class") nil nil))
+                nil [29570 29729])
+            ("Begin" function
+               (:parent "RemoteAdapterServer::ContactSendMessageAsyncResultRemote"
+                :arguments 
+                  ( ("base" variable
+                       (:pointer 1
+                        :type ("RemoteAdapterServer" type (:type "class") nil nil))
+                        (reparse-symbol arg-sub-list) [29843 29869])
+                    ("data" variable (:type ("EtchNativeArrayBytePtr" type (:type "class") nil nil)) (reparse-symbol arg-sub-list) [29870 29898]))                  
+                :type ("AdapterServer::ContactSendMessageAsyncResultPtr" type (:type "class") nil nil))
+                nil [29731 31061])
+            ("ProfileSendMessageAsyncResultRemote" function
+               (:constructor-flag t
+                :parent "RemoteAdapterServer::ProfileSendMessageAsyncResultRemote"
+                :arguments 
+                  ( ("base" variable
+                       (:pointer 1
+                        :type ("RemoteAdapterServer" type (:type "class") nil nil))
+                        (reparse-symbol arg-sub-list) [31157 31183])
+                    ("mailbox" variable (:type ("capu::SmartPointer" type
+                         (:template-specifier 
+                            ( ("EtchMailbox" type nil nil nil))                            
+                          :type "class")
+                          nil nil)) (reparse-symbol arg-sub-list) [31184 31224]))                  
+                :type ("ProfileSendMessageAsyncResultRemote" type (:type "class") nil nil))
+                nil [31063 31293])
+            ("ProfileSendMessageAsyncResultRemote" function
+               (:destructor-flag t
+                :parent "RemoteAdapterServer::ProfileSendMessageAsyncResultRemote"
+                :type "void")
+                nil [31295 31395])
+            ("mailboxStatus" function
+               (:parent "RemoteAdapterServer::ProfileSendMessageAsyncResultRemote"
+                :arguments 
+                  ( ("mb" variable
+                       (:pointer 1
+                        :type ("EtchMailbox" type (:type "class") nil nil))
+                        (reparse-symbol arg-sub-list) [31479 31495])
+                    ("state" variable
+                       (:pointer 1
+                        :type ("EtchObject" type (:type "class") nil nil))
+                        (reparse-symbol arg-sub-list) [31496 31514])
+                    ("closed" variable (:type ("capu::bool_t" type (:type "class") nil nil)) (reparse-symbol arg-sub-list) [31515 31535]))                  
+                :type ("status_t" type (:type "class") nil nil))
+                nil [31398 31557])
+            ("Begin" function
+               (:parent "RemoteAdapterServer::ProfileSendMessageAsyncResultRemote"
+                :arguments 
+                  ( ("base" variable
+                       (:pointer 1
+                        :type ("RemoteAdapterServer" type (:type "class") nil nil))
+                        (reparse-symbol arg-sub-list) [31671 31697])
+                    ("command" variable (:type ("EtchInt32Ptr" type (:type "class") nil nil)) (reparse-symbol arg-sub-list) [31698 31719])
+                    ("wparam" variable (:type ("EtchInt32Ptr" type (:type "class") nil nil)) (reparse-symbol arg-sub-list) [31720 31740])
+                    ("lparam" variable (:type ("EtchLongPtr" type (:type "class") nil nil)) (reparse-symbol arg-sub-list) [31741 31760])
+                    ("data" variable (:type ("EtchNativeArrayBytePtr" type (:type "class") nil nil)) (reparse-symbol arg-sub-list) [31761 31789])
+                    ("user_data" variable (:type ("EtchNativeArrayBytePtr" type (:type "class") nil nil)) (reparse-symbol arg-sub-list) [31790 31823]))                  
+                :type ("AdapterServer::ProfileSendMessageAsyncResultPtr" type (:type "class") nil nil))
+                nil [31559 33330])
+            ("LifeCycleManagerSendMessageAsyncResultRemote" function
+               (:constructor-flag t
+                :parent "RemoteAdapterServer::LifeCycleManagerSendMessageAsyncResultRemote"
+                :arguments 
+                  ( ("base" variable
+                       (:pointer 1
+                        :type ("RemoteAdapterServer" type (:type "class") nil nil))
+                        (reparse-symbol arg-sub-list) [33444 33470])
+                    ("mailbox" variable (:type ("capu::SmartPointer" type
+                         (:template-specifier 
+                            ( ("EtchMailbox" type nil nil nil))                            
+                          :type "class")
+                          nil nil)) (reparse-symbol arg-sub-list) [33471 33511]))                  
+                :type ("LifeCycleManagerSendMessageAsyncResultRemote" type (:type "class") nil nil))
+                nil [33332 33580])
+            ("LifeCycleManagerSendMessageAsyncResultRemote" function
+               (:destructor-flag t
+                :parent "RemoteAdapterServer::LifeCycleManagerSendMessageAsyncResultRemote"
+                :type "void")
+                nil [33582 33700])
+            ("mailboxStatus" function
+               (:parent "RemoteAdapterServer::LifeCycleManagerSendMessageAsyncResultRemote"
+                :arguments 
+                  ( ("mb" variable
+                       (:pointer 1
+                        :type ("EtchMailbox" type (:type "class") nil nil))
+                        (reparse-symbol arg-sub-list) [33793 33809])
+                    ("state" variable
+                       (:pointer 1
+                        :type ("EtchObject" type (:type "class") nil nil))
+                        (reparse-symbol arg-sub-list) [33810 33828])
+                    ("closed" variable (:type ("capu::bool_t" type (:type "class") nil nil)) (reparse-symbol arg-sub-list) [33829 33849]))                  
+                :type ("status_t" type (:type "class") nil nil))
+                nil [33703 33871])
+            ("Begin" function
+               (:parent "RemoteAdapterServer::LifeCycleManagerSendMessageAsyncResultRemote"
+                :arguments 
+                  ( ("base" variable
+                       (:pointer 1
+                        :type ("RemoteAdapterServer" type (:type "class") nil nil))
+                        (reparse-symbol arg-sub-list) [34003 34029])
+                    ("command" variable (:type ("EtchInt32Ptr" type (:type "class") nil nil)) (reparse-symbol arg-sub-list) [34030 34051])
+                    ("wparam" variable (:type ("EtchInt32Ptr" type (:type "class") nil nil)) (reparse-symbol arg-sub-list) [34052 34072])
+                    ("lparam" variable (:type ("EtchLongPtr" type (:type "class") nil nil)) (reparse-symbol arg-sub-list) [34073 34092])
+                    ("data" variable (:type ("EtchNativeArrayBytePtr" type (:type "class") nil nil)) (reparse-symbol arg-sub-list) [34093 34121])
+                    ("user_data" variable (:type ("EtchNativeArrayBytePtr" type (:type "class") nil nil)) (reparse-symbol arg-sub-list) [34122 34155]))                  
+                :type ("AdapterServer::LifeCycleManagerSendMessageAsyncResultPtr" type (:type "class") nil nil))
+                nil [33873 35725])
+            ("SotaSendMessageAsyncResultRemote" function
+               (:constructor-flag t
+                :parent "RemoteAdapterServer::SotaSendMessageAsyncResultRemote"
+                :arguments 
+                  ( ("base" variable
+                       (:pointer 1
+                        :type ("RemoteAdapterServer" type (:type "class") nil nil))
+                        (reparse-symbol arg-sub-list) [35815 35841])
+                    ("mailbox" variable (:type ("capu::SmartPointer" type
+                         (:template-specifier 
+                            ( ("EtchMailbox" type nil nil nil))                            
+                          :type "class")
+                          nil nil)) (reparse-symbol arg-sub-list) [35842 35882]))                  
+                :type ("SotaSendMessageAsyncResultRemote" type (:type "class") nil nil))
+                nil [35727 35951])
+            ("SotaSendMessageAsyncResultRemote" function
+               (:destructor-flag t
+                :parent "RemoteAdapterServer::SotaSendMessageAsyncResultRemote"
+                :type "void")
+                nil [35953 36047])
+            ("mailboxStatus" function
+               (:parent "RemoteAdapterServer::SotaSendMessageAsyncResultRemote"
+                :arguments 
+                  ( ("mb" variable
+                       (:pointer 1
+                        :type ("EtchMailbox" type (:type "class") nil nil))
+                        (reparse-symbol arg-sub-list) [36128 36144])
+                    ("state" variable
+                       (:pointer 1
+                        :type ("EtchObject" type (:type "class") nil nil))
+                        (reparse-symbol arg-sub-list) [36145 36163])
+                    ("closed" variable (:type ("capu::bool_t" type (:type "class") nil nil)) (reparse-symbol arg-sub-list) [36164 36184]))                  
+                :type ("status_t" type (:type "class") nil nil))
+                nil [36050 36206])
+            ("Begin" function
+               (:parent "RemoteAdapterServer::SotaSendMessageAsyncResultRemote"
+                :arguments 
+                  ( ("base" variable
+                       (:pointer 1
+                        :type ("RemoteAdapterServer" type (:type "class") nil nil))
+                        (reparse-symbol arg-sub-list) [36314 36340])
+                    ("command" variable (:type ("EtchInt32Ptr" type (:type "class") nil nil)) (reparse-symbol arg-sub-list) [36341 36362])
+                    ("wparam" variable (:type ("EtchInt32Ptr" type (:type "class") nil nil)) (reparse-symbol arg-sub-list) [36363 36383])
+                    ("lparam" variable (:type ("EtchLongPtr" type (:type "class") nil nil)) (reparse-symbol arg-sub-list) [36384 36403])
+                    ("data" variable (:type ("EtchNativeArrayBytePtr" type (:type "class") nil nil)) (reparse-symbol arg-sub-list) [36404 36432])
+                    ("user_data" variable (:type ("EtchNativeArrayBytePtr" type (:type "class") nil nil)) (reparse-symbol arg-sub-list) [36433 36466]))                  
+                :type ("AdapterServer::SotaSendMessageAsyncResultPtr" type (:type "class") nil nil))
+                nil [36208 37952])
+            ("SnmSendMessageAsyncResultRemote" function
+               (:constructor-flag t
+                :parent "RemoteAdapterServer::SnmSendMessageAsyncResultRemote"
+                :arguments 
+                  ( ("base" variable
+                       (:pointer 1
+                        :type ("RemoteAdapterServer" type (:type "class") nil nil))
+                        (reparse-symbol arg-sub-list) [38040 38066])
+                    ("mailbox" variable (:type ("capu::SmartPointer" type
+                         (:template-specifier 
+                            ( ("EtchMailbox" type nil nil nil))                            
+                          :type "class")
+                          nil nil)) (reparse-symbol arg-sub-list) [38067 38107]))                  
+                :type ("SnmSendMessageAsyncResultRemote" type (:type "class") nil nil))
+                nil [37954 38176])
+            ("SnmSendMessageAsyncResultRemote" function
+               (:destructor-flag t
+                :parent "RemoteAdapterServer::SnmSendMessageAsyncResultRemote"
+                :type "void")
+                nil [38178 38270])
+            ("mailboxStatus" function
+               (:parent "RemoteAdapterServer::SnmSendMessageAsyncResultRemote"
+                :arguments 
+                  ( ("mb" variable
+                       (:pointer 1
+                        :type ("EtchMailbox" type (:type "class") nil nil))
+                        (reparse-symbol arg-sub-list) [38350 38366])
+                    ("state" variable
+                       (:pointer 1
+                        :type ("EtchObject" type (:type "class") nil nil))
+                        (reparse-symbol arg-sub-list) [38367 38385])
+                    ("closed" variable (:type ("capu::bool_t" type (:type "class") nil nil)) (reparse-symbol arg-sub-list) [38386 38406]))                  
+                :type ("status_t" type (:type "class") nil nil))
+                nil [38273 38428])
+            ("Begin" function
+               (:parent "RemoteAdapterServer::SnmSendMessageAsyncResultRemote"
+                :arguments 
+                  ( ("base" variable
+                       (:pointer 1
+                        :type ("RemoteAdapterServer" type (:type "class") nil nil))
+                        (reparse-symbol arg-sub-list) [38534 38560])
+                    ("command" variable (:type ("EtchInt32Ptr" type (:type "class") nil nil)) (reparse-symbol arg-sub-list) [38561 38582])
+                    ("wparam" variable (:type ("EtchInt32Ptr" type (:type "class") nil nil)) (reparse-symbol arg-sub-list) [38583 38603])
+                    ("lparam" variable (:type ("EtchLongPtr" type (:type "class") nil nil)) (reparse-symbol arg-sub-list) [38604 38623])
+                    ("data" variable (:type ("EtchNativeArrayBytePtr" type (:type "class") nil nil)) (reparse-symbol arg-sub-list) [38624 38652])
+                    ("user_data" variable (:type ("EtchNativeArrayBytePtr" type (:type "class") nil nil)) (reparse-symbol arg-sub-list) [38653 38686]))                  
+                :type ("AdapterServer::SnmSendMessageAsyncResultPtr" type (:type "class") nil nil))
+                nil [38430 40165])
+            ("SnmSendMessageFbAsyncResultRemote" function
+               (:constructor-flag t
+                :parent "RemoteAdapterServer::SnmSendMessageFbAsyncResultRemote"
+                :arguments 
+                  ( ("base" variable
+                       (:pointer 1
+                        :type ("RemoteAdapterServer" type (:type "class") nil nil))
+                        (reparse-symbol arg-sub-list) [40257 40283])
+                    ("mailbox" variable (:type ("capu::SmartPointer" type
+                         (:template-specifier 
+                            ( ("EtchMailbox" type nil nil nil))                            
+                          :type "class")
+                          nil nil)) (reparse-symbol arg-sub-list) [40284 40324]))                  
+                :type ("SnmSendMessageFbAsyncResultRemote" type (:type "class") nil nil))
+                nil [40167 40393])
+            ("SnmSendMessageFbAsyncResultRemote" function
+               (:destructor-flag t
+                :parent "RemoteAdapterServer::SnmSendMessageFbAsyncResultRemote"
+                :type "void")
+                nil [40395 40491])
+            ("mailboxStatus" function
+               (:parent "RemoteAdapterServer::SnmSendMessageFbAsyncResultRemote"
+                :arguments 
+                  ( ("mb" variable
+                       (:pointer 1
+                        :type ("EtchMailbox" type (:type "class") nil nil))
+                        (reparse-symbol arg-sub-list) [40573 40589])
+                    ("state" variable
+                       (:pointer 1
+                        :type ("EtchObject" type (:type "class") nil nil))
+                        (reparse-symbol arg-sub-list) [40590 40608])
+                    ("closed" variable (:type ("capu::bool_t" type (:type "class") nil nil)) (reparse-symbol arg-sub-list) [40609 40629]))                  
+                :type ("status_t" type (:type "class") nil nil))
+                nil [40494 40651])
+            ("Begin" function
+               (:parent "RemoteAdapterServer::SnmSendMessageFbAsyncResultRemote"
+                :arguments 
+                  ( ("base" variable
+                       (:pointer 1
+                        :type ("RemoteAdapterServer" type (:type "class") nil nil))
+                        (reparse-symbol arg-sub-list) [40761 40787])
+                    ("command" variable (:type ("EtchInt32Ptr" type (:type "class") nil nil)) (reparse-symbol arg-sub-list) [40788 40809])
+                    ("data" variable (:type ("EtchNativeArrayBytePtr" type (:type "class") nil nil)) (reparse-symbol arg-sub-list) [40810 40838]))                  
+                :type ("AdapterServer::SnmSendMessageFbAsyncResultPtr" type (:type "class") nil nil))
+                nil [40653 42073])
+            ("SendJsonDataAsyncResultRemote" function
+               (:constructor-flag t
+                :parent "RemoteAdapterServer::SendJsonDataAsyncResultRemote"
+                :arguments 
+                  ( ("base" variable
+                       (:pointer 1
+                        :type ("RemoteAdapterServer" type (:type "class") nil nil))
+                        (reparse-symbol arg-sub-list) [42157 42183])
+                    ("mailbox" variable (:type ("capu::SmartPointer" type
+                         (:template-specifier 
+                            ( ("EtchMailbox" type nil nil nil))                            
+                          :type "class")
+                          nil nil)) (reparse-symbol arg-sub-list) [42184 42224]))                  
+                :type ("SendJsonDataAsyncResultRemote" type (:type "class") nil nil))
+                nil [42075 42293])
+            ("SendJsonDataAsyncResultRemote" function
+               (:destructor-flag t
+                :parent "RemoteAdapterServer::SendJsonDataAsyncResultRemote"
+                :type "void")
+                nil [42295 42383])
+            ("mailboxStatus" function
+               (:parent "RemoteAdapterServer::SendJsonDataAsyncResultRemote"
+                :arguments 
+                  ( ("mb" variable
+                       (:pointer 1
+                        :type ("EtchMailbox" type (:type "class") nil nil))
+                        (reparse-symbol arg-sub-list) [42461 42477])
+                    ("state" variable
+                       (:pointer 1
+                        :type ("EtchObject" type (:type "class") nil nil))
+                        (reparse-symbol arg-sub-list) [42478 42496])
+                    ("closed" variable (:type ("capu::bool_t" type (:type "class") nil nil)) (reparse-symbol arg-sub-list) [42497 42517]))                  
+                :type ("status_t" type (:type "class") nil nil))
+                nil [42386 42539])
+            ("Begin" function
+               (:parent "RemoteAdapterServer::SendJsonDataAsyncResultRemote"
+                :arguments 
+                  ( ("base" variable
+                       (:pointer 1
+                        :type ("RemoteAdapterServer" type (:type "class") nil nil))
+                        (reparse-symbol arg-sub-list) [42641 42667])
+                    ("data" variable (:type ("EtchNativeArrayBytePtr" type (:type "class") nil nil)) (reparse-symbol arg-sub-list) [42668 42696]))                  
+                :type ("AdapterServer::SendJsonDataAsyncResultPtr" type (:type "class") nil nil))
+                nil [42541 43817])
+            ("ClusterSendMessageAsyncResultRemote" function
+               (:constructor-flag t
+                :parent "RemoteAdapterServer::ClusterSendMessageAsyncResultRemote"
+                :arguments 
+                  ( ("base" variable
+                       (:pointer 1
+                        :type ("RemoteAdapterServer" type (:type "class") nil nil))
+                        (reparse-symbol arg-sub-list) [43913 43939])
+                    ("mailbox" variable (:type ("capu::SmartPointer" type
+                         (:template-specifier 
+                            ( ("EtchMailbox" type nil nil nil))                            
+                          :type "class")
+                          nil nil)) (reparse-symbol arg-sub-list) [43940 43980]))                  
+                :type ("ClusterSendMessageAsyncResultRemote" type (:type "class") nil nil))
+                nil [43819 44049])
+            ("ClusterSendMessageAsyncResultRemote" function
+               (:destructor-flag t
+                :parent "RemoteAdapterServer::ClusterSendMessageAsyncResultRemote"
+                :type "void")
+                nil [44051 44151])
+            ("mailboxStatus" function
+               (:parent "RemoteAdapterServer::ClusterSendMessageAsyncResultRemote"
+                :arguments 
+                  ( ("mb" variable
+                       (:pointer 1
+                        :type ("EtchMailbox" type (:type "class") nil nil))
+                        (reparse-symbol arg-sub-list) [44235 44251])
+                    ("state" variable
+                       (:pointer 1
+                        :type ("EtchObject" type (:type "class") nil nil))
+                        (reparse-symbol arg-sub-list) [44252 44270])
+                    ("closed" variable (:type ("capu::bool_t" type (:type "class") nil nil)) (reparse-symbol arg-sub-list) [44271 44291]))                  
+                :type ("status_t" type (:type "class") nil nil))
+                nil [44154 44313])
+            ("Begin" function
+               (:parent "RemoteAdapterServer::ClusterSendMessageAsyncResultRemote"
+                :arguments 
+                  ( ("base" variable
+                       (:pointer 1
+                        :type ("RemoteAdapterServer" type (:type "class") nil nil))
+                        (reparse-symbol arg-sub-list) [44427 44453])
+                    ("command" variable (:type ("EtchInt32Ptr" type (:type "class") nil nil)) (reparse-symbol arg-sub-list) [44454 44475])
+                    ("wparam" variable (:type ("EtchInt32Ptr" type (:type "class") nil nil)) (reparse-symbol arg-sub-list) [44476 44496])
+                    ("lparam" variable (:type ("EtchLongPtr" type (:type "class") nil nil)) (reparse-symbol arg-sub-list) [44497 44516])
+                    ("data" variable (:type ("EtchNativeArrayBytePtr" type (:type "class") nil nil)) (reparse-symbol arg-sub-list) [44517 44545])
+                    ("user_data" variable (:type ("EtchNativeArrayBytePtr" type (:type "class") nil nil)) (reparse-symbol arg-sub-list) [44546 44579]))                  
+                :type ("AdapterServer::ClusterSendMessageAsyncResultPtr" type (:type "class") nil nil))
+                nil [44315 46086])
+            ("PreferencesSendMessageAsyncResultRemote" function
+               (:constructor-flag t
+                :parent "RemoteAdapterServer::PreferencesSendMessageAsyncResultRemote"
+                :arguments 
+                  ( ("base" variable
+                       (:pointer 1
+                        :type ("RemoteAdapterServer" type (:type "class") nil nil))
+                        (reparse-symbol arg-sub-list) [46190 46216])
+                    ("mailbox" variable (:type ("capu::SmartPointer" type
+                         (:template-specifier 
+                            ( ("EtchMailbox" type nil nil nil))                            
+                          :type "class")
+                          nil nil)) (reparse-symbol arg-sub-list) [46217 46257]))                  
+                :type ("PreferencesSendMessageAsyncResultRemote" type (:type "class") nil nil))
+                nil [46088 46326])
+            ("PreferencesSendMessageAsyncResultRemote" function
+               (:destructor-flag t
+                :parent "RemoteAdapterServer::PreferencesSendMessageAsyncResultRemote"
+                :type "void")
+                nil [46328 46436])
+            ("mailboxStatus" function
+               (:parent "RemoteAdapterServer::PreferencesSendMessageAsyncResultRemote"
+                :arguments 
+                  ( ("mb" variable
+                       (:pointer 1
+                        :type ("EtchMailbox" type (:type "class") nil nil))
+                        (reparse-symbol arg-sub-list) [46524 46540])
+                    ("state" variable
+                       (:pointer 1
+                        :type ("EtchObject" type (:type "class") nil nil))
+                        (reparse-symbol arg-sub-list) [46541 46559])
+                    ("closed" variable (:type ("capu::bool_t" type (:type "class") nil nil)) (reparse-symbol arg-sub-list) [46560 46580]))                  
+                :type ("status_t" type (:type "class") nil nil))
+                nil [46439 46602])
+            ("Begin" function
+               (:parent "RemoteAdapterServer::PreferencesSendMessageAsyncResultRemote"
+                :arguments 
+                  ( ("base" variable
+                       (:pointer 1
+                        :type ("RemoteAdapterServer" type (:type "class") nil nil))
+                        (reparse-symbol arg-sub-list) [46724 46750])
+                    ("command" variable (:type ("EtchInt32Ptr" type (:type "class") nil nil)) (reparse-symbol arg-sub-list) [46751 46772])
+                    ("wparam" variable (:type ("EtchInt32Ptr" type (:type "class") nil nil)) (reparse-symbol arg-sub-list) [46773 46793])
+                    ("lparam" variable (:type ("EtchLongPtr" type (:type "class") nil nil)) (reparse-symbol arg-sub-list) [46794 46813])
+                    ("data" variable (:type ("EtchNativeArrayBytePtr" type (:type "class") nil nil)) (reparse-symbol arg-sub-list) [46814 46842])
+                    ("user_data" variable (:type ("EtchNativeArrayBytePtr" type (:type "class") nil nil)) (reparse-symbol arg-sub-list) [46843 46876]))                  
+                :type ("AdapterServer::PreferencesSendMessageAsyncResultPtr" type (:type "class") nil nil))
+                nil [46604 48411])
+            ("SettingsSendMessageAsyncResultRemote" function
+               (:constructor-flag t
+                :parent "RemoteAdapterServer::SettingsSendMessageAsyncResultRemote"
+                :arguments 
+                  ( ("base" variable
+                       (:pointer 1
+                        :type ("RemoteAdapterServer" type (:type "class") nil nil))
+                        (reparse-symbol arg-sub-list) [48509 48535])
+                    ("mailbox" variable (:type ("capu::SmartPointer" type
+                         (:template-specifier 
+                            ( ("EtchMailbox" type nil nil nil))                            
+                          :type "class")
+                          nil nil)) (reparse-symbol arg-sub-list) [48536 48576]))                  
+                :type ("SettingsSendMessageAsyncResultRemote" type (:type "class") nil nil))
+                nil [48413 48645])
+            ("SettingsSendMessageAsyncResultRemote" function
+               (:destructor-flag t
+                :parent "RemoteAdapterServer::SettingsSendMessageAsyncResultRemote"
+                :type "void")
+                nil [48647 48749])
+            ("mailboxStatus" function
+               (:parent "RemoteAdapterServer::SettingsSendMessageAsyncResultRemote"
+                :arguments 
+                  ( ("mb" variable
+                       (:pointer 1
+                        :type ("EtchMailbox" type (:type "class") nil nil))
+                        (reparse-symbol arg-sub-list) [48834 48850])
+                    ("state" variable
+                       (:pointer 1
+                        :type ("EtchObject" type (:type "class") nil nil))
+                        (reparse-symbol arg-sub-list) [48851 48869])
+                    ("closed" variable (:type ("capu::bool_t" type (:type "class") nil nil)) (reparse-symbol arg-sub-list) [48870 48890]))                  
+                :type ("status_t" type (:type "class") nil nil))
+                nil [48752 48912])
+            ("Begin" function
+               (:parent "RemoteAdapterServer::SettingsSendMessageAsyncResultRemote"
+                :arguments 
+                  ( ("base" variable
+                       (:pointer 1
+                        :type ("RemoteAdapterServer" type (:type "class") nil nil))
+                        (reparse-symbol arg-sub-list) [49028 49054])
+                    ("command" variable (:type ("EtchInt32Ptr" type (:type "class") nil nil)) (reparse-symbol arg-sub-list) [49055 49076])
+                    ("wparam" variable (:type ("EtchInt32Ptr" type (:type "class") nil nil)) (reparse-symbol arg-sub-list) [49077 49097])
+                    ("lparam" variable (:type ("EtchLongPtr" type (:type "class") nil nil)) (reparse-symbol arg-sub-list) [49098 49117])
+                    ("data" variable (:type ("EtchNativeArrayBytePtr" type (:type "class") nil nil)) (reparse-symbol arg-sub-list) [49118 49146])
+                    ("user_data" variable (:type ("EtchNativeArrayBytePtr" type (:type "class") nil nil)) (reparse-symbol arg-sub-list) [49147 49180]))                  
+                :type ("AdapterServer::SettingsSendMessageAsyncResultPtr" type (:type "class") nil nil))
+                nil [48914 50694])
+            ("FactoryResetSendMessageAsyncResultRemote" function
+               (:constructor-flag t
+                :parent "RemoteAdapterServer::FactoryResetSendMessageAsyncResultRemote"
+                :arguments 
+                  ( ("base" variable
+                       (:pointer 1
+                        :type ("RemoteAdapterServer" type (:type "class") nil nil))
+                        (reparse-symbol arg-sub-list) [50800 50826])
+                    ("mailbox" variable (:type ("capu::SmartPointer" type
+                         (:template-specifier 
+                            ( ("EtchMailbox" type nil nil nil))                            
+                          :type "class")
+                          nil nil)) (reparse-symbol arg-sub-list) [50827 50867]))                  
+                :type ("FactoryResetSendMessageAsyncResultRemote" type (:type "class") nil nil))
+                nil [50696 50936])
+            ("FactoryResetSendMessageAsyncResultRemote" function
+               (:destructor-flag t
+                :parent "RemoteAdapterServer::FactoryResetSendMessageAsyncResultRemote"
+                :type "void")
+                nil [50938 51048])
+            ("mailboxStatus" function
+               (:parent "RemoteAdapterServer::FactoryResetSendMessageAsyncResultRemote"
+                :arguments 
+                  ( ("mb" variable
+                       (:pointer 1
+                        :type ("EtchMailbox" type (:type "class") nil nil))
+                        (reparse-symbol arg-sub-list) [51137 51153])
+                    ("state" variable
+                       (:pointer 1
+                        :type ("EtchObject" type (:type "class") nil nil))
+                        (reparse-symbol arg-sub-list) [51154 51172])
+                    ("closed" variable (:type ("capu::bool_t" type (:type "class") nil nil)) (reparse-symbol arg-sub-list) [51173 51193]))                  
+                :type ("status_t" type (:type "class") nil nil))
+                nil [51051 51215])
+            ("Begin" function
+               (:parent "RemoteAdapterServer::FactoryResetSendMessageAsyncResultRemote"
+                :arguments 
+                  ( ("base" variable
+                       (:pointer 1
+                        :type ("RemoteAdapterServer" type (:type "class") nil nil))
+                        (reparse-symbol arg-sub-list) [51339 51365])
+                    ("command" variable (:type ("EtchInt32Ptr" type (:type "class") nil nil)) (reparse-symbol arg-sub-list) [51366 51387])
+                    ("wparam" variable (:type ("EtchInt32Ptr" type (:type "class") nil nil)) (reparse-symbol arg-sub-list) [51388 51408])
+                    ("lparam" variable (:type ("EtchLongPtr" type (:type "class") nil nil)) (reparse-symbol arg-sub-list) [51409 51428])
+                    ("data" variable (:type ("EtchNativeArrayBytePtr" type (:type "class") nil nil)) (reparse-symbol arg-sub-list) [51429 51457])
+                    ("user_data" variable (:type ("EtchNativeArrayBytePtr" type (:type "class") nil nil)) (reparse-symbol arg-sub-list) [51458 51491]))                  
+                :type ("AdapterServer::FactoryResetSendMessageAsyncResultPtr" type (:type "class") nil nil))
+                nil [51217 53033])
+            ("MultimediaStateSendMessageAsyncResultRemote" function
+               (:constructor-flag t
+                :parent "RemoteAdapterServer::MultimediaStateSendMessageAsyncResultRemote"
+                :arguments 
+                  ( ("base" variable
+                       (:pointer 1
+                        :type ("RemoteAdapterServer" type (:type "class") nil nil))
+                        (reparse-symbol arg-sub-list) [53145 53171])
+                    ("mailbox" variable (:type ("capu::SmartPointer" type
+                         (:template-specifier 
+                            ( ("EtchMailbox" type nil nil nil))                            
+                          :type "class")
+                          nil nil)) (reparse-symbol arg-sub-list) [53172 53212]))                  
+                :type ("MultimediaStateSendMessageAsyncResultRemote" type (:type "class") nil nil))
+                nil [53035 53281])
+            ("MultimediaStateSendMessageAsyncResultRemote" function
+               (:destructor-flag t
+                :parent "RemoteAdapterServer::MultimediaStateSendMessageAsyncResultRemote"
+                :type "void")
+                nil [53283 53399])
+            ("mailboxStatus" function
+               (:parent "RemoteAdapterServer::MultimediaStateSendMessageAsyncResultRemote"
+                :arguments 
+                  ( ("mb" variable
+                       (:pointer 1
+                        :type ("EtchMailbox" type (:type "class") nil nil))
+                        (reparse-symbol arg-sub-list) [53491 53507])
+                    ("state" variable
+                       (:pointer 1
+                        :type ("EtchObject" type (:type "class") nil nil))
+                        (reparse-symbol arg-sub-list) [53508 53526])
+                    ("closed" variable (:type ("capu::bool_t" type (:type "class") nil nil)) (reparse-symbol arg-sub-list) [53527 53547]))                  
+                :type ("status_t" type (:type "class") nil nil))
+                nil [53402 53569])
+            ("Begin" function
+               (:parent "RemoteAdapterServer::MultimediaStateSendMessageAsyncResultRemote"
+                :arguments 
+                  ( ("base" variable
+                       (:pointer 1
+                        :type ("RemoteAdapterServer" type (:type "class") nil nil))
+                        (reparse-symbol arg-sub-list) [53699 53725])
+                    ("command" variable (:type ("EtchInt32Ptr" type (:type "class") nil nil)) (reparse-symbol arg-sub-list) [53726 53747])
+                    ("wparam" variable (:type ("EtchInt32Ptr" type (:type "class") nil nil)) (reparse-symbol arg-sub-list) [53748 53768])
+                    ("lparam" variable (:type ("EtchLongPtr" type (:type "class") nil nil)) (reparse-symbol arg-sub-list) [53769 53788])
+                    ("data" variable (:type ("EtchNativeArrayBytePtr" type (:type "class") nil nil)) (reparse-symbol arg-sub-list) [53789 53817])
+                    ("user_data" variable (:type ("EtchNativeArrayBytePtr" type (:type "class") nil nil)) (reparse-symbol arg-sub-list) [53818 53851]))                  
+                :type ("AdapterServer::MultimediaStateSendMessageAsyncResultPtr" type (:type "class") nil nil))
+                nil [53571 55414])
+            ("NotifyErrorSendMessageAsyncResultRemote" function
+               (:constructor-flag t
+                :parent "RemoteAdapterServer::NotifyErrorSendMessageAsyncResultRemote"
+                :arguments 
+                  ( ("base" variable
+                       (:pointer 1
+                        :type ("RemoteAdapterServer" type (:type "class") nil nil))
+                        (reparse-symbol arg-sub-list) [55518 55544])
+                    ("mailbox" variable (:type ("capu::SmartPointer" type
+                         (:template-specifier 
+                            ( ("EtchMailbox" type nil nil nil))                            
+                          :type "class")
+                          nil nil)) (reparse-symbol arg-sub-list) [55545 55585]))                  
+                :type ("NotifyErrorSendMessageAsyncResultRemote" type (:type "class") nil nil))
+                nil [55416 55654])
+            ("NotifyErrorSendMessageAsyncResultRemote" function
+               (:destructor-flag t
+                :parent "RemoteAdapterServer::NotifyErrorSendMessageAsyncResultRemote"
+                :type "void")
+                nil [55656 55764])
+            ("mailboxStatus" function
+               (:parent "RemoteAdapterServer::NotifyErrorSendMessageAsyncResultRemote"
+                :arguments 
+                  ( ("mb" variable
+                       (:pointer 1
+                        :type ("EtchMailbox" type (:type "class") nil nil))
+                        (reparse-symbol arg-sub-list) [55852 55868])
+                    ("state" variable
+                       (:pointer 1
+                        :type ("EtchObject" type (:type "class") nil nil))
+                        (reparse-symbol arg-sub-list) [55869 55887])
+                    ("closed" variable (:type ("capu::bool_t" type (:type "class") nil nil)) (reparse-symbol arg-sub-list) [55888 55908]))                  
+                :type ("status_t" type (:type "class") nil nil))
+                nil [55767 55930])
+            ("Begin" function
+               (:parent "RemoteAdapterServer::NotifyErrorSendMessageAsyncResultRemote"
+                :arguments 
+                  ( ("base" variable
+                       (:pointer 1
+                        :type ("RemoteAdapterServer" type (:type "class") nil nil))
+                        (reparse-symbol arg-sub-list) [56052 56078])
+                    ("command" variable (:type ("EtchInt32Ptr" type (:type "class") nil nil)) (reparse-symbol arg-sub-list) [56079 56100])
+                    ("wparam" variable (:type ("EtchInt32Ptr" type (:type "class") nil nil)) (reparse-symbol arg-sub-list) [56101 56121])
+                    ("lparam" variable (:type ("EtchLongPtr" type (:type "class") nil nil)) (reparse-symbol arg-sub-list) [56122 56141])
+                    ("data" variable (:type ("EtchNativeArrayBytePtr" type (:type "class") nil nil)) (reparse-symbol arg-sub-list) [56142 56170])
+                    ("user_data" variable (:type ("EtchNativeArrayBytePtr" type (:type "class") nil nil)) (reparse-symbol arg-sub-list) [56171 56204]))                  
+                :type ("AdapterServer::NotifyErrorSendMessageAsyncResultPtr" type (:type "class") nil nil))
+                nil [55932 57739])
+            ("RemoteAdapterServer" function
+               (:constructor-flag t
+                :parent "RemoteAdapterServer"
+                :arguments 
+                  ( ("runtime" variable
+                       (:pointer 1
+                        :type ("EtchRuntime" type (:type "class") nil nil))
+                        (reparse-symbol arg-sub-list) [57861 57882])
+                    ("svc" variable
+                       (:pointer 1
+                        :type ("EtchDeliveryService" type (:type "class") nil nil))
+                        (reparse-symbol arg-sub-list) [57883 57908])
+                    ("vf" variable
+                       (:pointer 1
+                        :type ("EtchValueFactory" type (:type "class") nil nil))
+                        (reparse-symbol arg-sub-list) [57909 57930])
+                    ("stack" variable
+                       (:pointer 1
+                        :type ("EtchStack" type (:type "class") nil nil))
+                        (reparse-symbol arg-sub-list) [57931 57949]))                  
+                :type ("RemoteAdapterServer" type (:type "class") nil nil))
+                nil [57820 57996])
+            ("RemoteAdapterServer" function
+               (:destructor-flag t
+                :parent "RemoteAdapterServer"
+                :type "void")
+                nil [57998 58045])
+            ("SendAppMessage" function
+               (:parent "RemoteAdapterServer"
+                :arguments 
+                  ( ("command" variable (:type ("EtchInt32Ptr" type (:type "class") nil nil)) (reparse-symbol arg-sub-list) [58128 58149])
+                    ("wparam" variable (:type ("EtchInt32Ptr" type (:type "class") nil nil)) (reparse-symbol arg-sub-list) [58150 58170])
+                    ("lparam" variable (:type ("EtchLongPtr" type (:type "class") nil nil)) (reparse-symbol arg-sub-list) [58171 58190])
+                    ("data" variable (:type ("EtchNativeArrayBytePtr" type (:type "class") nil nil)) (reparse-symbol arg-sub-list) [58191 58219])
+                    ("user_data" variable (:type ("EtchNativeArrayBytePtr" type (:type "class") nil nil)) (reparse-symbol arg-sub-list) [58220 58253]))                  
+                :type ("AdapterServer::SendAppMessageAsyncResultPtr" type (:type "class") nil nil))
+                nil [58048 58423])
+            ("SendSysMessage" function
+               (:parent "RemoteAdapterServer"
+                :arguments 
+                  ( ("command" variable (:type ("EtchInt32Ptr" type (:type "class") nil nil)) (reparse-symbol arg-sub-list) [58506 58527])
+                    ("wparam" variable (:type ("EtchInt32Ptr" type (:type "class") nil nil)) (reparse-symbol arg-sub-list) [58528 58548])
+                    ("lparam" variable (:type ("EtchLongPtr" type (:type "class") nil nil)) (reparse-symbol arg-sub-list) [58549 58568])
+                    ("data" variable (:type ("EtchNativeArrayBytePtr" type (:type "class") nil nil)) (reparse-symbol arg-sub-list) [58569 58597])
+                    ("user_data" variable (:type ("EtchNativeArrayBytePtr" type (:type "class") nil nil)) (reparse-symbol arg-sub-list) [58598 58631]))                  
+                :type ("AdapterServer::SendSysMessageAsyncResultPtr" type (:type "class") nil nil))
+                nil [58426 58801])
+            ("RegisterService" function
+               (:parent "RemoteAdapterServer"
+                :arguments 
+                  ( ("id" variable (:type ("EtchInt32Ptr" type (:type "class") nil nil)) (reparse-symbol arg-sub-list) [58886 58902]))                  
+                :type ("AdapterServer::RegisterServiceAsyncResultPtr" type (:type "class") nil nil))
+                nil [58804 59036])
+            ("RegisterServiceList" function
+               (:parent "RemoteAdapterServer"
+                :arguments 
+                  ( ("list" variable (:type ("EtchInt32Ptr" type (:type "class") nil nil)) (reparse-symbol arg-sub-list) [59129 59147]))                  
+                :type ("AdapterServer::RegisterServiceListAsyncResultPtr" type (:type "class") nil nil))
+                nil [59039 59291])
+            ("SystemSendMessage" function
+               (:parent "RemoteAdapterServer"
+                :arguments 
+                  ( ("command" variable (:type ("EtchInt32Ptr" type (:type "class") nil nil)) (reparse-symbol arg-sub-list) [59380 59401])
+                    ("wparam" variable (:type ("EtchInt32Ptr" type (:type "class") nil nil)) (reparse-symbol arg-sub-list) [59402 59422])
+                    ("lparam" variable (:type ("EtchLongPtr" type (:type "class") nil nil)) (reparse-symbol arg-sub-list) [59423 59442])
+                    ("data" variable (:type ("EtchNativeArrayBytePtr" type (:type "class") nil nil)) (reparse-symbol arg-sub-list) [59443 59471])
+                    ("user_data" variable (:type ("EtchNativeArrayBytePtr" type (:type "class") nil nil)) (reparse-symbol arg-sub-list) [59472 59505]))                  
+                :type ("AdapterServer::SystemSendMessageAsyncResultPtr" type (:type "class") nil nil))
+                nil [59294 59681])
+            ("SystemSendMessageFb" function
+               (:parent "RemoteAdapterServer"
+                :arguments 
+                  ( ("command" variable (:type ("EtchInt32Ptr" type (:type "class") nil nil)) (reparse-symbol arg-sub-list) [59774 59795])
+                    ("data" variable (:type ("EtchNativeArrayBytePtr" type (:type "class") nil nil)) (reparse-symbol arg-sub-list) [59796 59824]))                  
+                :type ("AdapterServer::SystemSendMessageFbAsyncResultPtr" type (:type "class") nil nil))
+                nil [59684 59977])
+            ("CarHmiSendMessage" function
+               (:parent "RemoteAdapterServer"
+                :arguments 
+                  ( ("command" variable (:type ("EtchInt32Ptr" type (:type "class") nil nil)) (reparse-symbol arg-sub-list) [60066 60087])
+                    ("wparam" variable (:type ("EtchInt32Ptr" type (:type "class") nil nil)) (reparse-symbol arg-sub-list) [60088 60108])
+                    ("lparam" variable (:type ("EtchLongPtr" type (:type "class") nil nil)) (reparse-symbol arg-sub-list) [60109 60128])
+                    ("data" variable (:type ("EtchNativeArrayBytePtr" type (:type "class") nil nil)) (reparse-symbol arg-sub-list) [60129 60157])
+                    ("user_data" variable (:type ("EtchNativeArrayBytePtr" type (:type "class") nil nil)) (reparse-symbol arg-sub-list) [60158 60191]))                  
+                :type ("AdapterServer::CarHmiSendMessageAsyncResultPtr" type (:type "class") nil nil))
+                nil [59980 60367])
+            ("OnData" function
+               (:parent "RemoteAdapterServer"
+                :arguments 
+                  ( ("type" variable (:type ("EtchInt32Ptr" type (:type "class") nil nil)) (reparse-symbol arg-sub-list) [60434 60452])
+                    ("data" variable (:type ("EtchNativeArrayBytePtr" type (:type "class") nil nil)) (reparse-symbol arg-sub-list) [60453 60481]))                  
+                :type ("AdapterServer::OnDataAsyncResultPtr" type (:type "class") nil nil))
+                nil [60370 60605])
+            ("SendMessage" function
+               (:parent "RemoteAdapterServer"
+                :arguments 
+                  ( ("data" variable (:type ("EtchNativeArrayBytePtr" type (:type "class") nil nil)) (reparse-symbol arg-sub-list) [60682 60710]))                  
+                :type ("AdapterServer::SendMessageAsyncResultPtr" type (:type "class") nil nil))
+                nil [60608 60838])
+            ("AudioSendMessage" function
+               (:parent "RemoteAdapterServer"
+                :arguments 
+                  ( ("command" variable (:type ("EtchInt32Ptr" type (:type "class") nil nil)) (reparse-symbol arg-sub-list) [60925 60946])
+                    ("wparam" variable (:type ("EtchInt32Ptr" type (:type "class") nil nil)) (reparse-symbol arg-sub-list) [60947 60967])
+                    ("lparam" variable (:type ("EtchLongPtr" type (:type "class") nil nil)) (reparse-symbol arg-sub-list) [60968 60987])
+                    ("data" variable (:type ("EtchNativeArrayBytePtr" type (:type "class") nil nil)) (reparse-symbol arg-sub-list) [60988 61016])
+                    ("user_data" variable (:type ("EtchNativeArrayBytePtr" type (:type "class") nil nil)) (reparse-symbol arg-sub-list) [61017 61050]))                  
+                :type ("AdapterServer::AudioSendMessageAsyncResultPtr" type (:type "class") nil nil))
+                nil [60841 61224])
+            ("SpeechSendMessage" function
+               (:parent "RemoteAdapterServer"
+                :arguments 
+                  ( ("command" variable (:type ("EtchInt32Ptr" type (:type "class") nil nil)) (reparse-symbol arg-sub-list) [61313 61334])
+                    ("data" variable (:type ("EtchNativeArrayBytePtr" type (:type "class") nil nil)) (reparse-symbol arg-sub-list) [61335 61363]))                  
+                :type ("AdapterServer::SpeechSendMessageAsyncResultPtr" type (:type "class") nil nil))
+                nil [61227 61512])
+            ("BluetoothSendMessage" function
+               (:parent "RemoteAdapterServer"
+                :arguments 
+                  ( ("command" variable (:type ("EtchInt32Ptr" type (:type "class") nil nil)) (reparse-symbol arg-sub-list) [61607 61628])
+                    ("wparam" variable (:type ("EtchInt32Ptr" type (:type "class") nil nil)) (reparse-symbol arg-sub-list) [61629 61649])
+                    ("lparam" variable (:type ("EtchLongPtr" type (:type "class") nil nil)) (reparse-symbol arg-sub-list) [61650 61669])
+                    ("data" variable (:type ("EtchNativeArrayBytePtr" type (:type "class") nil nil)) (reparse-symbol arg-sub-list) [61670 61698])
+                    ("user_data" variable (:type ("EtchNativeArrayBytePtr" type (:type "class") nil nil)) (reparse-symbol arg-sub-list) [61699 61732]))                  
+                :type ("AdapterServer::BluetoothSendMessageAsyncResultPtr" type (:type "class") nil nil))
+                nil [61515 61914])
+            ("PIMSendMessage" function
+               (:parent "RemoteAdapterServer"
+                :arguments 
+                  ( ("command" variable (:type ("EtchInt32Ptr" type (:type "class") nil nil)) (reparse-symbol arg-sub-list) [61997 62018])
+                    ("wparam" variable (:type ("EtchInt32Ptr" type (:type "class") nil nil)) (reparse-symbol arg-sub-list) [62019 62039])
+                    ("lparam" variable (:type ("EtchLongPtr" type (:type "class") nil nil)) (reparse-symbol arg-sub-list) [62040 62059])
+                    ("data" variable (:type ("EtchNativeArrayBytePtr" type (:type "class") nil nil)) (reparse-symbol arg-sub-list) [62060 62088])
+                    ("user_data" variable (:type ("EtchNativeArrayBytePtr" type (:type "class") nil nil)) (reparse-symbol arg-sub-list) [62089 62122]))                  
+                :type ("AdapterServer::PIMSendMessageAsyncResultPtr" type (:type "class") nil nil))
+                nil [61917 62292])
+            ("TelephonySendMessage" function
+               (:parent "RemoteAdapterServer"
+                :arguments 
+                  ( ("command" variable (:type ("EtchInt32Ptr" type (:type "class") nil nil)) (reparse-symbol arg-sub-list) [62387 62408])
+                    ("wparam" variable (:type ("EtchInt32Ptr" type (:type "class") nil nil)) (reparse-symbol arg-sub-list) [62409 62429])
+                    ("lparam" variable (:type ("EtchLongPtr" type (:type "class") nil nil)) (reparse-symbol arg-sub-list) [62430 62449])
+                    ("data" variable (:type ("EtchNativeArrayBytePtr" type (:type "class") nil nil)) (reparse-symbol arg-sub-list) [62450 62478])
+                    ("user_data" variable (:type ("EtchNativeArrayBytePtr" type (:type "class") nil nil)) (reparse-symbol arg-sub-list) [62479 62512]))                  
+                :type ("AdapterServer::TelephonySendMessageAsyncResultPtr" type (:type "class") nil nil))
+                nil [62295 62694])
+            ("ContactSendMessage" function
+               (:parent "RemoteAdapterServer"
+                :arguments 
+                  ( ("data" variable (:type ("EtchNativeArrayBytePtr" type (:type "class") nil nil)) (reparse-symbol arg-sub-list) [62785 62813]))                  
+                :type ("AdapterServer::ContactSendMessageAsyncResultPtr" type (:type "class") nil nil))
+                nil [62697 62955])
+            ("ProfileSendMessage" function
+               (:parent "RemoteAdapterServer"
+                :arguments 
+                  ( ("command" variable (:type ("EtchInt32Ptr" type (:type "class") nil nil)) (reparse-symbol arg-sub-list) [63046 63067])
+                    ("wparam" variable (:type ("EtchInt32Ptr" type (:type "class") nil nil)) (reparse-symbol arg-sub-list) [63068 63088])
+                    ("lparam" variable (:type ("EtchLongPtr" type (:type "class") nil nil)) (reparse-symbol arg-sub-list) [63089 63108])
+                    ("data" variable (:type ("EtchNativeArrayBytePtr" type (:type "class") nil nil)) (reparse-symbol arg-sub-list) [63109 63137])
+                    ("user_data" variable (:type ("EtchNativeArrayBytePtr" type (:type "class") nil nil)) (reparse-symbol arg-sub-list) [63138 63171]))                  
+                :type ("AdapterServer::ProfileSendMessageAsyncResultPtr" type (:type "class") nil nil))
+                nil [62958 63349])
+            ("LifeCycleManagerSendMessage" function
+               (:parent "RemoteAdapterServer"
+                :arguments 
+                  ( ("command" variable (:type ("EtchInt32Ptr" type (:type "class") nil nil)) (reparse-symbol arg-sub-list) [63458 63479])
+                    ("wparam" variable (:type ("EtchInt32Ptr" type (:type "class") nil nil)) (reparse-symbol arg-sub-list) [63480 63500])
+                    ("lparam" variable (:type ("EtchLongPtr" type (:type "class") nil nil)) (reparse-symbol arg-sub-list) [63501 63520])
+                    ("data" variable (:type ("EtchNativeArrayBytePtr" type (:type "class") nil nil)) (reparse-symbol arg-sub-list) [63521 63549])
+                    ("user_data" variable (:type ("EtchNativeArrayBytePtr" type (:type "class") nil nil)) (reparse-symbol arg-sub-list) [63550 63583]))                  
+                :type ("AdapterServer::LifeCycleManagerSendMessageAsyncResultPtr" type (:type "class") nil nil))
+                nil [63352 63779])
+            ("SotaSendMessage" function
+               (:parent "RemoteAdapterServer"
+                :arguments 
+                  ( ("command" variable (:type ("EtchInt32Ptr" type (:type "class") nil nil)) (reparse-symbol arg-sub-list) [63864 63885])
+                    ("wparam" variable (:type ("EtchInt32Ptr" type (:type "class") nil nil)) (reparse-symbol arg-sub-list) [63886 63906])
+                    ("lparam" variable (:type ("EtchLongPtr" type (:type "class") nil nil)) (reparse-symbol arg-sub-list) [63907 63926])
+                    ("data" variable (:type ("EtchNativeArrayBytePtr" type (:type "class") nil nil)) (reparse-symbol arg-sub-list) [63927 63955])
+                    ("user_data" variable (:type ("EtchNativeArrayBytePtr" type (:type "class") nil nil)) (reparse-symbol arg-sub-list) [63956 63989]))                  
+                :type ("AdapterServer::SotaSendMessageAsyncResultPtr" type (:type "class") nil nil))
+                nil [63782 64161])
+            ("SnmSendMessage" function
+               (:parent "RemoteAdapterServer"
+                :arguments 
+                  ( ("command" variable (:type ("EtchInt32Ptr" type (:type "class") nil nil)) (reparse-symbol arg-sub-list) [64244 64265])
+                    ("wparam" variable (:type ("EtchInt32Ptr" type (:type "class") nil nil)) (reparse-symbol arg-sub-list) [64266 64286])
+                    ("lparam" variable (:type ("EtchLongPtr" type (:type "class") nil nil)) (reparse-symbol arg-sub-list) [64287 64306])
+                    ("data" variable (:type ("EtchNativeArrayBytePtr" type (:type "class") nil nil)) (reparse-symbol arg-sub-list) [64307 64335])
+                    ("user_data" variable (:type ("EtchNativeArrayBytePtr" type (:type "class") nil nil)) (reparse-symbol arg-sub-list) [64336 64369]))                  
+                :type ("AdapterServer::SnmSendMessageAsyncResultPtr" type (:type "class") nil nil))
+                nil [64164 64539])
+            ("SnmSendMessageFb" function
+               (:parent "RemoteAdapterServer"
+                :arguments 
+                  ( ("command" variable (:type ("EtchInt32Ptr" type (:type "class") nil nil)) (reparse-symbol arg-sub-list) [64626 64647])
+                    ("data" variable (:type ("EtchNativeArrayBytePtr" type (:type "class") nil nil)) (reparse-symbol arg-sub-list) [64648 64676]))                  
+                :type ("AdapterServer::SnmSendMessageFbAsyncResultPtr" type (:type "class") nil nil))
+                nil [64542 64823])
+            ("SendJsonData" function
+               (:parent "RemoteAdapterServer"
+                :arguments 
+                  ( ("data" variable (:type ("EtchNativeArrayBytePtr" type (:type "class") nil nil)) (reparse-symbol arg-sub-list) [64902 64930]))                  
+                :type ("AdapterServer::SendJsonDataAsyncResultPtr" type (:type "class") nil nil))
+                nil [64826 65060])
+            ("ClusterSendMessage" function
+               (:parent "RemoteAdapterServer"
+                :arguments 
+                  ( ("command" variable (:type ("EtchInt32Ptr" type (:type "class") nil nil)) (reparse-symbol arg-sub-list) [65151 65172])
+                    ("wparam" variable (:type ("EtchInt32Ptr" type (:type "class") nil nil)) (reparse-symbol arg-sub-list) [65173 65193])
+                    ("lparam" variable (:type ("EtchLongPtr" type (:type "class") nil nil)) (reparse-symbol arg-sub-list) [65194 65213])
+                    ("data" variable (:type ("EtchNativeArrayBytePtr" type (:type "class") nil nil)) (reparse-symbol arg-sub-list) [65214 65242])
+                    ("user_data" variable (:type ("EtchNativeArrayBytePtr" type (:type "class") nil nil)) (reparse-symbol arg-sub-list) [65243 65276]))                  
+                :type ("AdapterServer::ClusterSendMessageAsyncResultPtr" type (:type "class") nil nil))
+                nil [65063 65454])
+            ("PreferencesSendMessage" function
+               (:parent "RemoteAdapterServer"
+                :arguments 
+                  ( ("command" variable (:type ("EtchInt32Ptr" type (:type "class") nil nil)) (reparse-symbol arg-sub-list) [65553 65574])
+                    ("wparam" variable (:type ("EtchInt32Ptr" type (:type "class") nil nil)) (reparse-symbol arg-sub-list) [65575 65595])
+                    ("lparam" variable (:type ("EtchLongPtr" type (:type "class") nil nil)) (reparse-symbol arg-sub-list) [65596 65615])
+                    ("data" variable (:type ("EtchNativeArrayBytePtr" type (:type "class") nil nil)) (reparse-symbol arg-sub-list) [65616 65644])
+                    ("user_data" variable (:type ("EtchNativeArrayBytePtr" type (:type "class") nil nil)) (reparse-symbol arg-sub-list) [65645 65678]))                  
+                :type ("AdapterServer::PreferencesSendMessageAsyncResultPtr" type (:type "class") nil nil))
+                nil [65457 65864])
+            ("SettingsSendMessage" function
+               (:parent "RemoteAdapterServer"
+                :arguments 
+                  ( ("command" variable (:type ("EtchInt32Ptr" type (:type "class") nil nil)) (reparse-symbol arg-sub-list) [65957 65978])
+                    ("wparam" variable (:type ("EtchInt32Ptr" type (:type "class") nil nil)) (reparse-symbol arg-sub-list) [65979 65999])
+                    ("lparam" variable (:type ("EtchLongPtr" type (:type "class") nil nil)) (reparse-symbol arg-sub-list) [66000 66019])
+                    ("data" variable (:type ("EtchNativeArrayBytePtr" type (:type "class") nil nil)) (reparse-symbol arg-sub-list) [66020 66048])
+                    ("user_data" variable (:type ("EtchNativeArrayBytePtr" type (:type "class") nil nil)) (reparse-symbol arg-sub-list) [66049 66082]))                  
+                :type ("AdapterServer::SettingsSendMessageAsyncResultPtr" type (:type "class") nil nil))
+                nil [65867 66262])
+            ("FactoryResetSendMessage" function
+               (:parent "RemoteAdapterServer"
+                :arguments 
+                  ( ("command" variable (:type ("EtchInt32Ptr" type (:type "class") nil nil)) (reparse-symbol arg-sub-list) [66363 66384])
+                    ("wparam" variable (:type ("EtchInt32Ptr" type (:type "class") nil nil)) (reparse-symbol arg-sub-list) [66385 66405])
+                    ("lparam" variable (:type ("EtchLongPtr" type (:type "class") nil nil)) (reparse-symbol arg-sub-list) [66406 66425])
+                    ("data" variable (:type ("EtchNativeArrayBytePtr" type (:type "class") nil nil)) (reparse-symbol arg-sub-list) [66426 66454])
+                    ("user_data" variable (:type ("EtchNativeArrayBytePtr" type (:type "class") nil nil)) (reparse-symbol arg-sub-list) [66455 66488]))                  
+                :type ("AdapterServer::FactoryResetSendMessageAsyncResultPtr" type (:type "class") nil nil))
+                nil [66265 66676])
+            ("MultimediaStateSendMessage" function
+               (:parent "RemoteAdapterServer"
+                :arguments 
+                  ( ("command" variable (:type ("EtchInt32Ptr" type (:type "class") nil nil)) (reparse-symbol arg-sub-list) [66783 66804])
+                    ("wparam" variable (:type ("EtchInt32Ptr" type (:type "class") nil nil)) (reparse-symbol arg-sub-list) [66805 66825])
+                    ("lparam" variable (:type ("EtchLongPtr" type (:type "class") nil nil)) (reparse-symbol arg-sub-list) [66826 66845])
+                    ("data" variable (:type ("EtchNativeArrayBytePtr" type (:type "class") nil nil)) (reparse-symbol arg-sub-list) [66846 66874])
+                    ("user_data" variable (:type ("EtchNativeArrayBytePtr" type (:type "class") nil nil)) (reparse-symbol arg-sub-list) [66875 66908]))                  
+                :type ("AdapterServer::MultimediaStateSendMessageAsyncResultPtr" type (:type "class") nil nil))
+                nil [66679 67102])
+            ("NotifyErrorSendMessage" function
+               (:parent "RemoteAdapterServer"
+                :arguments 
+                  ( ("command" variable (:type ("EtchInt32Ptr" type (:type "class") nil nil)) (reparse-symbol arg-sub-list) [67201 67222])
+                    ("wparam" variable (:type ("EtchInt32Ptr" type (:type "class") nil nil)) (reparse-symbol arg-sub-list) [67223 67243])
+                    ("lparam" variable (:type ("EtchLongPtr" type (:type "class") nil nil)) (reparse-symbol arg-sub-list) [67244 67263])
+                    ("data" variable (:type ("EtchNativeArrayBytePtr" type (:type "class") nil nil)) (reparse-symbol arg-sub-list) [67264 67292])
+                    ("user_data" variable (:type ("EtchNativeArrayBytePtr" type (:type "class") nil nil)) (reparse-symbol arg-sub-list) [67293 67326]))                  
+                :type ("AdapterServer::NotifyErrorSendMessageAsyncResultPtr" type (:type "class") nil nil))
+                nil [67105 67512]))          
+      :file "RemoteAdapterServer.cpp"
+      :pointmax 67514
+      :fsize 67513
+      :lastmodtime '(23676 37589 902015 744000)
+      :unmatched-syntax nil))
+  :file "!home!kyle!Project!OAF!platform-binder!platform_binder!binding!service!src!semantic.cache"
+  :semantic-tag-version "2.0"
+  :semanticdb-version "2.2")

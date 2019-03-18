@@ -1,0 +1,201 @@
+;; Object semanticdb-project-database-file
+;; SEMANTICDB Tags save file
+(semanticdb-project-database-file "semanticdb-project-database-file"
+  :tables
+  (list
+    (semanticdb-table "semanticdb-table"
+      :major-mode c++-mode
+      :tags 
+        '( ("platform_binder/proxy/channel_manager/channel_control.h" include nil nil [239 305])
+            ("bitset" include (:system-flag t) nil [306 323])
+            ("platform_binder/common/pb_log.h" include nil nil [324 366])
+            ("platform_binder/proxy/notifyerror/impl_notifyerror_interface.h" include nil nil [367 440])
+            ("platform_binder" type
+               (:members 
+                  ( ("proxy" type
+                       (:members 
+                          ( ("LogTag" variable
+                               (:pointer 1
+                                :typemodifiers ("static")
+                                :constant-flag t
+                                :default-value "\"ChannelControl\""
+                                :type "char")
+                                (reparse-symbol namespacesubparts) [489 534])
+                            ("LogTag_id" variable
+                               (:pointer 1
+                                :typemodifiers ("static")
+                                :constant-flag t
+                                :default-value "\"PBPR\""
+                                :type "char")
+                                (reparse-symbol namespacesubparts) [535 573])
+                            ("ChannelControl" function
+                               (:constructor-flag t
+                                :parent "ChannelControl"
+                                :type ("ChannelControl" type (:type "class") nil nil))
+                                (reparse-symbol namespacesubparts) [575 610])
+                            ("ChannelControl" function
+                               (:destructor-flag t
+                                :parent "ChannelControl"
+                                :type "void")
+                                (reparse-symbol namespacesubparts) [612 648])
+                            ("InitInterfaceSubscribers" function
+                               (:parent "ChannelControl"
+                                :arguments 
+                                  ( ("interfaces" variable
+                                       (:pointer 1
+                                        :type ("PBInterfaces" type (:type "class") nil nil))
+                                        (reparse-symbol arg-sub-list) [696 721]))                                  
+                                :type "void")
+                                (reparse-symbol namespacesubparts) [650 2906])
+                            ("InitDelegateSubscribers" function
+                               (:parent "ChannelControl"
+                                :arguments 
+                                  ( ("delegates" variable
+                                       (:pointer 1
+                                        :type ("PBDelegate" type (:type "class") nil nil))
+                                        (reparse-symbol arg-sub-list) [2953 2975]))                                  
+                                :type "void")
+                                (reparse-symbol namespacesubparts) [2908 5063])
+                            ("InitBroadcast" function
+                               (:parent "ChannelControl"
+                                :type "void")
+                                (reparse-symbol namespacesubparts) [5065 7107])
+                            ("Broadcast2Interfaces" function
+                               (:parent "ChannelControl"
+                                :arguments 
+                                  ( ("from" variable (:type ("UINT32" type (:type "class") nil nil)) (reparse-symbol arg-sub-list) [7151 7163])
+                                    ("to" variable (:type ("UINT32" type (:type "class") nil nil)) (reparse-symbol arg-sub-list) [7164 7174])
+                                    ("command" variable (:type ("INT32" type (:type "class") nil nil)) (reparse-symbol arg-sub-list) [7175 7189])
+                                    ("msg" variable
+                                       (:pointer 1
+                                        :type ("PBChannelCtrlMsg" type (:type "class") nil nil))
+                                        (reparse-symbol arg-sub-list) [7190 7212]))                                  
+                                :type "void")
+                                (reparse-symbol namespacesubparts) [7109 7717])
+                            ("InitNotifyErrorCB" function
+                               (:parent "ChannelControl"
+                                :arguments 
+                                  ( ("AvailableServiceList" variable (:type ("ServiceType" type (:type "class") nil nil)) (reparse-symbol arg-sub-list) [7758 7791]))                                  
+                                :type "void")
+                                (reparse-symbol namespacesubparts) [7719 9267])
+                            ("SendNotifyError" function
+                               (:parent "ChannelControl"
+                                :arguments 
+                                  ( ("from" variable (:type ("uint32_t" type (:type "class") nil nil)) (reparse-symbol arg-sub-list) [9306 9320])
+                                    ("error" variable
+                                       (:pointer 1
+                                        :type ("ErrorInfo" type (:type "class") nil nil))
+                                        (reparse-symbol arg-sub-list) [9321 9338]))                                  
+                                :type "void")
+                                (reparse-symbol namespacesubparts) [9269 9677]))                          
+                        :type "namespace")
+                        (reparse-symbol namespacesubparts) [470 9680]))                  
+                :type "namespace")
+                nil [442 9702]))          
+      :file "channel_control.cc"
+      :pointmax 9733
+      :fsize 9732
+      :lastmodtime '(23681 53174 898441 989000)
+      :unmatched-syntax nil)
+    (semanticdb-table "semanticdb-table"
+      :major-mode c-mode
+      :tags 
+        '( ("map" include (:system-flag t) nil [239 253])
+            ("platform_binder/common/pb_common.h" include nil nil [254 299])
+            ("platform_binder/common/pb_plugin.h" include nil nil [300 345])
+            ("platform_binder/proxy/notifyerror/impl_notifyerror_interface.h" include nil nil [346 419])
+            ("platform_binder" type
+               (:members 
+                  ( ("proxy" type
+                       (:members 
+                          ( ("ChannelControl" type
+                               (:members 
+                                  ( ("public" label nil (reparse-symbol classsubparts) [492 499])
+                                    ("ChannelControl" function
+                                       (:prototype-flag t
+                                        :constructor-flag t
+                                        :type ("ChannelControl" type (:type "class") nil nil))
+                                        (reparse-symbol classsubparts) [502 519])
+                                    ("ChannelControl" function
+                                       (:prototype-flag t
+                                        :destructor-flag t
+                                        :typemodifiers ("virtual")
+                                        :type "void")
+                                        (reparse-symbol classsubparts) [522 548])
+                                    ("InitDelegateSubscribers" function
+                                       (:prototype-flag t
+                                        :arguments 
+                                          ( ("delegates" variable
+                                               (:pointer 1
+                                                :type ("PBDelegate" type (:type "class") nil nil))
+                                                (reparse-symbol arg-sub-list) [581 603]))                                          
+                                        :type "void")
+                                        (reparse-symbol classsubparts) [552 604])
+                                    ("InitInterfaceSubscribers" function
+                                       (:prototype-flag t
+                                        :arguments 
+                                          ( ("interfaces" variable
+                                               (:pointer 1
+                                                :type ("PBInterfaces" type (:type "class") nil nil))
+                                                (reparse-symbol arg-sub-list) [637 662]))                                          
+                                        :type "void")
+                                        (reparse-symbol classsubparts) [607 663])
+                                    ("InitBroadcast" function
+                                       (:prototype-flag t
+                                        :type "void")
+                                        (reparse-symbol classsubparts) [666 687])
+                                    ("InitNotifyErrorCB" function
+                                       (:prototype-flag t
+                                        :arguments 
+                                          ( ("AvailableServiceList" variable (:type ("ServiceType" type (:type "class") nil nil)) (reparse-symbol arg-sub-list) [714 747]))                                          
+                                        :type "void")
+                                        (reparse-symbol classsubparts) [691 748])
+                                    ("Broadcast2Interfaces" function
+                                       (:prototype-flag t
+                                        :arguments 
+                                          ( ("from" variable (:type ("UINT32" type (:type "class") nil nil)) (reparse-symbol arg-sub-list) [778 790])
+                                            ("to" variable (:type ("UINT32" type (:type "class") nil nil)) (reparse-symbol arg-sub-list) [791 801])
+                                            ("command" variable (:type ("INT32" type (:type "class") nil nil)) (reparse-symbol arg-sub-list) [802 816])
+                                            ("msg" variable
+                                               (:pointer 1
+                                                :type ("PBChannelCtrlMsg" type (:type "class") nil nil))
+                                                (reparse-symbol arg-sub-list) [845 867]))                                          
+                                        :type "void")
+                                        (reparse-symbol classsubparts) [752 868])
+                                    ("SendNotifyError" function
+                                       (:prototype-flag t
+                                        :arguments 
+                                          ( ("from" variable (:type ("uint32_t" type (:type "class") nil nil)) (reparse-symbol arg-sub-list) [892 906])
+                                            ("error" variable
+                                               (:pointer 1
+                                                :type ("ErrorInfo" type (:type "class") nil nil))
+                                                (reparse-symbol arg-sub-list) [907 924]))                                          
+                                        :type "void")
+                                        (reparse-symbol classsubparts) [871 925])
+                                    ("private" label nil (reparse-symbol classsubparts) [928 936])
+                                    ("interface_subscribers_" variable (:type ("std::map" type
+                                         (:template-specifier 
+                                            ( ("INT32" type nil nil nil)
+                                              ("PBChannelCtrl" type (:pointer 1) nil nil))                                            
+                                          :type "class")
+                                          nil nil)) (reparse-symbol classsubparts) [939 994])
+                                    ("delegate_subscribers_" variable (:type ("std::map" type
+                                         (:template-specifier 
+                                            ( ("INT32" type nil nil nil)
+                                              ("PBChannelCtrl" type (:pointer 1) nil nil))                                            
+                                          :type "class")
+                                          nil nil)) (reparse-symbol classsubparts) [997 1051]))                                  
+                                :type "class")
+                                (reparse-symbol namespacesubparts) [468 1054]))                          
+                        :type "namespace")
+                        (reparse-symbol namespacesubparts) [449 1057]))                  
+                :type "namespace")
+                nil [421 1079]))          
+      :file "channel_control.h"
+      :pointmax 1109
+      :fsize 1108
+      :lastmodtime '(23676 37589 910015 802000)
+      :unmatched-syntax nil))
+  :file "!home!kyle!Project!OAF!platform-binder!platform_binder!proxy!channel_manager!semantic.cache"
+  :semantic-tag-version "2.0"
+  :semanticdb-version "2.2")

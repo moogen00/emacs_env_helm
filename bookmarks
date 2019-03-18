@@ -1,0 +1,25 @@
+;;;; Emacs Bookmark Format Version 1 ;;;;
+;;; This format is meant to be slightly human-readable;
+;;; nevertheless, you probably don't want to edit it.
+;;; -*- End Of Bookmark File Format Version Stamp -*-
+(("init.el"
+ (filename . "~/.emacs.d/init.el")
+ (front-context-string . "\n\n;; theme\n(requ")
+ (rear-context-string . "etup-my-binding)")
+ (position . 821))
+(".emacs.d"
+ (filename . "~/.emacs.d/")
+ (front-context-string . "custom\n  -rw-rw-")
+ (rear-context-string . "96  3월  4 11:30 ")
+ (position . 269))
+("Documents"
+ (filename . "~/Documents/")
+ (front-context-string . "build_command\n  ")
+ (rear-context-string . "66  4월 24  2018 ")
+ (position . 398))
+("D_dir_renault_project"
+ (filename . "/media/kyle/DATA/kyle/Project/renault/")
+ (front-context-string . "build\n  -rw-rw-r")
+ (rear-context-string . "96  3월  5 19:06 ")
+ (position . 239))
+)

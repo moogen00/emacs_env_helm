@@ -1,0 +1,447 @@
+;; Object semanticdb-project-database-file
+;; SEMANTICDB Tags save file
+(semanticdb-project-database-file "semanticdb-project-database-file"
+  :tables
+  (list
+    (semanticdb-table "semanticdb-table"
+      :major-mode c++-mode
+      :tags 
+        '( ("adapter_manager.h" include nil nil [243 271])
+            ("assert.h" include (:system-flag t) nil [272 291])
+            ("platform_binder/common/pb_log.h" include nil nil [292 334])
+            ("platform_binder/common/pb_services.h" include nil nil [335 382])
+            ("adapter_aivi" type
+               (:members 
+                  ( ("kTag" variable
+                       (:dereference 1
+                        :typemodifiers ("static")
+                        :constant-flag t
+                        :default-value "\"AdapterManager\""
+                        :type "char")
+                        (reparse-symbol namespacesubparts) [410 454])
+                    ("kTag_id" variable
+                       (:dereference 1
+                        :typemodifiers ("static")
+                        :constant-flag t
+                        :default-value "\"PTAM\""
+                        :type "char")
+                        (reparse-symbol namespacesubparts) [455 492])
+                    ("SET_DELEGATE" variable (:constant-flag t) (reparse-symbol namespacesubparts) [502 514])
+                    ("AdapterManager" function
+                       (:constructor-flag t
+                        :parent "AdapterManager"
+                        :type ("AdapterManager" type (:type "class") nil nil))
+                        (reparse-symbol namespacesubparts) [1474 1824])
+                    ("AdapterManager" function
+                       (:destructor-flag t
+                        :parent "AdapterManager"
+                        :type "void")
+                        (reparse-symbol namespacesubparts) [1826 1935])
+                    ("CreateInterface" function
+                       (:parent "AdapterManager"
+                        :type "void")
+                        (reparse-symbol namespacesubparts) [1937 5023])
+                    ("InitPBPlugin" function
+                       (:parent "AdapterManager"
+                        :type "int")
+                        (reparse-symbol namespacesubparts) [5025 10449])
+                    ("FinishPBPlugin" function
+                       (:parent "AdapterManager"
+                        :type "void")
+                        (reparse-symbol namespacesubparts) [10451 10572])
+                    ("DestroyInterface" function
+                       (:parent "AdapterManager"
+                        :type "void")
+                        (reparse-symbol namespacesubparts) [10574 11530])
+                    ("ConnectedCallback" function
+                       (:parent "AdapterManager"
+                        :arguments 
+                          ( ("id" variable (:type ("UINT32" type (:type "class") nil nil)) (reparse-symbol arg-sub-list) [11571 11581]))                          
+                        :type "void")
+                        (reparse-symbol namespacesubparts) [11532 11890])
+                    ("InitNativeIPCWatcher" function
+                       (:parent "AdapterManager"
+                        :type "void")
+                        (reparse-symbol namespacesubparts) [11892 12557])
+                    ("NotifyNativeIPCUp" function
+                       (:parent "AdapterManager"
+                        :arguments 
+                          ( ("services" variable (:type ("UINT32" type (:type "class") nil nil)) (reparse-symbol arg-sub-list) [12598 12614]))                          
+                        :type "void")
+                        (reparse-symbol namespacesubparts) [12559 14661])
+                    ("NotifyNativeIPCDown" function
+                       (:parent "AdapterManager"
+                        :arguments 
+                          ( ("services" variable (:type ("UINT32" type (:type "class") nil nil)) (reparse-symbol arg-sub-list) [14704 14720]))                          
+                        :type "void")
+                        (reparse-symbol namespacesubparts) [14663 16834])
+                    ("DaemonWatcherCb" function
+                       (:parent "AdapterManager"
+                        :arguments 
+                          ( ("arg" variable
+                               (:pointer 1
+                                :type "void")
+                                (reparse-symbol arg-sub-list) [16873 16883])
+                            ("state" variable (:type ("INT32" type (:type "class") nil nil)) (reparse-symbol arg-sub-list) [16884 16896]))                          
+                        :type "void")
+                        (reparse-symbol namespacesubparts) [16836 17588])
+                    ("GatewayWatcherCb" function
+                       (:parent "AdapterManager"
+                        :arguments 
+                          ( ("arg" variable
+                               (:pointer 1
+                                :type "void")
+                                (reparse-symbol arg-sub-list) [17628 17638])
+                            ("state" variable (:type ("INT32" type (:type "class") nil nil)) (reparse-symbol arg-sub-list) [17639 17651]))                          
+                        :type "void")
+                        (reparse-symbol namespacesubparts) [17590 18312])
+                    ("NetWatcherCb" function
+                       (:parent "AdapterManager"
+                        :arguments 
+                          ( ("arg" variable
+                               (:pointer 1
+                                :type "void")
+                                (reparse-symbol arg-sub-list) [18348 18358])
+                            ("state" variable (:type ("INT32" type (:type "class") nil nil)) (reparse-symbol arg-sub-list) [18359 18371]))                          
+                        :type "void")
+                        (reparse-symbol namespacesubparts) [18314 19024]))                  
+                :type "namespace")
+                nil [384 19027]))          
+      :file "adapter_manager.cc"
+      :pointmax 19055
+      :fsize 19054
+      :lastmodtime '(23681 53174 902441 996000)
+      :unmatched-syntax nil
+      :lexical-table 
+        '(("SET_DELEGATE" (spp-arg-list ("interface" "delegate" "serv") 514 . 541) . ((semantic-list "{                                                                      \\
+    INT32 result = interface->SetDelegate(                               \\
+        delegate, std::bind(&AdapterManager::ConnectedCallback, this,    \\
+                            std::placeholders::_1));                     \\
+    if (result < 0) {                                                    \\
+      STRING errmsg = \"SetDelegate failed: \" + std::to_string(serv);     \\
+      PB_LOG_ERROR(kTag, errmsg.c_str());                                \\
+      if (delegates_.notifyerror_delegate)                               \\
+        delegates_.notifyerror_delegate->NotifyErrorPB(                  \\
+            PB_MSG_NOTIFYERROR, AES_PB_ERR_RESULT_SERVICE_NOT_AVAILABLE, \\
+            errmsg.c_str());                                             \\
+    }                                                                    \\
+  }" 571 . 1472)))
+          )
+)
+    (semanticdb-table "semanticdb-table"
+      :major-mode c-mode
+      :tags 
+        '( ("TARGET_AIVI_ADAPTER_MANAGER_H_" variable (:constant-flag t) nil [292 322])
+            ("boost/smart_ptr.hpp" include (:system-flag t) nil [324 354])
+            ("mutex" include (:system-flag t) nil [355 371])
+            ("platform_binder/common/pb_plugin.h" include nil nil [372 417])
+            ("target/aivi/services/audio_service/impl_audio_interface.h" include nil nil [418 486])
+            ("target/aivi/services/bluetooth_service/impl_bluetooth_interface.h" include nil nil [487 563])
+            ("target/aivi/services/car_configuration/impl_car_config_interface.h" include nil nil [564 641])
+            ("target/aivi/services/cluster_service/impl_cluster_interface.h" include nil nil [642 714])
+            ("target/aivi/services/contact_service/impl_pim_interface.h" include nil nil [715 783])
+            ("target/aivi/services/geocode_service/impl_geocoding_interface.h" include nil nil [784 858])
+            ("target/aivi/services/lcm/impl_lcm_interface.h" include nil nil [859 915])
+            ("target/aivi/services/location/impl_location_interface.h" include nil nil [916 982])
+            ("target/aivi/services/navigation/impl_navigation_interface.h" include nil nil [983 1053])
+            ("target/aivi/services/preferences/impl_preferences_interface.h" include nil nil [1054 1126])
+            ("target/aivi/services/privatedata_service/impl_privatedata_interface.h" include nil nil [1127 1207])
+            ("target/aivi/services/profile_service/impl_profile_interface.h" include nil nil [1208 1280])
+            ("target/aivi/services/securedata_service/impl_securedata_interface.h" include nil nil [1281 1359])
+            ("target/aivi/services/snm/impl_snm_interface.h" include nil nil [1360 1416])
+            ("target/aivi/services/sota_service/impl_sota_interface.h" include nil nil [1417 1483])
+            ("target/aivi/services/speech_service/impl_speech_interface.h" include nil nil [1484 1554])
+            ("target/aivi/services/system_service/impl_system_interface.h" include nil nil [1555 1625])
+            ("target/aivi/services/telephony_service/impl_telephony_interface.h" include nil nil [1626 1702])
+            ("target/aivi/services/tuner_service/impl_tuner_interface.h" include nil nil [1703 1771])
+            ("target/aivi/services/vehicle/impl_vehicle_interface.h" include nil nil [1991 2055])
+            ("target/aivi/services/managedapp_service/impl_managedapp_interface.h" include nil nil [2056 2134])
+            ("utils/dbus/watcher/watcher.h" include nil nil [2135 2174])
+            ("adapter_aivi" type
+               (:members 
+                  ( ("PbStatusType" type
+                       (:members 
+                          ( ("PB_NONE" variable
+                               (:constant-flag t
+                                :default-value (2242 2243)
+                                :type "int")
+                                (reparse-symbol enumsubparts) [2232 2243])
+                            ("PB_INITIALIZED" variable
+                               (:constant-flag t
+                                :default-value (2264 2265)
+                                :type "int")
+                                (reparse-symbol enumsubparts) [2247 2265])
+                            ("PB_FINALIZED" variable
+                               (:constant-flag t
+                                :default-value (2284 2285)
+                                :type "int")
+                                (reparse-symbol enumsubparts) [2269 2285]))                          
+                        :type "enum")
+                        (reparse-symbol namespacesubparts) [2202 2301])
+                    ("PbStatusType" type
+                       (:typedef ("PbStatusType" type (:type "enum") nil nil)
+                        :type "typedef")
+                        (reparse-symbol namespacesubparts) [2202 2301])
+                    ("AdapterManager" type
+                       (:members 
+                          ( ("public" label nil (reparse-symbol classsubparts) [2327 2334])
+                            ("AdapterManager" function
+                               (:prototype-flag t
+                                :constructor-flag t
+                                :type ("AdapterManager" type (:type "class") nil nil))
+                                (reparse-symbol classsubparts) [2337 2354])
+                            ("AdapterManager" function
+                               (:prototype-flag t
+                                :destructor-flag t
+                                :type "void")
+                                (reparse-symbol classsubparts) [2357 2375])
+                            ("PbStatus" function (:type ("PbStatusType" type (:type "class") nil nil)) (reparse-symbol classsubparts) [2378 2424])
+                            ("DaemonWatcherCb" function
+                               (:prototype-flag t
+                                :typemodifiers ("static")
+                                :arguments 
+                                  ( ("arg" variable
+                                       (:pointer 1
+                                        :type "void")
+                                        (reparse-symbol arg-sub-list) [2456 2466])
+                                    ("state" variable (:type ("INT32" type (:type "class") nil nil)) (reparse-symbol arg-sub-list) [2467 2479]))                                  
+                                :type "void")
+                                (reparse-symbol classsubparts) [2428 2480])
+                            ("GatewayWatcherCb" function
+                               (:prototype-flag t
+                                :typemodifiers ("static")
+                                :arguments 
+                                  ( ("arg" variable
+                                       (:pointer 1
+                                        :type "void")
+                                        (reparse-symbol arg-sub-list) [2512 2522])
+                                    ("state" variable (:type ("INT32" type (:type "class") nil nil)) (reparse-symbol arg-sub-list) [2523 2535]))                                  
+                                :type "void")
+                                (reparse-symbol classsubparts) [2483 2536])
+                            ("NetWatcherCb" function
+                               (:prototype-flag t
+                                :typemodifiers ("static")
+                                :arguments 
+                                  ( ("arg" variable
+                                       (:pointer 1
+                                        :type "void")
+                                        (reparse-symbol arg-sub-list) [2564 2574])
+                                    ("state" variable (:type ("INT32" type (:type "class") nil nil)) (reparse-symbol arg-sub-list) [2575 2587]))                                  
+                                :type "void")
+                                (reparse-symbol classsubparts) [2539 2588])
+                            ("private" label nil (reparse-symbol classsubparts) [2591 2599])
+                            ("InitPBPlugin" function
+                               (:prototype-flag t
+                                :type "int")
+                                (reparse-symbol classsubparts) [2602 2621])
+                            ("FinishPBPlugin" function
+                               (:prototype-flag t
+                                :type "void")
+                                (reparse-symbol classsubparts) [2624 2646])
+                            ("CreateInterface" function
+                               (:prototype-flag t
+                                :type "void")
+                                (reparse-symbol classsubparts) [2649 2672])
+                            ("DestroyInterface" function
+                               (:prototype-flag t
+                                :type "void")
+                                (reparse-symbol classsubparts) [2675 2699])
+                            ("ConnectedCallback" function
+                               (:prototype-flag t
+                                :arguments 
+                                  ( ("id" variable (:type ("UINT32" type (:type "class") nil nil)) (reparse-symbol arg-sub-list) [2725 2735]))                                  
+                                :type "void")
+                                (reparse-symbol classsubparts) [2702 2736])
+                            ("private" label nil (reparse-symbol classsubparts) [2739 2747])
+                            ("interfaces_" variable (:type ("PBInterfaces" type (:type "class") nil nil)) (reparse-symbol classsubparts) [2750 2775])
+                            ("delegates_" variable (:type ("PBDelegate" type (:type "class") nil nil)) (reparse-symbol classsubparts) [2778 2800])
+                            ("mutex_" variable (:type ("std::mutex" type (:type "class") nil nil)) (reparse-symbol classsubparts) [2804 2822])
+                            ("pb_status_" variable (:type ("PbStatusType" type (:type "class") nil nil)) (reparse-symbol classsubparts) [2825 2849])
+                            ("callback_flag_" variable (:type ("BOOL" type (:type "class") nil nil)) (reparse-symbol classsubparts) [2852 2872])
+                            ("noti_service_" variable (:type ("UINT32" type (:type "class") nil nil)) (reparse-symbol classsubparts) [2875 2896])
+                            ("impl_system_interface_" variable (:type ("std::unique_ptr" type
+                                 (:template-specifier 
+                                    ( ("ImplSystemInterface" type nil nil nil))                                    
+                                  :type "class")
+                                  nil nil)) (reparse-symbol classsubparts) [2900 2960])
+                            ("impl_vehicle_interface_" variable (:type ("std::unique_ptr" type
+                                 (:template-specifier 
+                                    ( ("ImplVehicleInterface" type nil nil nil))                                    
+                                  :type "class")
+                                  nil nil)) (reparse-symbol classsubparts) [2963 3025])
+                            ("impl_audio_interface_" variable (:type ("std::unique_ptr" type
+                                 (:template-specifier 
+                                    ( ("ImplAudioInterface" type nil nil nil))                                    
+                                  :type "class")
+                                  nil nil)) (reparse-symbol classsubparts) [3028 3086])
+                            ("impl_geocoding_interface_" variable (:type ("std::unique_ptr" type
+                                 (:template-specifier 
+                                    ( ("ImplGeocodingInterface" type nil nil nil))                                    
+                                  :type "class")
+                                  nil nil)) (reparse-symbol classsubparts) [3089 3155])
+                            ("impl_location_interface_" variable (:type ("std::unique_ptr" type
+                                 (:template-specifier 
+                                    ( ("ImplLocationInterface" type nil nil nil))                                    
+                                  :type "class")
+                                  nil nil)) (reparse-symbol classsubparts) [3158 3222])
+                            ("impl_navigation_interface_" variable (:type ("std::unique_ptr" type
+                                 (:template-specifier 
+                                    ( ("ImplNavigationInterface" type nil nil nil))                                    
+                                  :type "class")
+                                  nil nil)) (reparse-symbol classsubparts) [3225 3293])
+                            ("impl_speech_interface_" variable (:type ("std::unique_ptr" type
+                                 (:template-specifier 
+                                    ( ("ImplSpeechInterface" type nil nil nil))                                    
+                                  :type "class")
+                                  nil nil)) (reparse-symbol classsubparts) [3296 3356])
+                            ("impl_bluetooth_interface_" variable (:type ("std::unique_ptr" type
+                                 (:template-specifier 
+                                    ( ("ImplBluetoothInterface" type nil nil nil))                                    
+                                  :type "class")
+                                  nil nil)) (reparse-symbol classsubparts) [3359 3425])
+                            ("impl_telephony_interface_" variable (:type ("std::unique_ptr" type
+                                 (:template-specifier 
+                                    ( ("ImplTelephonyInterface" type nil nil nil))                                    
+                                  :type "class")
+                                  nil nil)) (reparse-symbol classsubparts) [3428 3494])
+                            ("impl_tuner_interface_" variable (:type ("std::unique_ptr" type
+                                 (:template-specifier 
+                                    ( ("ImplTunerInterface" type nil nil nil))                                    
+                                  :type "class")
+                                  nil nil)) (reparse-symbol classsubparts) [3497 3555])
+                            ("impl_contact_interface_" variable (:type ("std::unique_ptr" type
+                                 (:template-specifier 
+                                    ( ("ImplContactInterface" type nil nil nil))                                    
+                                  :type "class")
+                                  nil nil)) (reparse-symbol classsubparts) [3558 3620])
+                            ("impl_preferences_interface_" variable (:type ("std::unique_ptr" type
+                                 (:template-specifier 
+                                    ( ("ImplPreferencesInterface" type nil nil nil))                                    
+                                  :type "class")
+                                  nil nil)) (reparse-symbol classsubparts) [3623 3693])
+                            ("impl_car_config_interface_" variable (:type ("std::unique_ptr" type
+                                 (:template-specifier 
+                                    ( ("ImplCarConfigInterface" type nil nil nil))                                    
+                                  :type "class")
+                                  nil nil)) (reparse-symbol classsubparts) [3696 3763])
+                            ("impl_profile_interface_" variable (:type ("std::unique_ptr" type
+                                 (:template-specifier 
+                                    ( ("ImplProfileInterface" type nil nil nil))                                    
+                                  :type "class")
+                                  nil nil)) (reparse-symbol classsubparts) [3766 3828])
+                            ("impl_lcm_interface_" variable (:type ("std::unique_ptr" type
+                                 (:template-specifier 
+                                    ( ("ImplLifeCycleManagerInterface" type nil nil nil))                                    
+                                  :type "class")
+                                  nil nil)) (reparse-symbol classsubparts) [3831 3898])
+                            ("impl_sota_interface_" variable (:type ("std::unique_ptr" type
+                                 (:template-specifier 
+                                    ( ("ImplSotaInterface" type nil nil nil))                                    
+                                  :type "class")
+                                  nil nil)) (reparse-symbol classsubparts) [3901 3957])
+                            ("impl_snm_interface_" variable (:type ("std::unique_ptr" type
+                                 (:template-specifier 
+                                    ( ("ImplSnmInterface" type nil nil nil))                                    
+                                  :type "class")
+                                  nil nil)) (reparse-symbol classsubparts) [4184 4238])
+                            ("impl_securedata_interface_" variable (:type ("std::unique_ptr" type
+                                 (:template-specifier 
+                                    ( ("ImplSecureDataInterface" type nil nil nil))                                    
+                                  :type "class")
+                                  nil nil)) (reparse-symbol classsubparts) [4241 4309])
+                            ("impl_privatedata_interface_" variable (:type ("std::unique_ptr" type
+                                 (:template-specifier 
+                                    ( ("ImplPrivateDataInterface" type nil nil nil))                                    
+                                  :type "class")
+                                  nil nil)) (reparse-symbol classsubparts) [4312 4382])
+                            ("impl_cluster_interface_" variable (:type ("std::unique_ptr" type
+                                 (:template-specifier 
+                                    ( ("ImplClusterInterface" type nil nil nil))                                    
+                                  :type "class")
+                                  nil nil)) (reparse-symbol classsubparts) [4385 4447])
+                            ("impl_managedapp_interface_" variable (:type ("std::unique_ptr" type
+                                 (:template-specifier 
+                                    ( ("ImplManagedAppInterface" type nil nil nil))                                    
+                                  :type "class")
+                                  nil nil)) (reparse-symbol classsubparts) [4450 4518])
+                            ("daemon_watcher_" variable (:type ("std::unique_ptr" type
+                                 (:template-specifier 
+                                    ( ("utils::dbus::Watcher" type nil nil nil))                                    
+                                  :type "class")
+                                  nil nil)) (reparse-symbol classsubparts) [4545 4599])
+                            ("gateway_watcher_" variable (:type ("std::unique_ptr" type
+                                 (:template-specifier 
+                                    ( ("utils::dbus::Watcher" type nil nil nil))                                    
+                                  :type "class")
+                                  nil nil)) (reparse-symbol classsubparts) [4602 4657])
+                            ("net_watcher_" variable (:type ("std::unique_ptr" type
+                                 (:template-specifier 
+                                    ( ("utils::dbus::Watcher" type nil nil nil))                                    
+                                  :type "class")
+                                  nil nil)) (reparse-symbol classsubparts) [4660 4711])
+                            ("gateway_services_" variable (:type ("UINT32" type (:type "class") nil nil)) (reparse-symbol classsubparts) [4714 4739])
+                            ("net_services_" variable (:type ("UINT32" type (:type "class") nil nil)) (reparse-symbol classsubparts) [4742 4763])
+                            ("InitNativeIPCWatcher" function
+                               (:prototype-flag t
+                                :type "void")
+                                (reparse-symbol classsubparts) [4767 4795])
+                            ("NotifyNativeIPCUp" function
+                               (:prototype-flag t
+                                :arguments 
+                                  ( ("services" variable (:type ("UINT32" type (:type "class") nil nil)) (reparse-symbol arg-sub-list) [4821 4837]))                                  
+                                :type "void")
+                                (reparse-symbol classsubparts) [4798 4838])
+                            ("NotifyNativeIPCDown" function
+                               (:prototype-flag t
+                                :arguments 
+                                  ( ("services" variable (:type ("UINT32" type (:type "class") nil nil)) (reparse-symbol arg-sub-list) [4866 4882]))                                  
+                                :type "void")
+                                (reparse-symbol classsubparts) [4841 4883]))                          
+                        :type "class")
+                        (reparse-symbol namespacesubparts) [2303 4886]))                  
+                :type "namespace")
+                nil [2176 4889]))          
+      :file "adapter_manager.h"
+      :pointmax 4960
+      :fsize 4959
+      :lastmodtime '(23681 53174 902441 996000)
+      :unmatched-syntax '((punctuation 2424 . 2425))
+      :lexical-table 
+        '(("TARGET_AIVI_ADAPTER_MANAGER_H_")
+          )
+)
+    (semanticdb-table "semanticdb-table"
+      :major-mode c++-mode
+      :tags 
+        '( ("assert.h" include (:system-flag t) nil [193 212])
+            ("unistd.h" include (:system-flag t) nil [213 232])
+            ("thread" include (:system-flag t) nil [234 251])
+            ("chrono" include (:system-flag t) nil [252 269])
+            ("csignal" include (:system-flag t) nil [270 288])
+            ("adapter_manager.h" include nil nil [290 318])
+            ("utils/signal/signal_handler.h" include nil nil [319 359])
+            ("adapter_aivi" using (:type ("adapter_aivi" type
+                 (:prototype t
+                  :type "namespace")
+                  nil nil)) nil [361 390])
+            ("utils::signal_handler" using (:type ("utils::signal_handler" type
+                 (:prototype t
+                  :type "namespace")
+                  nil nil)) nil [391 429])
+            ("main" function
+               (:arguments 
+                  ( ("argc" variable (:type "int") (reparse-symbol arg-sub-list) [465 474])
+                    ("argv" variable
+                       (:pointer 2
+                        :type "char")
+                        (reparse-symbol arg-sub-list) [475 487]))                  
+                :type "int")
+                nil [456 1051]))          
+      :file "main.cc"
+      :pointmax 1052
+      :fsize 1051
+      :lastmodtime '(23543 23975 982873 440000)
+      :unmatched-syntax nil))
+  :file "!home!kyle!Project!OAF!platform-binder!target!aivi!semantic.cache"
+  :semantic-tag-version "2.0"
+  :semanticdb-version "2.2")

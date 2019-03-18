@@ -1,0 +1,160 @@
+;; Object semanticdb-project-database-file
+;; SEMANTICDB Tags save file
+(semanticdb-project-database-file "semanticdb-project-database-file"
+  :tables
+  (list
+    (semanticdb-table "semanticdb-table"
+      :major-mode c++-mode
+      :tags 
+        '( ("platform_binder/proxy/notifyerror/impl_notifyerror_delegate.h" include nil nil [277 349])
+            ("platform_binder/binding/serializer/event_generated.h" include nil nil [350 413])
+            ("platform_binder/common/pb_errors.h" include nil nil [414 459])
+            ("platform_binder/common/pb_log.h" include nil nil [460 502])
+            ("platform_binder/proxy/notifyerror/notifyerror_adapter_client.h" include nil nil [503 576])
+            ("platform_binder" type
+               (:members 
+                  ( ("proxy" type
+                       (:members 
+                          ( ("kTag" variable
+                               (:typemodifiers ("static")
+                                :constant-flag t
+                                :default-value "\"notifyErrorDelegate\""
+                                :type ("STRING" type (:type "class") nil nil))
+                                (reparse-symbol namespacesubparts) [625 674])
+                            ("kTag_id" variable
+                               (:typemodifiers ("static")
+                                :constant-flag t
+                                :default-value "\"NOTE\""
+                                :type ("STRING" type (:type "class") nil nil))
+                                (reparse-symbol namespacesubparts) [675 712])
+                            ("ImplNotifyErrorDelegate" function
+                               (:constructor-flag t
+                                :parent "ImplNotifyErrorDelegate"
+                                :arguments 
+                                  ( ("remote" variable
+                                       (:pointer 1
+                                        :type ("ListenerInterface" type (:type "class") nil nil))
+                                        (reparse-symbol arg-sub-list) [763 789]))                                  
+                                :type ("ImplNotifyErrorDelegate" type (:type "class") nil nil))
+                                (reparse-symbol namespacesubparts) [714 850])
+                            ("ImplNotifyErrorDelegate" function
+                               (:destructor-flag t
+                                :parent "ImplNotifyErrorDelegate"
+                                :type "void")
+                                (reparse-symbol namespacesubparts) [852 937])
+                            ("OnNotifyErrorServices" function
+                               (:parent "ImplNotifyErrorDelegate"
+                                :arguments 
+                                  ( ("from" variable (:type ("uint32_t" type (:type "class") nil nil)) (reparse-symbol arg-sub-list) [991 1005])
+                                    ("error" variable
+                                       (:pointer 1
+                                        :type ("ErrorInfo" type (:type "class") nil nil))
+                                        (reparse-symbol arg-sub-list) [1058 1075]))                                  
+                                :type "void")
+                                (reparse-symbol namespacesubparts) [939 1498]))                          
+                        :type "namespace")
+                        (reparse-symbol namespacesubparts) [606 1501]))                  
+                :type "namespace")
+                nil [578 1523]))          
+      :file "impl_notifyerror_delegate.cc"
+      :pointmax 1554
+      :fsize 1553
+      :lastmodtime '(23676 37589 914015 831000)
+      :unmatched-syntax nil)
+    (semanticdb-table "semanticdb-table"
+      :file "impl_notifyerror_delegate.h"
+      :fsize 1069
+      :lastmodtime '(23676 37589 914015 831000))
+    (semanticdb-table "semanticdb-table"
+      :file "notifyerror_adapter_client.h"
+      :fsize 1532
+      :lastmodtime '(23676 37589 914015 831000))
+    (semanticdb-table "semanticdb-table"
+      :major-mode c++-mode
+      :tags 
+        '( ("platform_binder/proxy/notifyerror/notifyerror_adapter_client.h" include nil nil [263 336])
+            ("platform_binder/binding/error_helper/error_helper.h" include nil nil [337 399])
+            ("platform_binder/common/pb_errors.h" include nil nil [400 445])
+            ("platform_binder/common/pb_log.h" include nil nil [446 488])
+            ("platform_binder/proxy/notifyerror/notifyerror_proxy.h" include nil nil [489 553])
+            ("platform_binder" type
+               (:members 
+                  ( ("proxy" type
+                       (:members 
+                          ( ("EtchArrayInt8" type
+                               (:typedef ("EtchNativeArray" type
+                                     (:template-specifier 
+                                        ( ("capu::int8_t" type nil nil nil))                                        
+                                      :type "class")
+                                      nil nil)
+                                :type "typedef")
+                                (reparse-symbol namespacesubparts) [602 654])
+                            ("kTag" variable
+                               (:typemodifiers ("static")
+                                :constant-flag t
+                                :default-value "\"NotifyErrorAdapterClient\""
+                                :type ("STRING" type (:type "class") nil nil))
+                                (reparse-symbol namespacesubparts) [656 710])
+                            ("kTag_id" variable
+                               (:typemodifiers ("static")
+                                :constant-flag t
+                                :default-value "\"NOTE\""
+                                :type ("STRING" type (:type "class") nil nil))
+                                (reparse-symbol namespacesubparts) [711 748])
+                            ("NotifyErrorAdapterClient" function
+                               (:constructor-flag t
+                                :parent "NotifyErrorAdapterClient"
+                                :arguments 
+                                  ( ("notifyError_interface" variable
+                                       (:pointer 1
+                                        :type ("NotifyErrorInterface" type (:type "class") nil nil))
+                                        (reparse-symbol arg-sub-list) [801 845]))                                  
+                                :type ("NotifyErrorAdapterClient" type (:type "class") nil nil))
+                                (reparse-symbol namespacesubparts) [750 921])
+                            ("NotifyErrorAdapterClient" function
+                               (:destructor-flag t
+                                :parent "NotifyErrorAdapterClient"
+                                :type "void")
+                                (reparse-symbol namespacesubparts) [923 1010])
+                            ("PostMessage" function
+                               (:parent "NotifyErrorAdapterClient"
+                                :arguments 
+                                  ( ("command" variable (:type ("INT32" type (:type "class") nil nil)) (reparse-symbol arg-sub-list) [1068 1082])
+                                    ("wparam" variable (:type ("INT32" type (:type "class") nil nil)) (reparse-symbol arg-sub-list) [1083 1096])
+                                    ("lparam" variable (:type ("INT64" type (:type "class") nil nil)) (reparse-symbol arg-sub-list) [1097 1110])
+                                    ("data" variable
+                                       (:pointer 1
+                                        :type "void")
+                                        (reparse-symbol arg-sub-list) [1111 1122])
+                                    ("user_data" variable
+                                       (:pointer 1
+                                        :type "void")
+                                        (reparse-symbol arg-sub-list) [1123 1139]))                                  
+                                :type "void")
+                                (reparse-symbol namespacesubparts) [1025 1261])
+                            ("NotifyErrorSendMessage" function
+                               (:parent "NotifyErrorAdapterClient"
+                                :arguments 
+                                  ( ("command" variable (:type ("INT32" type (:type "class") nil nil)) (reparse-symbol arg-sub-list) [1329 1343])
+                                    ("data" variable
+                                       (:pointer 1
+                                        :type "void")
+                                        (reparse-symbol arg-sub-list) [1344 1355]))                                  
+                                :type "void")
+                                (reparse-symbol namespacesubparts) [1275 2391]))                          
+                        :type "namespace")
+                        (reparse-symbol namespacesubparts) [583 2394]))                  
+                :type "namespace")
+                nil [555 2416]))          
+      :file "notifyerror_adapter_client.cc"
+      :pointmax 2447
+      :fsize 2446
+      :lastmodtime '(23676 37589 914015 831000)
+      :unmatched-syntax nil)
+    (semanticdb-table "semanticdb-table"
+      :file "notifyerror_proxy.h"
+      :fsize 1904
+      :lastmodtime '(23676 37589 914015 831000)))
+  :file "!home!kyle!Project!OAF!platform-binder!platform_binder!proxy!notifyerror!semantic.cache"
+  :semantic-tag-version "2.0"
+  :semanticdb-version "2.2")

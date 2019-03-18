@@ -1,0 +1,234 @@
+;; Object semanticdb-project-database-file
+;; SEMANTICDB Tags save file
+(semanticdb-project-database-file "semanticdb-project-database-file"
+  :tables
+  (list
+    (semanticdb-table "semanticdb-table"
+      :major-mode c++-mode
+      :tags 
+        '( ("stdlib.h" include (:system-flag t) nil [264 283])
+            ("adapter/notifyerror/adapter_notifyerror_handler.h" include nil nil [285 345])
+            ("common/messages/pb_messages.h" include nil nil [346 386])
+            ("common/pb_errors.h" include nil nil [387 416])
+            ("common/pb_services.h" include nil nil [417 448])
+            ("common/pb_log.h" include nil nil [449 475])
+            ("platform_binder/binding/error_helper/error_helper.h" include nil nil [476 538])
+            ("platform_binder/binding/serializer/event_generated.h" include nil nil [539 602])
+            ("platform_binder" type
+               (:members 
+                  ( ("adapter" type
+                       (:members 
+                          ( ("EtchArrayInt8" type
+                               (:typedef ("EtchNativeArray" type
+                                     (:template-specifier 
+                                        ( ("capu::int8_t" type nil nil nil))                                        
+                                      :type "class")
+                                      nil nil)
+                                :type "typedef")
+                                (reparse-symbol namespacesubparts) [652 704])
+                            ("kTag" variable
+                               (:typemodifiers ("static")
+                                :constant-flag t
+                                :default-value "\"AdapterNotifyErrorHandler\""
+                                :type ("STRING" type (:type "class") nil nil))
+                                (reparse-symbol namespacesubparts) [706 761])
+                            ("kTag_id" variable
+                               (:typemodifiers ("static")
+                                :constant-flag t
+                                :default-value "\"NOTE\""
+                                :type ("STRING" type (:type "class") nil nil))
+                                (reparse-symbol namespacesubparts) [762 799])
+                            ("AdapterNotifyErrorHandler::instance_" variable
+                               (:pointer 1
+                                :default-value "NULL"
+                                :type ("AdapterNotifyErrorHandler" type (:type "class") nil nil))
+                                (reparse-symbol namespacesubparts) [802 873])
+                            ("AdapterNotifyErrorHandler" function
+                               (:constructor-flag t
+                                :parent "AdapterNotifyErrorHandler"
+                                :type ("AdapterNotifyErrorHandler" type (:type "class") nil nil))
+                                (reparse-symbol namespacesubparts) [875 997])
+                            ("DestroyHandler" function
+                               (:parent "AdapterNotifyErrorHandler"
+                                :type "void")
+                                (reparse-symbol namespacesubparts) [999 1119])
+                            ("Instance" function
+                               (:pointer 1
+                                :parent "AdapterNotifyErrorHandler"
+                                :type ("AdapterNotifyErrorHandler" type (:type "class") nil nil))
+                                (reparse-symbol namespacesubparts) [1121 1338])
+                            ("SetAppID" function
+                               (:parent "AdapterNotifyErrorHandler"
+                                :arguments 
+                                  ( ("appid" variable
+                                       (:constant-flag t
+                                        :type ("APPID_T" type (:type "class") nil nil))
+                                        (reparse-symbol arg-sub-list) [1381 1401]))                                  
+                                :type "void")
+                                (reparse-symbol namespacesubparts) [1340 1494])
+                            ("NotifyRpcErrorSendMessage" function
+                               (:parent "AdapterNotifyErrorHandler"
+                                :arguments 
+                                  ( ("from" variable
+                                       (:constant-flag t
+                                        :type ("UINT32" type (:type "class") nil nil))
+                                        (reparse-symbol arg-sub-list) [1554 1572])
+                                    ("command" variable
+                                       (:constant-flag t
+                                        :type ("INT32" type (:type "class") nil nil))
+                                        (reparse-symbol arg-sub-list) [1631 1651]))                                  
+                                :type "void")
+                                (reparse-symbol namespacesubparts) [1496 2189])
+                            ("NotifyErrorSendMessage" function
+                               (:parent "AdapterNotifyErrorHandler"
+                                :arguments 
+                                  ( ("from" variable
+                                       (:constant-flag t
+                                        :type ("UINT32" type (:type "class") nil nil))
+                                        (reparse-symbol arg-sub-list) [2246 2264])
+                                    ("err" variable
+                                       (:pointer 1
+                                        :type ("ErrorInfo" type (:type "class") nil nil))
+                                        (reparse-symbol arg-sub-list) [2320 2335])
+                                    ("to" variable
+                                       (:constant-flag t
+                                        :type ("DELEGATE_TYPE" type (:type "class") nil nil))
+                                        (reparse-symbol arg-sub-list) [2391 2414]))                                  
+                                :type "void")
+                                (reparse-symbol namespacesubparts) [2191 2800])
+                            ("GetDelegateCarConfigService" function
+                               (:parent "AdapterNotifyErrorHandler"
+                                :arguments 
+                                  ( ("delegate_type" variable
+                                       (:reference 1
+                                        :type ("DELEGATE_TYPE" type (:type "class") nil nil))
+                                        (reparse-symbol arg-sub-list) [2863 2892])
+                                    ("response_what" variable
+                                       (:constant-flag t
+                                        :type ("INT32" type (:type "class") nil nil))
+                                        (reparse-symbol arg-sub-list) [2953 2979]))                                  
+                                :type "void")
+                                (reparse-symbol namespacesubparts) [2803 3232])
+                            ("GetDelegateAiService" function
+                               (:parent "AdapterNotifyErrorHandler"
+                                :arguments 
+                                  ( ("delegate_type" variable
+                                       (:reference 1
+                                        :type ("DELEGATE_TYPE" type (:type "class") nil nil))
+                                        (reparse-symbol arg-sub-list) [3287 3316])
+                                    ("response_what" variable
+                                       (:constant-flag t
+                                        :type ("INT32" type (:type "class") nil nil))
+                                        (reparse-symbol arg-sub-list) [3370 3396]))                                  
+                                :type "void")
+                                (reparse-symbol namespacesubparts) [3234 3598])
+                            ("GetDelegatePreferencesService" function
+                               (:parent "AdapterNotifyErrorHandler"
+                                :arguments 
+                                  ( ("delegate_type" variable
+                                       (:reference 1
+                                        :type ("DELEGATE_TYPE" type (:type "class") nil nil))
+                                        (reparse-symbol arg-sub-list) [3662 3691])
+                                    ("response_what" variable
+                                       (:constant-flag t
+                                        :type ("INT32" type (:type "class") nil nil))
+                                        (reparse-symbol arg-sub-list) [3754 3780]))                                  
+                                :type "void")
+                                (reparse-symbol namespacesubparts) [3600 4077])
+                            ("GetDelegateNavigationService" function
+                               (:parent "AdapterNotifyErrorHandler"
+                                :arguments 
+                                  ( ("delegate_type" variable
+                                       (:reference 1
+                                        :type ("DELEGATE_TYPE" type (:type "class") nil nil))
+                                        (reparse-symbol arg-sub-list) [4140 4169])
+                                    ("response_what" variable
+                                       (:constant-flag t
+                                        :type ("INT32" type (:type "class") nil nil))
+                                        (reparse-symbol arg-sub-list) [4231 4257]))                                  
+                                :type "void")
+                                (reparse-symbol namespacesubparts) [4079 4536])
+                            ("GetDelegateSystemService" function
+                               (:parent "AdapterNotifyErrorHandler"
+                                :arguments 
+                                  ( ("delegate_type" variable
+                                       (:reference 1
+                                        :type ("DELEGATE_TYPE" type (:type "class") nil nil))
+                                        (reparse-symbol arg-sub-list) [4937 4966])
+                                    ("response_what" variable
+                                       (:constant-flag t
+                                        :type ("INT32" type (:type "class") nil nil))
+                                        (reparse-symbol arg-sub-list) [5024 5050]))                                  
+                                :type "void")
+                                (reparse-symbol namespacesubparts) [4880 6112])
+                            ("GetDelegateConfigManageService" function
+                               (:parent "AdapterNotifyErrorHandler"
+                                :arguments 
+                                  ( ("delegate_type" variable
+                                       (:reference 1
+                                        :type ("DELEGATE_TYPE" type (:type "class") nil nil))
+                                        (reparse-symbol arg-sub-list) [6177 6206])
+                                    ("response_what" variable
+                                       (:constant-flag t
+                                        :type ("INT32" type (:type "class") nil nil))
+                                        (reparse-symbol arg-sub-list) [6270 6296]))                                  
+                                :type "void")
+                                (reparse-symbol namespacesubparts) [6114 6915])
+                            ("GetDelegate" function
+                               (:parent "AdapterNotifyErrorHandler"
+                                :arguments 
+                                  ( ("delegate_type" variable
+                                       (:reference 1
+                                        :type ("DELEGATE_TYPE" type (:type "class") nil nil))
+                                        (reparse-symbol arg-sub-list) [6961 6990])
+                                    ("service" variable
+                                       (:constant-flag t
+                                        :type ("INT32" type (:type "class") nil nil))
+                                        (reparse-symbol arg-sub-list) [7035 7055])
+                                    ("response_what" variable
+                                       (:constant-flag t
+                                        :type ("INT32" type (:type "class") nil nil))
+                                        (reparse-symbol arg-sub-list) [7100 7126]))                                  
+                                :type "void")
+                                (reparse-symbol namespacesubparts) [6917 8721])
+                            ("NotifyErrorSendMessage" function
+                               (:parent "AdapterNotifyErrorHandler"
+                                :arguments 
+                                  ( ("command" variable
+                                       (:constant-flag t
+                                        :type ("INT32" type (:type "class") nil nil))
+                                        (reparse-symbol arg-sub-list) [8778 8798])
+                                    ("wparam" variable
+                                       (:constant-flag t
+                                        :type ("INT32" type (:type "class") nil nil))
+                                        (reparse-symbol arg-sub-list) [8854 8873])
+                                    ("lparam" variable
+                                       (:constant-flag t
+                                        :type ("INT64" type (:type "class") nil nil))
+                                        (reparse-symbol arg-sub-list) [8929 8948])
+                                    ("data" variable
+                                       (:pointer 1
+                                        :type "void")
+                                        (reparse-symbol arg-sub-list) [9004 9015])
+                                    ("user_data" variable
+                                       (:pointer 1
+                                        :type "void")
+                                        (reparse-symbol arg-sub-list) [9071 9087]))                                  
+                                :type "void")
+                                (reparse-symbol namespacesubparts) [8723 10562]))                          
+                        :type "namespace")
+                        (reparse-symbol namespacesubparts) [632 10565]))                  
+                :type "namespace")
+                nil [604 10589]))          
+      :file "adapter_notifyerror_handler.cc"
+      :pointmax 10619
+      :fsize 10618
+      :lastmodtime '(23681 56315 321187 163000)
+      :unmatched-syntax nil)
+    (semanticdb-table "semanticdb-table"
+      :file "adapter_notifyerror_handler.h"
+      :fsize 2645
+      :lastmodtime '(23676 37589 890015 655000)))
+  :file "!home!kyle!Project!OAF!platform-binder!platform_binder!adapter!notifyerror!semantic.cache"
+  :semantic-tag-version "2.0"
+  :semanticdb-version "2.2")

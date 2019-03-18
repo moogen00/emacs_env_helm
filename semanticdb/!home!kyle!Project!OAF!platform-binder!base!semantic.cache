@@ -1,0 +1,120 @@
+;; Object semanticdb-project-database-file
+;; SEMANTICDB Tags save file
+(semanticdb-project-database-file "semanticdb-project-database-file"
+  :tables
+  (list
+    (semanticdb-table "semanticdb-table"
+      :major-mode c-mode
+      :tags 
+        '( ("BASE_EVENT_H_" variable (:constant-flag t) nil [78 91])
+            ("cstdint" include (:system-flag t) nil [93 111])
+            ("vector" include (:system-flag t) nil [112 129])
+            ("externals/flatbuffers/flexbuffers.h" include nil nil [130 176])
+            ("platform_binder/binding/serializer/event_v2_generated.h" include nil nil [177 243])
+            ("platform_binder" type
+               (:members 
+                  ( ("internal" type
+                       (:members 
+                          ( ("Buffer" type
+                               (:typedef ("std::vector" type
+                                     (:template-specifier 
+                                        ( ("uint8_t" type nil nil nil))                                        
+                                      :type "class")
+                                      nil nil)
+                                :type "typedef")
+                                (reparse-symbol namespacesubparts) [295 331])
+                            ("Post" function
+                               (:typemodifiers ("inline")
+                                :arguments 
+                                  ( ("id" variable
+                                       (:constant-flag t
+                                        :type ("uint32_t" type (:type "class") nil nil))
+                                        (reparse-symbol arg-sub-list) [350 368])
+                                    ("buffer" variable
+                                       (:constant-flag t
+                                        :type ("Buffer" type (:type "class") nil nil))
+                                        (reparse-symbol arg-sub-list) [369 389])
+                                    ("" variable (:type ("std::function" type (:type "class") nil nil)) (reparse-symbol arg-sub-list) [407 421])
+                                    ("" variable (:type "void") (reparse-symbol arg-sub-list) [421 445])
+                                    ("" variable (:type ("sender" type (:type "class") nil nil)) (reparse-symbol arg-sub-list) [447 454]))                                  
+                                :type "void")
+                                (reparse-symbol namespacesubparts) [333 680])
+                            ("GetEvent" function
+                               (:typemodifiers ("inline")
+                                :arguments 
+                                  ( ("id" variable
+                                       (:constant-flag t
+                                        :type ("uint32_t" type (:type "class") nil nil))
+                                        (reparse-symbol arg-sub-list) [726 744])
+                                    ("flexBuffer" variable
+                                       (:constant-flag t
+                                        :type ("Buffer" type (:type "class") nil nil))
+                                        (reparse-symbol arg-sub-list) [745 769]))                                  
+                                :type ("flatbuffers::DetachedBuffer" type (:type "class") nil nil))
+                                (reparse-symbol namespacesubparts) [682 984]))                          
+                        :type "namespace")
+                        (reparse-symbol namespacesubparts) [273 987]))                  
+                :type "namespace")
+                nil [245 1012]))          
+      :file "event.h"
+      :pointmax 1069
+      :fsize 1068
+      :lastmodtime '(23543 23975 610870 144000)
+      :unmatched-syntax '((punctuation 445 . 446) (semantic-list 425 . 445) (punctuation 420 . 421))
+      :lexical-table 
+        '(("BASE_EVENT_H_")
+          )
+)
+    (semanticdb-table "semanticdb-table"
+      :major-mode c-mode
+      :tags 
+        '( ("BASE_SINGLETON_H_" variable (:constant-flag t) nil [82 99])
+            ("memory" include (:system-flag t) nil [101 118])
+            ("platform_binder" type
+               (:members 
+                  ( ("Singleton" type
+                       (:template 
+                          ( ("T" type (:type "class") nil nil))                          
+                        :type "class"
+                        :members 
+                          ( ("public" label nil (reparse-symbol classsubparts) [190 197])
+                            ("Instance" function
+                               (:pointer 1
+                                :typemodifiers ("static")
+                                :type ("T" type (:type "class") nil nil))
+                                (reparse-symbol classsubparts) [200 312])
+                            ("protected" label nil (reparse-symbol classsubparts) [315 325])
+                            ("Singleton" function
+                               (:destructor-flag t
+                                :typemodifiers ("virtual")
+                                :type "void")
+                                (reparse-symbol classsubparts) [328 351])
+                            ("private" label nil (reparse-symbol classsubparts) [354 362])
+                            ("instance_" variable
+                               (:typemodifiers ("static")
+                                :type ("std::unique_ptr" type
+                                     (:template-specifier 
+                                        ( ("T" type nil nil nil))                                        
+                                      :type "class")
+                                      nil nil))
+                                (reparse-symbol classsubparts) [365 401]))                          )
+                        (reparse-symbol namespacesubparts) [149 404]))                  
+                :type "namespace")
+                nil [120 407])
+            ("platform_binder::Singleton::instance_" variable (:type ("std::unique_ptr" type
+                 (:template-specifier 
+                    ( ("T" type nil nil nil))                    
+                  :type "class")
+                  nil nil)) nil [439 521]))          
+      :file "singleton.h"
+      :pointmax 552
+      :fsize 551
+      :lastmodtime '(23543 23975 610870 144000)
+      :unmatched-syntax nil
+      :lexical-table 
+        '(("BASE_SINGLETON_H_")
+          )
+))
+  :file "!home!kyle!Project!OAF!platform-binder!base!semantic.cache"
+  :semantic-tag-version "2.0"
+  :semanticdb-version "2.2")
