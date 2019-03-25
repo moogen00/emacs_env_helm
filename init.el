@@ -37,17 +37,18 @@
 ;; 파일목록 자동 갱신
 (setq sr-speedbar-auto-refresh t)
 
-;; speedbar 토글. speedbar가 뜨면 포커스를 speedbar로 이동.
-(defun my-speedbar ()
-  "Toggle sr-speedbar and select"
-  (interactive)
-  (progn
-    (sr-speedbar-toggle)
-    (if (sr-speedbar-exist-p)
-        (sr-speedbar-select-window))))
 
-;; ;; 단축키 C-x p
-(global-set-key (kbd "C-x p") 'my-speedbar)
+;; speedbar 토글. speedbar가 뜨면 포커스를 speedbar로 이동.
+;; (defun my-speedbar ()
+;;   "Toggle sr-speedbar and select"
+;;   (interactive)
+;;   (progn
+;;     (sr-speedbar-toggle)
+;;     (if (sr-speedbar-exist-p)
+;;         (sr-speedbar-select-window))))
+
+;; ;; ;; 단축키 C-x p
+;; (global-set-key (kbd "C-x p") 'my-speedbar)
 ;; sr speedbar end
 
 
@@ -57,6 +58,11 @@
 (setq company-backends (delete 'company-semantic company-backends))
 (define-key c-mode-map [ ( tab ) ] 'company-complete )
 (define-key c++-mode-map [ ( tab ) ] 'company-complete )
+
+
+(when (version<= "26.0.50" emacs-version )
+  (global-display-line-numbers-mode))
+
 
 ;; function-args
 ;; (require 'function-args)
@@ -69,7 +75,8 @@
 
 ;; theme
 ;; (require 'setup-theme)
-(load-theme 'subatomic t)
+;; (load-theme 'subatomic t)
+;; (require 'emacs-color-themes)
 
 (custom-set-variables
  ;; custom-set-variables was added by Custom.
@@ -78,7 +85,7 @@
  ;; If there is more than one, they won't work right.
  '(package-selected-packages
    (quote
-    (sr-speedbar hc-zenburn-theme subatomic-theme zygospore helm-gtags helm yasnippet ws-butler volatile-highlights use-package undo-tree iedit dtrt-indent counsel-projectile company clean-aindent-mode anzu)))
+    (sublime-themes sr-speedbar hc-zenburn-theme subatomic-theme zygospore helm-gtags helm yasnippet ws-butler volatile-highlights use-package undo-tree iedit dtrt-indent counsel-projectile company clean-aindent-mode anzu)))
  '(subatomic-high-contrast t)
  '(subatomic-more-visible-comment-delimiters t))
 (custom-set-faces

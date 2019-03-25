@@ -1,1 +1,1 @@
-("~/Project/OAF/" "~/")
+("~/.emacs.d/" "~/" "~/Project/OAF/" "/media/kyle/DATA/kyle/Project/renault/platform-binder/" "~/Documents/AGW/gw_20180710/Platform_Binder_Integration_Interface/")

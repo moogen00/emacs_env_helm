@@ -2,7 +2,22 @@
 ;;; This format is meant to be slightly human-readable;
 ;;; nevertheless, you probably don't want to edit it.
 ;;; -*- End Of Bookmark File Format Version Stamp -*-
-(("init.el"
+(("ddd"
+ (filename . "/media/kyle/DATA/")
+ (front-context-string . "kyle\n  drwx-----")
+ (rear-context-string . "96  1월  3 15:58 ")
+ (position . 213))
+("geocode_dbus_command"
+ (filename . "~/Documents/geocode_dbus_command")
+ (front-context-string . "su lxc_web\nexpor")
+ (rear-context-string)
+ (position . 1))
+("navi_dbus_command"
+ (filename . "~/Documents/navi_dbus_command")
+ (front-context-string . "\nlxc_web@MYCAR:/")
+ (rear-context-string . " array [\n      ]")
+ (position . 9850))
+("init.el"
  (filename . "~/.emacs.d/init.el")
  (front-context-string . "\n\n;; theme\n(requ")
  (rear-context-string . "etup-my-binding)")
