@@ -1,0 +1,3414 @@
+;; -*- mode: emacs-lisp; coding: utf-8; fill-column: 78 -*-
+;;
+;; Written by Oleksandr Gavenko <gavenkoa@gmail.com>, 2008-2015.
+;;
+;; This file formed from parts and ideas from many sites/docs and
+;; placed in public domain.
+;;
+;; Config file for GNU Emacs.
+;;
+;; For load order see README.
+
+(with-no-warnings (require 'cl))
+
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+(message "recentf")
+
+(eval-and-compile
+  (require 'recentf))
+
+(setq recentf-save-file (concat user-emacs-directory ".recentf"))
+(when (eq system-type 'cygwin)
+  (setq recentf-save-file (concat user-emacs-directory ".recentf-cygwin")))
+
+(setq recentf-auto-cleanup 600)
+;; Prevent TRAMP to login on remote host when loading. Its take time and ask passwords!
+(setq recentf-keep '(file-remote-p file-readable-p))
+(setq recentf-exclude                   ; Use ``M-x recentf-cleanup`` to update recentf-list.
+      '("/devel/[^/]*-\\(orig\\|tmp\\|xxx\\)"
+        "/devel/my-\\(merge\\|pull\\)/"
+        "/.cache/"
+        "\\.png\\'"))
+
+(setq recentf-max-saved-items 10000)
+(setq recentf-max-menu-items 40)
+(setq recentf-show-file-shortcuts-flag nil)
+
+(recentf-mode t)
+
+(global-set-key (kbd "\e\eq") 'recentf-open-files)
+(global-set-key [?\s-q] 'recentf-open-files)
+
+;; (setq recentf-menu-filter 'recentf-arrange-by-dir) ; Too slow with dir widgets.
+;; Don't sort ``recentf-list`` so ``recentf-open-files`` show files in historical order!
+(setq recentf-menu-filter nil)
+
+(defun my-recentf.clean-project (dir)
+  "Remove from recentf all files that belong to DIR directory."
+  (interactive (list (read-directory-name "Exclude all paths")))
+  (let ( recentf-exclude )
+    (setq recentf-exclude (list (concat "^" (regexp-quote (expand-file-name dir)))))
+    (recentf-cleanup) ))
+
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+(message "revert buffer")
+
+(global-set-key [f5]    'revert-buffer)
+(setq revert-without-query (quote (".*")))
+(setq auto-revert-interval 2)
+
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+(message "debugging")
+
+;; Shut off message buffer by setting nil.
+(setq message-log-max 512)
+
+;; Prevent Emacs from loading 'default.el', which loaded after '.emacs'.
+;; Also '-q' prevent loading your init file.
+(setq inhibit-default-init nil)         ; t/nil
+
+(defun my-debug (mode)
+  "With prefix enable enter to debuger and show backtrace when
+problems occur, with double prefix enable debugging on event and
+signal, else disable breaking to debugger."
+  (interactive "P")
+  (let ( (lvl1 (not (not mode))) (lvl2 (equal mode '(16))) )
+    (setq debug-on-error lvl1)
+    ;; Get trace when press C-g.
+    (setq debug-on-quit lvl1)
+    (setq debug-on-event lvl2)
+    (setq debug-on-signal lvl2)))
+
+(my-debug nil)
+
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+(message "user info")
+
+;; Set in ~/.emacs.d/.emacs-auth:
+;; (setq user-full-name "Oleksandr Gavenko")
+;; (setq user-mail-address "gavenkoa@gmail.com")
+;; (setq user-nick "gavenkoa")
+;; (setq user-home-page "http://gavenkoa.users.sf.net")
+;; (setq user-home-page "http://defun.work/")
+
+(defvar user-nick (user-login-name)
+  "My nick name.")
+;; auto-insert and copyright package use this to insert copyright owner. Gnus
+;; uses this for Organization header.
+(setenv "ORGANIZATION"
+        (concat
+         user-full-name
+         " <" user-mail-address  ">"
+         (when (boundp 'user-home-page) (concat ", " user-home-page))))
+
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+(message "my defun, defmacro, defvar")
+
+(defmacro my-filter (pred list)
+  "Construct list with elements from LIST which satisfy PRED."
+  (let ( (r (make-symbol "r_")) )
+    `(let ( (,r (list nil)) )
+       (mapc (lambda (item)
+               (when (,pred item)
+                 (nconc ,r (cons item nil))))
+             ,list)
+       (cdr ,r))))
+
+(defun my-fold (f x list)
+  "Recursively applies (F i j) to LIST starting with X.
+For example, (fold F X '(1 2 3)) computes (F (F (F X 1) 2) 3)."
+  (let ((li list) (x2 x))
+    (while li
+      (setq x2 (funcall f x2 (pop li)))
+      )
+    x2
+    ) )
+
+(unless (fboundp 'ignore-errors)
+  (defmacro ignore-errors (&rest body)
+    "Execute BODY; if an error occurs, return nil.
+Otherwise, return result of last form in BODY."
+    (declare (debug t) (indent 0))
+    `(condition-case nil (progn ,@body) (error nil)))
+  )
+
+(defun my-lookup-key (key)
+  "Search for KEY in all known keymaps."
+  (mapatoms (lambda (ob) (when (and (boundp ob) (keymapp (symbol-value ob)))
+                      (when (functionp (lookup-key (symbol-value ob) key))
+                        (message "%S" ob))))
+            obarray))
+
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+(message "lisp, elisp")
+
+(setq list-command-history-max 256)
+
+(add-hook 'emacs-lisp-mode-hook 'turn-on-eldoc-mode)
+(add-hook 'lisp-interaction-mode-hook 'turn-on-eldoc-mode)
+(add-hook 'ielm-mode-hook 'turn-on-eldoc-mode)
+
+(defun my-emacs-lisp-mode-hook ()
+  (setq tab-width 8))
+(add-hook 'emacs-lisp-mode-hook 'my-emacs-lisp-mode-hook)
+
+(defun my-elisp-find-tag ()
+  (interactive)
+  (require 'etags)
+  (ring-insert find-tag-marker-ring (point-marker))
+  (unless (find-variable-at-point)
+    (find-function-at-point)
+    ))
+;; Goto elisp definition.
+(define-key emacs-lisp-mode-map (kbd "M-.") 'my-elisp-find-tag)
+
+(if (not (fboundp 'global-prettify-symbols-mode))
+    ;; http://www.emacswiki.org/emacs/PrettyLambda
+    (font-lock-add-keywords
+     'emacs-lisp-mode
+     `(("(\\<\\(lambda\\)\\>"
+        (1 (progn (compose-region (match-beginning 1) (match-end 1) ,(make-char 'greek-iso8859-7 107)) font-lock-keyword-face)) )))
+  (global-prettify-symbols-mode 1))
+
+(defun my-dump-funcs ()
+  "Dump all function calls in current buffer. Useful to explore
+elisp API from somebody else files."
+  (interactive)
+  (let* ( (cur-buffer (current-buffer)) (new-buffer (get-buffer-create (concat (buffer-name cur-buffer) "-funcs.el"))) symb )
+    (while (search-forward-regexp "([[:alnum:]*]" nil t)
+      (setq symb (thing-at-point 'symbol))
+      (with-current-buffer new-buffer
+        (insert symb)
+        (insert-char ?\n 1)))
+    (switch-to-buffer new-buffer)
+    (shell-command-on-region (point-min) (point-max) "sort -u" nil t)
+    ))
+
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+(message "mode groups")
+
+(defmacro my-defun-rename-symb-tree (name doc func)
+  "Travel by TREE and applies FUNC to each symbol."
+  `(defun ,name (tree)
+     ,doc
+     (cond
+      ((symbolp tree)
+       (,func tree)
+       )
+      ((listp tree)
+       (mapcar ',name tree)
+       )
+      (t (error "Only tree of symbols allowed"))
+      )))
+
+(my-defun-rename-symb-tree
+ my-feature2mode
+ "Convert TREE of features to TREE of modes for these features. Single symbol allowed."
+ (lambda (symb) (intern (concat (symbol-name symb) "-mode"))))
+
+(my-defun-rename-symb-tree
+ my-mode2hook
+ "Convert TREE of modes to TREE of hooks for these modes. Single symbol allowed."
+ (lambda (symb) (intern (concat (symbol-name symb) "-hook")))
+ )
+
+(my-defun-rename-symb-tree
+ my-mode2modemap
+ "Convert TREE of modes to TREE of keymaps for these modes. Single symbol allowed."
+ (lambda (symb) (intern (concat (symbol-name symb) "-map")))
+ )
+
+(defvar my-devel-mode-list
+  '(
+    sh-mode script-mode tcl-mode
+    c-mode c++-mode java-mode js-mode
+    python-mode perl-mode cperl-mode
+    lisp-mode
+    sql-mode
+    emacs-lisp-mode
+    makefile-mode makefile-gmake-mode
+    nsis-mode
+    bat-generic-mode
+    html-mode nxml-mode wesnoth-mode
+    LilyPond-mode
+    texinfo-mode
+    )
+  "List of development modes.")
+
+(defvar my-devel-mode-hook-list
+   (my-mode2hook my-devel-mode-list)
+  "List of development mode hooks.")
+
+(defvar my-scroll-margin-mode-list
+  '(
+    vc-dir-mode
+    recentf-dialog-mode
+    org-agenda-grid-mode           ; XXX for this item not worked!
+    log-view-mode
+    dired-mode
+    compilation-mode
+    )
+  "List of modes for enabling scroll margin.")
+
+(defvar my-scroll-margin-mode-hook-list
+  (my-mode2hook my-scroll-margin-mode-list)
+  "List of mode hooks for enabling scroll margin.")
+
+(defvar my-text-mode-list
+  '(
+    text-mode
+    outline-mode
+    rst-mode
+    diff-mode
+    dict-c5-mode
+    )
+  "List of text modes.")
+
+(defvar my-text-mode-hook-list
+  (my-mode2hook my-text-mode-list)
+  "List of text mode hooks.")
+
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+(message "package, elpa")
+
+;; (setq package-enable-at-startup t)
+(when (fboundp 'package-initialize)
+  (package-initialize))
+
+(setq package-archives
+      '(
+        ("elpa" . "http://tromey.com/elpa/")
+        ("gnu" . "http://elpa.gnu.org/packages/")
+        ;; ("marmalade" . "http://marmalade-repo.org/packages/")
+        ("melpa" . "http://melpa.milkbox.net/packages/")
+        ))
+
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+(message "appearance")
+
+;; To maximize frame on full screen, not work with Windows Emacs 21.4.
+;; And maked different height with Emacs 22.3 and 23.1.
+;; (setq initial-frame-alist '((fullscreen . fullboth)))
+
+(setq display-buffer-reuse-frames t)
+
+(defun my-maximize ()
+  ;; Next code work with Emacs 21.4, 22.3, 23.1.
+  (let (
+        (px (display-pixel-width))
+        (py (display-pixel-height))
+        (fx (frame-char-width))
+        (fy (frame-char-height))
+        tx ty
+        )
+    ;; Next formulas discovered empiric on Windows host with default font.
+    (setq tx (- (/ px fx) 7))
+    (setq ty (- (/ py fy) 4))
+    (setq initial-frame-alist '((top . 2) (left . 2)))
+    (add-to-list 'initial-frame-alist (cons 'width tx))
+    (add-to-list 'initial-frame-alist (cons 'height ty)) ))
+
+(when window-system
+  (if (fboundp 'toggle-frame-maximized)
+      (toggle-frame-maximized)
+    (my-maximize) ))
+
+(menu-bar-mode -1)
+(when window-system
+  (mouse-avoidance-mode 'animate)
+  (scroll-bar-mode 1)
+  (tool-bar-mode -1)
+  (setq-default line-spacing nil)
+  (defun my-popup-menu ()
+    "Menu from keyboard by emulating mouse event."
+    (interactive)
+    (mouse-popup-menubar
+     (list (list (/ (display-pixel-width) 2) 10) (get-buffer-window (buffer-name)))
+     nil)
+    )
+  (global-set-key [f10] 'my-popup-menu)
+  (global-set-key [apps] 'my-popup-menu)
+  (global-set-key [menu] 'my-popup-menu)
+  (when (>= emacs-major-version 22) (tooltip-mode -1))
+  )
+
+;; Prefer horizontal windows splitting.
+(when (>= emacs-major-version 23)
+  (setq split-height-threshold nil)
+  (setq split-width-threshold nil)
+  )
+
+(setq frame-title-format '("EMACS " system-name ": %b"))
+(setq icon-title-format '("EMACS " system-name ": %b"))
+
+;; Deprecated: `default-header-line-format', `default-mode-line-format'.
+;; For `mode-line-format' default value was used.
+(setq-default header-line-format nil)
+
+(setq default-left-fringe-width nil)
+(setq default-right-fringe-width nil)
+(setq default-left-margin-width nil)
+(setq default-right-margin-width nil)
+
+(if (< emacs-major-version 24)
+    (setq default-truncate-lines nil)
+  (setq truncate-lines nil)
+  )
+(setq truncate-partial-width-windows nil)
+
+;; show column & line numbers in status bar
+(setq column-number-mode t)
+(setq line-number-mode t)
+(setq size-indication-mode t)
+(setq line-number-display-limit large-file-warning-threshold)
+(setq line-number-display-limit-width 200)
+;; (linum-mode 1)
+;; (global-linum-mode 1)
+
+(when window-system
+  (set-background-color "white")
+  (set-foreground-color "black")
+  (set-cursor-color "brown")
+  ;; (set-mouse-color "white")
+  (setq cursor-type 'box)           ; box, hollow, bar, hbar
+  ;;(setq blink-matching-delay 0.01)
+  (blink-cursor-mode 1)
+  (setq use-file-dialog t)
+  (setq use-dialog-box t)
+  ;; (set-face-font 'default "7x14")
+  )
+
+;; See what I am typing immediately (for keystroke in minibuffer).
+(setq echo-keystrokes 0.2)
+
+(when (eq window-system 'x)
+  (set-frame-font "-misc-fixed-medium-r-normal--14-*-*-*-c-*-iso10646-1")
+  (set-fontset-font "fontset-default" 'latin
+                    "-misc-fixed-medium-r-normal--14-*-*-*-c-*-iso10646-1")
+  (set-fontset-font "fontset-default" 'phonetic
+                    "-misc-fixed-medium-r-normal--14-*-*-*-c-*-iso10646-1")
+  (set-fontset-font "fontset-default" 'cyrillic
+                    "-misc-fixed-medium-r-normal--14-*-*-*-c-*-iso10646-1")
+  (set-fontset-font "fontset-default" 'greek
+                    "-misc-fixed-medium-r-normal--14-*-*-*-c-*-iso10646-1"))
+
+(fset 'yes-or-no-p 'y-or-n-p)
+
+(when (boundp 'confirm-kill-emacs)
+  (setq confirm-kill-emacs 'y-or-n-p))
+
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+(message "silent runing")
+
+;; (setq inhibit-splash-screen t) ; nonexist on 21.4.1
+(setq inhibit-startup-message t)
+
+(setq initial-scratch-message nil)
+
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+(message "date, time")
+
+(require 'time)
+
+;; Also useful such format: (setq display-time-format " %H:%M %d-%m-%y ")
+(setq display-time-24hr-format t)
+(setq display-time-day-and-date nil)
+(setq display-time-default-load-average nil)
+(display-time)                          ; display-time-mode
+
+;; For (display-time-world).
+(setq display-time-world-time-format "%A %d %B %R %z %Z")
+(mapc (lambda (el) (add-to-list 'display-time-world-list el))
+      '(("EET" "UTC+2, Eastern European Time")
+        ("EST" "UTC-5, Eastern Standard Time, New York")
+        ("EDT" "UTC-4, Eastern Daylight Time, New York")))
+
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+(message "shell, bash, Cygwin, MSYS")
+
+(defvar my-use-windows-shell nil
+  "If t 'cmdproxy.exe' will be used as shell.
+Affect on \\[shell] like commands. If nil, 'sh' will be used." )
+
+(defun follow-cygwin-symlink ()
+  "Follow new-style (and also UCS-16) Cygwin symlinks."
+  (save-excursion
+    (goto-char 0)
+    (when (looking-at "!<symlink>\xff\xfe")
+      (find-alternate-file
+       (substring
+        (decode-coding-string
+         (buffer-substring (match-end 0) (point-max))
+         'utf-16-le)
+        0 -1)                           ; -1 for stripping final \0.
+       ))))
+
+(defun my-dos2cygwin-path (path)
+  "Convert DOS path to Cygwin according to current mount table."
+  (interactive (list (read-directory-name "Enter DOS path: ")))
+  (setq path (replace-regexp-in-string "\\\\" "/" (expand-file-name path)))
+  (let ( (table cygwin-mount-table--internal) item prefix )
+    (while table
+      (setq item (car table))
+      (setq prefix (concat "\\`" (regexp-quote (car item))))
+      (setq table (cdr table))
+      (when (string-match prefix path)
+        (setq path (replace-regexp-in-string prefix (cdr item) path))
+        (setq table nil)
+        ) )
+    path
+    ))
+
+(when (eq system-type 'windows-nt)
+  (ignore-errors
+    (require 'cygwin-mount)
+    (cygwin-mount-activate)
+    )
+  (add-hook 'find-file-hook 'follow-cygwin-symlink)
+  ;; Workaround for Cygwin shell, when set 'CYGWIN=noglob'. By default 'shell-quote-argument'
+  ;; quoted by double '\' chars this cause failure.
+  (defun shell-quote-argument (argument)
+    (concat "'" argument "'")
+    )
+  ;; Workaround for Cygwin when 'shell-file-name' is 'bash'.
+  (setq null-device "/dev/null")
+  ;; Use shell from Cygwin/MinGW.
+  (setq shell-file-name "bash")
+  (setenv "SHELL" "/bin/bash")
+  (modify-coding-system-alist 'process "bash" '(cp1251-unix . cp1251-unix))
+  )
+
+(when (eq window-system 'w32)
+  ;; Fix 'starttls.el' on native Windows Emacs with gnutls-cli from Cygwin.
+  ;; 'gnutls-cli' run with '-s' opt and process wait for SIGALRM.
+  ;; But build-in native Emacs 'kill' command can not send such Cygwin
+  ;; specific sygnal. So 'starttls-negotiate-gnutls' function infinitely
+  ;; wait for 'gnutls-cli' output.
+  (defadvice signal-process (around cygwin (process sigcode))
+    "Use 'kill.exe' instead build-in Emacs 'kill'."
+    (if (eq sigcode 'SIGALRM)
+        (shell-command
+         (format "kill.exe -s SIGALRM %d"
+                 (if (processp process) (process-id process) process)))
+      ad-do-it
+      ))
+  (ad-activate 'signal-process)
+  (modify-coding-system-alist 'process "gnutls-cli" '(binary . binary))
+  )
+
+(when (eq window-system 'w32)
+  (add-to-list 'exec-suffixes ".py")
+  (add-to-list 'exec-suffixes ".sh")
+  (defun executable-find (command) (locate-file command exec-path exec-suffixes))
+  )
+
+(ansi-color-for-comint-mode-on)
+
+(defun my-ansi-color (&optional beg end)
+  "Interpret ANSI color esacape sequence by colorifying cotent.
+Operate on selected region on whole buffer."
+  (interactive
+   (if (use-region-p)
+       (list (region-beginning) (region-end))
+     (list (point-min) (point-max))))
+  (ansi-color-apply-on-region beg end))
+
+(setq explicit-bash-args '("-i"))
+(setq explicit-sh-args '("-i"))
+
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+(message "term")
+
+(setq term-buffer-maximum-size (lsh 1 14))
+
+(setq term-scroll-show-maximum-output t)
+
+(my--eval-after-load term
+  (define-key term-mode-map [?\t] #'term-dynamic-complete)
+
+  (defun my-term-send-delete-word-forward () (interactive) (term-send-raw-string "\ed"))
+  (defun my-term-send-delete-word-backward () (interactive) (term-send-raw-string "\e\C-h"))
+  (define-key term-raw-map [C-delete] 'my-term-send-delete-word-forward)
+  (define-key term-raw-map [C-backspace] 'my-term-send-delete-word-backward)
+  (defun my-term-send-forward-word () (interactive) (term-send-raw-string "\ef"))
+  (defun my-term-send-backward-word () (interactive) (term-send-raw-string "\eb"))
+  (define-key term-raw-map [C-left] 'my-term-send-backward-word)
+  (define-key term-raw-map [C-right] 'my-term-send-forward-word)
+  (defun my-term-send-m-right () (interactive) (term-send-raw-string "\e[1;3C"))
+  (defun my-term-send-m-left () (interactive) (term-send-raw-string "\e[1;3D"))
+  (define-key term-raw-map [M-right] 'my-term-send-m-right)
+  (define-key term-raw-map [M-left] 'my-term-send-m-left) )
+
+(defun my-term-mode-hook ()
+  (goto-address-mode 1))
+(add-hook 'term-mode-hook #'my-term-mode-hook)
+
+(setq term-prompt-regexp "^[^#$%>\n]*[#$%>] *")
+
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+(message "proced")
+
+(setq-default proced-format 'medium)
+
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+(message "whitespaces")
+
+(setq default-indicate-empty-lines t)
+(setq default-indicate-buffer-boundaries 'left)
+
+;; (setq-default show-trailing-whitespace t)
+
+(setq whitespace-style '(face trailing tabs))
+(setq whitespace-global-modes (append my-devel-mode-list my-text-mode-list))
+(ignore-errors
+  (require 'whitespace)
+  (global-whitespace-mode 1))
+
+(setq next-line-add-newlines nil)
+
+;; See also 'mode-require-final-newline'.
+(add-hook 'text-mode-hook (lambda () (setq require-final-newline nil)))
+
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+(message "server")
+
+(when (and (>= emacs-major-version 22) (not (eq system-type 'cygwin)))
+  (require 'server)
+  (when (and (>= emacs-major-version 23) (equal window-system 'w32))
+    (defun server-ensure-safe-dir (dir) "Noop" t)) ; Suppress error directory ~/.emacs.d/server is unsafe on windows.
+  (when (or (= emacs-major-version 22) (not (eq (server-running-p server-name) t)))
+    (server-start)) )
+
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+(message "standart/general settings")
+
+;; Try to speed things up, especially in VM.
+(setq gc-cons-threshold 2000000)
+
+;; Default 'command-history' length too short (in Emacs 23.2 is 30).
+(setq history-length 200)
+
+;; Don't beep in my headphones!
+(setq ring-bell-function '(lambda () "Empty ring-bell-function." nil))
+(setq visible-bell t) ; With default ring-bell-function in text terminal
+                      ; revert screen if press [end] or [home]
+(setq track-eol nil)
+
+;; (setq enable-recursive-minibuffers t)
+
+;; Prompt before evaluating local bits of lisp.  This stops people
+;; putting things at the end of files which delete all your files!
+(setq enable-local-variables :safe
+      enable-local-eval      1)
+
+(setq kill-whole-line t)
+
+;; Disable because of bug with gettext.el. See
+;;   http://bugs.debian.org/cgi-bin/bugreport.cgi?bug=287261
+;; (setq view-read-only t)
+
+(setq read-quoted-char-radix 16)
+
+(when (and (>= emacs-major-version 22) (not (eq system-type 'darwin)))
+  (setq standard-display-table (make-display-table))
+  (let ( (i ?\x80) hex hi low )
+    (while (<= i ?\xff)
+      (setq hex (format "%x" i))
+      (setq hi (elt hex 0))
+      (setq low (elt hex 1))
+      (aset standard-display-table (unibyte-char-to-multibyte i)
+            (vector (make-glyph-code ?\\ 'escape-glyph)
+                    (make-glyph-code ?x 'escape-glyph)
+                    (make-glyph-code hi 'escape-glyph)
+                    (make-glyph-code low 'escape-glyph)))
+      (setq i (+ i 1))))
+  )
+
+(when (>= emacs-major-version 23)
+  (define-key global-map "\C-x8g" (lambda nil (interactive) (ucs-insert `,(cdr (assoc-string "HRYVNIA SIGN" (ucs-names) t)))))
+  (define-key global-map "\C-x8e" (lambda nil (interactive) (ucs-insert `,(cdr (assoc-string "EURO SIGN" (ucs-names) t)))))
+  )
+
+;; generic-define-* before (require 'generic-x) allow load all useful extra modes.
+(setq generic-define-mswindows-modes t)
+(setq generic-define-unix-modes t)
+(require 'generic-x)
+
+;; The following commands are usually disabled by default. Enable them...
+(put 'eval-expression  'disabled nil)
+(put 'downcase-region  'disabled nil)
+(put 'upcase-region    'disabled nil)
+(put 'narrow-to-page   'disabled nil)
+(put 'narrow-to-region 'disabled nil)
+(put 'scroll-left      'disabled nil)
+
+(setq
+ use-dialog-box t
+ x-gtk-show-hidden-files t
+ )
+
+(defun my-prevent-kill-buffer ()
+  (if (member (buffer-name) '("*scratch*" "NOTE.org")) nil t))
+(add-to-list 'kill-buffer-query-functions 'my-prevent-kill-buffer)
+
+(define-key global-map "\C-v" nil)
+(define-key global-map "\C-vt" (lambda nil (interactive) (switch-to-buffer "*scratch*")))
+
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+(message "scrolling")
+
+(defvar my-scroll-margin 4)
+
+(setq-default
+ ;; Set to zero as this recommend documentation.
+ scroll-step 0
+ ;; If the value is greater than 100, redisplay will never recenter point, but
+ ;; will always scroll just enough text to bring point into view
+ scroll-conservatively 1000
+ scroll-preserve-screen-position t
+ )
+
+;; Set margin only for desired modes! Do not frustrate calendar any more.
+(make-variable-buffer-local 'scroll-margin)
+(mapc (lambda (hook) (add-hook hook (lambda nil (setq scroll-margin my-scroll-margin))))
+      ;; TODO its good invoke delete-dups for list, but delete-dups not exist in Emacs 21.4
+      (append my-text-mode-hook-list my-devel-mode-hook-list my-scroll-margin-mode-hook-list) )
+
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+(message "chars, unicode")
+
+(defun my-print-unicode (&optional start end)
+  "Print UNICODE table."
+  (interactive "nstart: \nnend: ")
+  (switch-to-buffer (get-buffer-create "*UNICODE*"))
+  (erase-buffer)
+  (let ( (i start) )
+    (while (<= i end)
+      (insert (format "%s: U+%04x, %s\n" (char-to-string i) i (get-char-code-property i 'name)))
+      (setq i (1+ i))
+      )))
+
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+(message "search, isearch, occur")
+
+(setq-default case-fold-search t)
+
+(setq query-replace-highlight t)        ; highlight during query
+(setq search-highlight t)               ; highlight incremental search
+
+;; Make old Emacs key binding like in Emacs 23.x.
+(when (< emacs-major-version 23)
+  (global-set-key (kbd "M-s o") 'occur)
+  )
+
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+(message "grep, find")
+
+;; -ls produce very noisy output:
+;; (setq find-ls-option '("-ls" . ""))
+;; So I use next expression, which work with GNU find, I replace %s with '0'
+;; to avoid unnecessary sys calls and this make output aligned by column:
+(setq find-ls-option '("-printf ' -rw-rw-rw- %9s %AY-%Am-%Ad %AH:%AM %p\n'" . ""))
+
+;; Do not set t because some grep do not has --color options.
+(setq grep-highlight-matches nil)
+(setq grep-use-null-device nil)
+
+(my--eval-after-load grep
+  (add-to-list 'grep-find-ignored-directories "build" t)
+  (add-to-list 'grep-find-ignored-directories "dist" t)
+  (add-to-list 'grep-find-ignored-directories "lib" t)
+  (add-to-list 'grep-find-ignored-directories "_build" t)
+  (add-to-list 'grep-find-ignored-directories "_dist" t)
+  (add-to-list 'grep-find-ignored-directories "_lib" t)
+  (when (boundp 'grep-find-ignored-files)
+    (add-to-list 'grep-find-ignored-files "*TAGS")
+    (add-to-list 'grep-find-ignored-files "GPATH")) )
+
+(global-set-key [f7] 'rgrep)
+(global-set-key [M-f7] 'rgrep)
+
+(defun lzgrep ()
+  (interactive)
+  (let ( (grep-template "zgrep <C> -nH -e <R> <F>") (grep-find-ignored-files nil) )
+    (cl-flet ( (grep-compute-defaults () nil) )
+      (call-interactively #'lgrep))))
+
+(defun rzgrep ()
+  (interactive)
+  (let ( (grep-find-template "find . -type f <F> -exec zgrep <C> -nH -e <R> {} +") (grep-find-ignored-files nil) )
+    (cl-flet ( (grep-compute-defaults () nil) )
+      (call-interactively #'rgrep))))
+
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+(message "highlighting")
+
+;; Increase scrolling speed by defer consuming operation.
+;; I disable this due to bugs in Emacs (it doesn't highlight at all until you
+;; press any key).
+;; (setq jit-lock-defer-time 0.01)
+
+(setq font-lock-maximum-decoration t)
+(global-font-lock-mode 1)
+
+;; http://debbugs.gnu.org/cgi/bugreport.cgi?archive=yes&bug=22620
+;; 24.5; "(global-hi-lock-mode 1)" broke "C-x" key bindings inside "M-x term", especially for "emacs -nw" (Emacs inside Emacs).
+; (global-hi-lock-mode -1)
+
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+(message "highlight selected text")
+
+(delete-selection-mode 1)
+
+(when (<= emacs-major-version 23)
+  ;; 1/-1, when the mark is active, the region is highlighted.
+  (transient-mark-mode 1)
+
+  ;; Order of next items is important, (assignment must done before pc-selection-mode enabled).
+  (require 'pc-select)
+  (setq pc-select-selection-keys-only t)  ; To avoid some key bindings as F6, etc.
+  (setq pc-select-meta-moves-sexps t)
+  (cond
+   ((= emacs-major-version 21) (pc-selection-mode))
+   ((>= emacs-major-version 22) (pc-selection-mode 1))
+   )
+  )
+
+(when window-system
+  (set-face-attribute 'region nil :background "light blue"))
+
+(when (eq window-system 'x)
+  (setq x-select-enable-clipboard t)    ; for Emacs 21.2.1 and newer
+  )
+
+(when (fboundp 'er/expand-region)
+  (global-set-key (kbd "C-=") 'er/expand-region))
+
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+(message "highlighting current line")
+
+(defun my-hl-line-range-function ()
+  (cons (line-end-position) (line-beginning-position 2)))
+(setq hl-line-range-function #'my-hl-line-range-function)
+
+(when window-system
+  (require 'hl-line)
+  (set-face-attribute 'hl-line nil :inherit nil :background "light yellow")
+  (setq global-hl-line-sticky-flag t)
+  (global-hl-line-mode 1))
+
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+(message "paren, braces")
+
+(show-paren-mode 1) ; Parenthesis matching via highlighting.
+(setq show-paren-style (quote parenthesis))
+
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+(message "keyboard, mouse")
+
+(setq mouse-yank-at-point t)
+
+;; (pc-bindings-mode) ; I define own keybinding...
+
+;; cyrillic-jis-russian  for 567 is :,.
+;; cyrillic-jcuken  for SHIFT 567 is :,.
+;; russian-computer for SHIFT 567 is %^&
+(setq my-russian-input-method 'russian-computer)
+(setq my-ukranian-input-method 'ukrainian-computer)
+(setq my-ipa-input-method 'ipa-x-sampa)
+(when (<= emacs-major-version 21)
+  (setq my-russian-input-method 'cyrillic-jcuken)
+  (setq my-ukranian-input-method 'cyrillic-jcuken))
+(setq default-input-method my-russian-input-method)
+
+(defun my-toggle-input-method (&optional arg)
+  (interactive "P")
+  (if (numberp arg)
+      (cond
+       ((eq arg 1)
+        (activate-input-method nil))
+       ((eq arg 2)
+        (activate-input-method my-russian-input-method))
+       ((eq arg 3)
+        (activate-input-method my-ukranian-input-method))
+       ((eq arg 4)
+        (activate-input-method 'greek))
+       ((eq arg 5)
+        (activate-input-method my-ipa-input-method))
+       ((eq arg 6)
+        (activate-input-method 'TeX)) )
+    (toggle-input-method arg)) )
+
+(global-set-key (kbd "C-\\") 'my-toggle-input-method)
+
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+(message "mouse")
+
+;; Scroll Bar gets dragged by mouse butn 1
+(global-set-key [vertical-scroll-bar down-mouse-1] 'scroll-bar-drag)
+;; Paste at point NOT at cursor
+(setq mouse-yank-at-point t)
+(when window-system
+  (mouse-wheel-mode 1)
+  )
+
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+(message "key binding, short-keys")
+
+(defun my--smart-beginning-of-line ()
+  "Move point to `beginning-of-line'. If repeat command it cycle
+position between `back-to-indentation' and `beginning-of-line'."
+  (interactive "^")
+  (if (and (eq last-command 'my--smart-beginning-of-line)
+           (= (line-beginning-position) (point)))
+      (back-to-indentation)
+    (beginning-of-line)))
+
+(defun my--smart-end-of-line ()
+  "Move point to `end-of-line'. If repeat command it cycle
+position between last non-whitespace and `end-of-line'."
+  (interactive "^")
+  (if (and (eq last-command 'my--smart-end-of-line)
+           (= (line-end-position) (point)))
+      (skip-syntax-backward " " (line-beginning-position))
+    (end-of-line)))
+
+(global-set-key [home]     'my--smart-beginning-of-line)
+(global-set-key [end]      'my--smart-end-of-line)
+(global-set-key [C-home]   'beginning-of-buffer)
+(global-set-key [C-end]    'end-of-buffer)
+(global-set-key [C-delete] 'kill-word)
+(global-set-key [delete]   'delete-char)
+;; (global-set-key [backspace]  'backward-delete-char-untabify) ; not work properly in *info* mode
+
+(global-set-key [f2]    'save-buffer)
+(global-set-key [S-f6]  'rename-buffer)
+(global-set-key [M-f4]  'save-buffers-kill-emacs)
+(global-set-key [f6]    'toggle-truncate-lines)
+(global-set-key [s-tab] 'other-window)
+
+;; Disable suspend. It is ugly.
+(when window-system
+  (global-set-key (kbd "C-z") nil))
+(global-set-key (kbd "C-x C-z") nil)
+
+;; (global-set-key [language-change] 'ignore)
+
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+(message "coding system, charset, locale, lang")
+
+;; Emacs 23.1 no longer need codepage-setup.
+(when (<= emacs-major-version 22)
+  (codepage-setup 866)
+  (codepage-setup 1251)
+  )
+
+;; Comment because prefer-coding-system will be ignored.
+;; (setq-default coding-system-for-read  'cp1251-dos)
+;; (setq-default coding-system-for-write 'cp1251-dos)
+
+;; (setq locale-coding-system  'cp1251-dos)
+;; (set-language-environment 'UTF-8)
+;; (set-terminal-coding-system 'cp1251)
+;; (set-keyboard-coding-system 'cp1251)
+
+(modify-coding-system-alist 'file "\\.el" 'iso-2022-7bit)
+(cond
+ ((equal window-system 'w32)          ; also (string-equal system-type "windows-nt")
+  ;; (set-selection-coding-system 'utf-16-le-dos)
+  (setq-default buffer-file-coding-system 'cp1251)
+  (setq default-file-name-coding-system 'cp1251)
+  (setq default-process-coding-system '(cp1251 . cp1251))
+  )
+ ((equal window-system 'x)
+  (prefer-coding-system 'utf-8-unix)
+  (setq selection-coding-system nil)
+  (setq x-select-request-type '(UTF8_STRING COMPOUND_TEXT TEXT STRING))
+  (modify-coding-system-alist 'process ".*" 'utf-8-unix)
+  )
+ ((eq system-type 'cygwin)
+  (when (and (getenv "LANG") (string-match "1251\\'" (getenv "LANG")))
+    (prefer-coding-system 'cp1251-unix)
+    (prefer-coding-system 'utf-8-unix)
+    (modify-coding-system-alist 'process ".*" 'cp1251-unix)
+    )
+  )
+ ((eq system-type 'darwin)
+  nil
+  )
+ )
+
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+(message "selecting/switching, creating/killing buffers, open file")
+(message "ido, ffap")
+
+;; (add-hook 'find-file-hook #'make-frame-visible)
+
+(require 'ffap)
+;; Ido makes appropriate binding.
+;(ffap-bindings)
+;; C-u C-x C-f finds the file at point
+;(setq ffap-require-prefix t)
+;; browse urls at point via w3m
+;(setq ffap-url-fetcher 'w3m-browse-url)
+
+(setq find-file-existing-other-name t)
+
+(setq ido-enable-flex-matching t)
+
+(setq ido-use-filename-at-point 'guess)
+(setq ido-use-url-at-point t)
+(setq ido-auto-merge-work-directories-length -1)
+(setq ido-enable-tramp-completion t)
+(setq ido-use-virtual-buffers t)
+(setq ido-max-prospects 16)
+(setq ido-max-work-directory-list 100)
+
+(setq ido-create-new-buffer 'always)
+
+(setq ido-file-extensions-order '(".java" ".c" ".py" ".xml" ".txt" ".el" ".ini" ".cfg" ".cnf" ".log"))
+
+(setq ido-ignore-buffers '("\\` "))
+(setq ido-ignore-extensions nil)        ; From completion-ignored-extensions.
+(setq ido-case-fold t)
+;; ido-ignore-directories
+;; ido-ignore-files
+
+(unless
+    (ignore-errors
+      (require 'ido)
+      (ido-mode 1)
+      (global-set-key [?\s-d] #'ido-dired)
+      (global-set-key [?\s-f] #'ido-find-file)
+      t)
+  (global-set-key [?\s-d] #'dired)
+  (global-set-key [?\s-f] #'find-file))
+
+(global-set-key [?\C-x right] 'next-buffer)
+(global-set-key [?\C-x left]  'previous-buffer)
+(global-set-key [s-right] 'next-buffer)
+(global-set-key [s-left]  'previous-buffer)
+(defun my--kill-this-buffer-maybe-switch-to-next ()
+  "Kill current buffer. Switch to next buffer if previous command
+was switching to next buffer or this command itself allowing
+sequential closing of uninteresting buffers."
+  (interactive)
+  (let ( (cmd last-command) )
+    (kill-buffer (current-buffer))
+    (when (memq cmd (list 'next-buffer this-command))
+      (next-buffer))))
+(global-set-key [?\C-x deletechar] 'my--kill-this-buffer-maybe-switch-to-next)
+(global-set-key [s-delete] 'my--kill-this-buffer-maybe-switch-to-next)
+(defun my--backward-other-window ()
+  (interactive)
+  (other-window -1))
+(global-set-key [?\C-x up] #'my--backward-other-window)
+(global-set-key [?\C-x down] #'other-window)
+(global-set-key [s-up] #'my--backward-other-window)
+(global-set-key [s-down] #'other-window)
+
+(require 'uniquify)
+(setq uniquify-buffer-name-style 'post-forward)
+(setq uniquify-separator "|")
+(setq uniquify-after-kill-buffer-p t)
+(setq uniquify-strip-common-suffix t)
+
+(setq read-buffer-completion-ignore-case t)
+(setq read-file-name-completion-ignore-case t)
+
+;; buffer-menu better then buffer-list, but ibuffer much better.
+(global-set-key "\C-x\C-b" 'ibuffer)
+(global-set-key [s-insert] 'ibuffer)
+
+(icomplete-mode 1)
+(setq icomplete-with-completion-tables t)
+
+(defun my--large-file-p ()
+  "If buffer too large and my cause performance issue."
+  (< large-file-warning-threshold (buffer-size)))
+
+(define-derived-mode my-large-file-mode fundamental-mode "LargeFile"
+  "Fixes performance issues in Emacs for large files."
+  ;; (setq buffer-read-only t)
+  (setq bidi-display-reordering nil)
+  (jit-lock-mode nil)
+  (buffer-disable-undo)
+  ;; (make-variable-buffer-local 'mode-line-format)
+  ;; (setq mode-line-format (delq 'mode-line-position 'mode-line-format))
+  (set (make-variable-buffer-local 'global-hl-line-mode) nil)
+  (set (make-variable-buffer-local 'line-number-mode) nil)
+  (set (make-variable-buffer-local 'column-number-mode) nil) )
+
+(add-to-list 'magic-mode-alist (cons #'my--large-file-p #'my-large-file-mode))
+
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+(message "bookmark")
+
+;; (require 'autobm)
+(global-set-key (kbd "C-x r m") 'autobm)
+
+(setq set-mark-command-repeat-pop 't)
+
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+(message "completion")
+
+;; I remove partial-completion-mode because it depricated in Emacs 24.0.
+;; Completion controled by 'completion-styles' variable.
+
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+(message "yasnippet")
+
+(setq my-yas-root-directory "~/.emacs.d/my-yas")
+(setq yas/ignore-filenames-as-triggers t)
+
+;; (my--eval-after-load yasnippet
+;;   (cond
+;;    ((listp yas/root-directory) (add-to-list 'yas/root-directory my-yas-root-directory))
+;;    ((stringp yas/root-directory) (setq yas/root-directory (list my-yas-root-directory yas/root-directory)))
+;;    (t (error "I expect that yas/root-directory is a list of string")) )
+;;   (mapc 'yas/load-directory yas/root-directory))
+
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+(message "dired")
+
+(setq-default save-place t)
+;; `save-place-file' in ".emacs".
+(require 'saveplace)
+
+(require 'dired)
+
+(setq dired-dwim-target t)
+;; dangerous
+;; (setq
+;;  dired-recursive-copies 'top
+;;  dired-recursive-deletes 'top)
+
+(defun my-dired-up-dir ()
+  "'Reuse' buffer if enter to dir or open new buffer if enter to file."
+  (interactive)
+  ;; (dired-current-directory) always end with trailing '/' char.
+  (let* ( (dir (dired-current-directory)) (i (- (length dir) 2)) upperdir )
+    (while (and
+            (>= i 0)
+            (not (equal (aref dir i) ?/)) )
+      (setq i (- i 1))
+      )
+    (setq upperdir (substring dir 0 (+ i 1)))
+    (when (file-directory-p upperdir)
+      (find-alternate-file upperdir)
+      (dired-goto-file dir)
+      )
+    ))
+(define-key dired-mode-map (kbd "<backspace>") 'my-dired-up-dir)
+
+(defun my-dired-enter-to-dir ()
+  "'Reuse' buffer if enter to dir or open new buffer if enter to file."
+  (interactive)
+  (let ( (file (dired-get-file-for-visit)) )
+    (if (file-directory-p file)
+        (find-alternate-file file)
+      (find-file file)
+      )))
+(define-key dired-mode-map (kbd "<return>")
+  'my-dired-enter-to-dir)
+
+;; Make behaviour same as in GUI.
+(unless window-system
+  (define-key dired-mode-map (kbd "DEL") 'my-dired-up-dir)
+  (define-key dired-mode-map (kbd "RET") 'my-dired-enter-to-dir)
+  )
+
+(when (>= emacs-major-version 22)
+  ;; Enable 'a' command.
+  (put 'dired-find-alternate-file 'disabled nil)
+  )
+
+(defvar my--file-name-tmp-refex
+  (concat
+   "\\(?:^#.*#"
+   "\\|~"
+   "\\|\\." (regexp-opt '("base" "local" "orig" "other" "rej" "diff" "log" "stackdump" "pyc" "pyo"))
+   "\\|\\.log\\.[0-9]+"
+   "\\)\\'")
+  "Rule to detect temp/backup files.")
+
+(defun my--file-name-tmp-p (file)
+  (string-match my--file-name-tmp-refex
+                (or (and (file-directory-p file) "") (file-name-nondirectory file))))
+
+(defun my--dired-flag-tmp-files ()
+  "Flag all temporary files for deletion."
+  (interactive)
+  (dired-mark-if
+   (let ( (fn (dired-get-filename 'verbatim t)) )
+     (and fn (my--file-name-tmp-p fn)) )
+   "backup file"))
+
+(define-key dired-mode-map (kbd "`") 'my--dired-flag-tmp-files)
+
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+(message "ls-lisp, dired ls")
+
+;; If non-nil - use 'insert-directory-program', which I dislike.
+(setq ls-lisp-use-insert-directory-program nil)
+(setq ls-lisp-ignore-case t)
+(setq ls-lisp-dirs-first t)
+(if (memq system-type '(windows-nt cygwin))
+    (setq ls-lisp-verbosity nil)
+  (setq  ls-lisp-verbosity '(links uid gid)))
+;; Force use 'ls-lisp-format-time-list'.
+(setq ls-lisp-use-localized-time-format t)
+(setq ls-lisp-format-time-list
+      '("%Y-%m-%d %H:%M:%S"
+        "%Y-%m-%d %H:%M   "))
+(require 'ls-lisp)
+
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+(message "compression, archive")
+
+(require 'jka-compr) ; Automatic decompression, hooks for tar-mode.
+(when (fboundp 'auto-compression-mode)
+  (auto-compression-mode 1))
+
+(modify-coding-system-alist 'file "\\.\\(war\\|ear\\|sar\\|egg\\)\\'" 'no-conversion)
+
+(add-to-list 'auto-mode-alist '("\\.\\(war\\|ear\\|sar\\|egg\\)\\'" . archive-mode))
+
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+(message "image, png, svg")
+
+(when (fboundp 'auto-image-file-mode)
+  (auto-image-file-mode 1))
+(my--eval-after-load image-file
+  ;; Exclude .svg image from supported image list, as Emacs doesn't come
+  ;; with SVG shared library.
+  (setq image-file-name-extensions (remove "svg" image-file-name-extensions))
+  ;; Re-initialize the image-file handler.
+  (auto-image-file-mode t) )
+
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+(message "url")
+
+;; http://tools.ietf.org/html/rfc3986
+;; http://en.wikipedia.org/wiki/Percent-encoding
+(defun my-percent-decode (str)
+  (decode-coding-string
+   (let* ( (s (split-string str "%")) )
+     (my-fold
+      'concat
+      (car s)
+      (mapcar
+       (lambda (x)
+         (concat (unibyte-string (string-to-number (substring x 0 2) 16)) (substring x 2)))
+       (cdr s))
+      )) 'utf-8))
+
+(defun my-percent-decode-region (beg end &optional arg)
+  "Convert percent encoded string to native."
+  (interactive "r\nP")
+  (let ( (result (my-percent-decode (buffer-substring-no-properties beg end))) )
+    (if (not arg)
+        result
+      (delete-region beg end)
+      (insert result))
+    ) )
+
+(defun my-percent-encode (str)
+  (apply 'concat
+         (mapcar
+          (lambda (ch) (if (or (and (<= ?a ch) (>= ?z ch))
+                          (and (<= ?A ch) (>= ?Z ch))
+                          (memq ch '(?- ?_ ?. ?~)))
+                      (char-to-string ch)
+                    (format "%%%02X" ch)))
+          (encode-coding-string str 'utf-8) )))
+
+(defun my-percent-encode-region (beg end &optional arg)
+  "Encode string to percent encoding."
+  (interactive "r\nP")
+  (let ( (result (my-percent-encode (buffer-substring-no-properties beg end))) )
+    (if (not arg)
+        result
+      (delete-region beg end)
+      (insert result))
+    ) )
+
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+(message "browser")
+
+(cond
+ ((equal window-system 'w32)
+  (setq browse-url-browser-function 'browse-url-default-windows-browser))
+ ((boundp 'debian-emacs-flavor)
+  (setq browse-url-browser-function 'browse-url-firefox))
+ (t
+  (setq browse-url-browser-function 'browse-url-mozilla)))
+
+(defun my-cygwin-search (str)
+  "Search for Cygwin package on-line."
+  (interactive (list (read-string "Search for Cygwin package on-line: ")))
+  (browse-url (format "http://cygwin.com/cgi-bin2/package-grep.cgi?grep=%s" str))
+  )
+
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+(message "netbeans")
+
+(defun netbeans-find-command ()
+  "Search for NetBeans executable in PATH, later in '/opt/netbeans*/bin/'."
+  (or
+   (executable-find "netbeans")
+   (car (last (sort (file-expand-wildcards "/opt/[Nn]etbeans*/bin/netbeans" t) 'equal))) ))
+(defvar netbeans-command (netbeans-find-command)
+  "Command to run NetBeans.")
+(defun netbeans-open-file (file &optional line)
+  "Open FILE on LINE in NetBeans."
+  (if (integerp line)
+      (start-process "netbeans" nil netbeans-command "--open" (format "%s:%d" file line))
+    (start-process "netbeans" nil netbeans-command "--open" file)))
+(defun netbeans-open-this-buffer ()
+  "Open file for burrent buffer in NetBeans."
+  (interactive)
+  (unless (stringp (buffer-file-name))
+    (error "Buffer have no association with a file"))
+  (if (file-regular-p (buffer-file-name))
+      (netbeans-open-file (buffer-file-name) (line-number-at-pos))
+    (message "Current buffer wasnt' associated with a real file")))
+
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+(message "calendar")
+
+;; (setq mark-holidays-in-calendar t)
+;; (setq all-christian-calendar-holidays t)
+;; (setq calendar-date-display-form (quote ((format "%04s-%02d-%02d" year (string-to-int month) (string-to-int day)))))
+;; (setq calendar-time-display-form (quote (24-hours ":" minutes (if time-zone " (") time-zone (if time-zone ")"))))
+(setq calendar-week-start-day 1)
+(setq european-calendar-style t)
+
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+(message "standard hooks")
+
+(add-hook 'write-file-hooks 'time-stamp)
+
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+(message "logging, logs")
+
+(defun my-auto-revert-tail-mode-hook ()
+  (when (string-match "/logs?/\\|\\.\\(?:log\\|out\\)\\'\\|/.xsession-errors\\'"
+                      (buffer-file-name (current-buffer)))
+    (auto-revert-tail-mode 1)
+    (log4-hi-mode 1)
+    (setq scroll-margin my-scroll-margin)
+    ))
+(add-hook 'find-file-hook 'my-auto-revert-tail-mode-hook)
+
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+(message "auto-fill")
+
+(setq-default fill-column 78)
+
+(defvar my-fill-column 100
+  "I use greater value then 78 for comment in prog source.")
+
+;; By default used American convention - sentence and with two spaces. Change
+;; it to one space. Has affect on filling and M-a, M-e commands.
+(setq sentence-end-double-space nil)
+
+;; Turn on auto-fill mode
+(add-hook 'html-mode-hook 'turn-on-auto-fill)
+(add-hook 'text-mode-hook 'turn-on-auto-fill)
+
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+(message "cacl, calculator")
+
+(setq-default calc-group-digits t)
+(setq-default calc-group-char "'")
+
+(defun my-calc-region (arg beg end)
+  "Calculate the region and display the result in the echo area.
+With prefix ARG non-nil, insert the result at the end of region."
+  (interactive "P\nr")
+  (require 'calc)
+  (let* ((expr (buffer-substring-no-properties beg end))
+         (result (calc-eval expr)))
+    (if (null arg)
+        (message "%s = %s" expr result)
+      (goto-char end)
+      (save-excursion
+        (insert result)))))
+
+(defun my-calc-line (arg)
+  "Evaluate expression in current line and display the result in
+the echo area by skipping final '=' sign. With prefix ARG
+non-nil, insert the result at the end of line and space if
+necessary for delimiting."
+  (interactive "P")
+  (require 'calc)
+  (save-excursion
+    (let (beg end expr result)
+      (beginning-of-line)
+      (setq beg (point))
+      (end-of-line)
+      (search-backward "=" beg t)
+      (setq end (point))
+      (setq expr (buffer-substring-no-properties beg end))
+      (setq result (calc-eval expr))
+      (if (null arg)
+          (message "%s = %s" expr result)
+        (end-of-line)
+        (unless (eq (char-before) ?\ )
+          (insert ?\ ))
+        (insert result)))))
+
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+(message "rst, reStructuredText")
+
+;; Maintaining the table of contents up-to-date.
+(add-hook 'rst-adjust-hook 'rst-toc-update)
+
+(unless window-system
+  (my--eval-after-load rst
+    (custom-set-faces
+     '(rst-level-1-face ((t (:background "yellow"))) t)
+     '(rst-level-2-face ((t (:background "yellow"))) t)
+     '(rst-level-3-face ((t (:background "yellow"))) t)
+     '(rst-level-4-face ((t (:background "yellow"))) t)
+     '(rst-level-5-face ((t (:background "yellow"))) t)
+     '(rst-level-6face ((t (:background "yellow"))) t)
+     ) ) )
+
+;; (add-hook 'rst-mode-hook #'abbrev-mode)
+;; (remove-hook 'rst-mode-hook #'abbrev-mode)
+
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+(message "TeX, LaTeX")
+
+(setq tex-run-command "initex")
+
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+(message "AUC TeX")
+
+;(add-hook 'LaTeX-mode-hook 'LaTeX-install-toolbar)
+;; (setq TeX-parse-self t)             ; Enable parse on load.
+;; (setq TeX-auto-save t)              ; Enable parse on save.
+;; Query for master file. If you often use \include or \input, you should make AUCTEX aware of the
+;; multi-file document structure.
+(setq-default TeX-master nil)
+
+;(setq TeX-PDF-mode t)
+;(setq TeX-interactive-mode t)
+;(setq TeX-source-specials-mode 1)
+
+;;; some more menu entries in the command list:
+;;; see tex-mik.el from package auctex: %v is defined in tex-mik.el
+;;; other variables are defined in tex.el from auctex
+;;; the meaning of some auctex-varibles:
+        ;symbols defined in tex.el and tex-mik.el:
+        ;%b name slave tex-file  %t name master tex-file
+        ;%d dvi-file  %f ps-file
+        ;%l "latex --src-specials"
+        ;%n line number  %p printcommand  %q "lpq"
+        ;%r (TeX-style-check TeX-print-style)
+        ;%s master-file-name without extention
+        ;%v yap command view line
+;; (my--eval-after-load tex
+;;   (add-to-list 'TeX-command-list
+;;                (list "->PS landscape for pdf"
+;;                      "dvips %d -N0 -Ppdf -G0 -T 297mm,210mm -o %f "
+;;                      'TeX-run-command nil t))
+;;   (add-to-list 'TeX-command-list
+;;                (list "All Texify run-viewer"
+;;                      "texify --tex-opt=--src --run-viewer --clean %s.tex"
+;;                      'TeX-run-command nil t)))
+
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+(message "reftex")
+
+;; Reftex is included with Emacs 21.1.
+
+;; (autoload 'reftex-mode     "reftex" "RefTeX Minor Mode" t)
+;; (autoload 'turn-on-reftex  "reftex" "RefTeX Minor Mode" nil)
+;; (autoload 'reftex-citation "reftex-cite" "Make citation" nil)
+;; (autoload 'reftex-index-phrase-mode "reftex-index" "Phrase mode" t)
+;; (add-hook 'LaTeX-mode-hook 'turn-on-reftex)   ; with AUCTeX LaTeX mode
+;; (add-hook 'latex-mode-hook 'turn-on-reftex)   ; with Emacs latex mode
+
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+(message "PreviewLatex")
+
+;(load "preview-latex.el" nil t t)
+
+;(add-hook 'LaTeX-mode-hook #'LaTeX-preview-setup)
+;(autoload 'LaTeX-preview-setup "preview")
+
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+(message "Info")
+
+(unless (getenv "INFOPATH")
+  (setenv "INFOPATH" (expand-file-name "~/usr/share/info:")))
+
+;; Assume that cygwin-mount already activated.
+(when (featurep 'cygwin-mount)
+  (setenv "INFOPATH" "/usr/share/info/:~/usr/share/info/:")
+  ;; Redefine path-separator to UNIX to update Info-directory-list.
+  (let ( (path-separator ":") )
+    (require 'info)
+    (info-initialize)
+    ))
+
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+(message "info-lookup")
+
+;; Info index nodes for automake under Debian.
+(setq my-fix-for-automake-info-lookup
+      '(("(automake-1.11)Macro Index" nil
+         "^`" "['(]")
+        ("(automake-1.11)Variable Index" nil
+         "^`" "['(]")
+        ("(automake-1.11)General Index" nil
+         "^`" "['(]")))
+
+;; Add `my-fix-for-automake-info-lookup' entries to the end of doc-spec for
+;; some modes.
+(my--eval-after-load info-look
+  (mapc
+   (lambda (mode)
+     (let ( (doc-spec (info-lookup->doc-spec 'symbol mode)) )
+       (mapc
+        (lambda (doc-spec-item)
+          (setcdr (last doc-spec) (list doc-spec-item)))
+        my-fix-for-automake-info-lookup)))
+   '(makefile-mode autoconf-mode))
+  (info-lookup-maybe-add-help
+   :mode 'makefile-gmake-mode
+   :other-modes '(makefile-mode)))
+
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+(message "man, woman")
+
+;; Assume that cygwin-mount already activated.
+(when (featurep 'cygwin-mount)
+  (let ( (path (expand-file-name "~")) )
+    (when (string-match "\\([c-z]\\):/" path)
+      (setenv "MANPATH" (concat "/cygdrive/" (substring path 0 1) "/" (substring path 3) "/usr/share/man/:"))
+      ) ))
+
+(setq woman-use-own-frame nil)
+(setq woman-fill-frame t)
+;; I prefer EN man pages.
+(when (memq system-type '(windows-nt cygwin))
+  (setq manual-program "LANG=C man")
+  )
+
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+(message "comint")
+
+;; If non-nil, add a `/' to completed directories, ` ' to file names.
+(setq comint-completion-addsuffix t)
+;; Non-nil means go to the end of the line before sending input.
+(setq comint-eol-on-send t)
+
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+(message "spell, ispell, aspell, flyspell")
+
+;; Settings for spelling done in '.emacs-autogen'.
+
+(add-hook 'log-edit-mode-hook 'flyspell-mode)
+
+;; (setq-default ispell-extra-args  '("--sug-mode=ultra"))
+
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+(message "dict, dictd, dictionary, gadict")
+
+(when (fboundp 'gadict-mode)
+  (add-to-list 'auto-mode-alist '("\\.gadict$" . gadict-mode)) )
+
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+(message "figlet")
+
+(defun my-figlet-region (&optional b e)
+  (interactive "r")
+  (shell-command-on-region b e "figlet" (current-buffer) t)
+  (comment-region (mark) (point)))
+
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+(message "jdone")
+
+(ignore-errors
+  (require 'jdone)
+  (jdone-setup-key-binding)
+  (jdone-integrate-hook)
+  )
+
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+(message "org-mode, GTD, PIM, organize, todo")
+
+(when (>= emacs-major-version 22)
+  (require 'org))
+
+;; XXX org-todo-keywords '((sequence "TODO" "START" "|" "DONE")) for org-version 4.67c
+(when (or (featurep 'org) (featurep 'org-install))
+  (add-to-list 'auto-mode-alist '("\\.org$" . org-mode))
+  (setq org-directory "~/my/gtd")
+  (setq
+   org-agenda-ndays 31
+   org-deadline-warning-days 7
+   org-agenda-show-all-dates t
+   org-agenda-format-date "%Y-%m-%d, %A %e %B"
+   org-agenda-skip-deadline-if-done t
+   org-agenda-skip-scheduled-if-done t
+   org-agenda-start-on-weekday nil
+   org-reverse-note-order t
+   org-hide-leading-stars t
+   org-tags-column 64
+   org-archive-save-context-info '(time file olpath todo itags)
+   )
+  (setq my-org-agenda-todo-file (concat org-directory "/TODO.org"))
+  (setq my-org-agenda-note-file (concat org-directory "/NOTE.org"))
+  (setq org-agenda-file-regexp "\\`[^.#].*[^_]\\.org\\'"
+        org-agenda-files (list org-directory))
+  ;; (setq my-org-agenda-learning-file (concat org-directory "/LEARNING.org"))
+  ;; (setq org-agenda-files `(,my-org-agenda-todo-file ,my-org-agenda-note-file ,my-org-agenda-learning-file))
+  (define-key global-map "\C-va" 'org-agenda)
+  (define-key global-map "\C-ve" (lambda nil (interactive) (find-file my-org-agenda-note-file)))
+
+  (setq org-todo-keywords '("|" "DONE"))
+
+  ;; My tags for remember buffer.
+  (setq org-tag-alist
+        '(
+          ("ADMIN" . ?a)
+          ("BLOG" . ?b)
+          ("DEVEL" . ?d)
+          ("HOME" . ?h)
+          ("GET" . ?g)
+          ("LIFE" . ?l)
+          ("MAIL" . ?m)
+          ("JOB" . ?j)
+          ("QUESTION" . ?q)
+          ("PROJECT" . ?p)
+          ("READ" . ?r)
+          ("SEE" . ?s)
+          ))
+  ;; With this variable tags duplicated in *Org Tags* menu. I use
+  ;; `org-tag-alist' instead until bug fixed.
+  (setq org-tag-persistent-alist nil)
+
+  (setq org-support-shift-select t)
+
+  (when (>= emacs-major-version 24)
+    (require 'org-capture))
+
+  (cond
+   ((featurep 'org-capture)
+    (setq org-default-notes-file my-org-agenda-todo-file)
+    (setq org-capture-templates
+          '(("t" "Todo" entry (file my-org-agenda-todo-file) "* %?\n  SCHEDULED: %T")))
+    (define-key global-map "\C-vr"
+      (lambda () (interactive) (org-capture nil "t")))
+    )
+   ((or (featurep 'remember) (fboundp 'remember))
+    (setq remember-annotation-functions '(org-remember-annotation))
+    (setq remember-handler-functions '(org-remember-handler))
+    (add-hook 'remember-mode-hook 'org-remember-apply-template)
+    (define-key global-map "\C-vr" 'org-remember)
+    (setq org-remember-templates
+          ;; With one item org-mode do not prompt choose template.
+          `(
+            ("todo" ?t "* TODO %?" ,my-org-agenda-todo-file)
+            ;; ("note" ?n "* %?\n" ,my-org-agenda-note-file)
+            ))
+    (setq org-remember-store-without-prompt t)
+    (org-remember-insinuate)
+    ))
+
+  )
+
+(defun my/org-archive-location (path)
+  "For given PATH make path to archive. Currently add undescore
+before file extention. If file name doesn't match
+`org-agenda-file-regexp' or have no extention return `nil'."
+  (if (and (file-name-extension path)
+           (string-match org-agenda-file-regexp (file-name-nondirectory path)))
+      (concat (file-name-sans-extension path) "_." (file-name-extension path))
+    nil))
+
+(defun my/org-archive-file (path)
+  "Move marked by `org-done-keywords' entries to archive file.
+
+Archive file name constructed by `my/org-archive-location'."
+  (let ( (archive (my/org-archive-location path))
+         entry-re entry-done-re
+         entry-beg entry-end )
+    (unless archive
+      (error "'%s' looks like a non-org file..." path))
+    (save-excursion
+      (with-current-buffer (find-file-noselect path)
+        (org-set-regexps-and-options)
+        (setq entry-re "^\\* "
+              entry-done-re (concat "^\\* *" (mapconcat 'regexp-quote org-done-keywords "\\|") " "))
+        (kill-new "")
+        (goto-char (point-min))
+        (while (re-search-forward entry-done-re nil t)
+          (setq entry-beg (line-beginning-position))
+          (if (re-search-forward entry-re nil t)
+              (beginning-of-line)
+            (goto-char (point-max)))
+          (setq entry-end (point))
+          (let ( (last-command 'kill-region) )
+            (kill-region entry-beg entry-end))
+          )
+        (when (> (length (car kill-ring)) 0)
+          (with-current-buffer (find-file-noselect archive)
+            (goto-char (point-max))
+            (insert ?\n)
+            (yank)
+            (save-buffer))
+          (save-buffer) )))))
+
+(defun my/org-archive (&optional prefix)
+  "Move all entries marked by `org-done-keywords' to archive
+files with name mangled by `my/org-archive-location'.
+
+Without prefix work on current file. With prefix work on "
+  (interactive "P")
+  (loop for file in (if prefix (org-agenda-files) (list (buffer-file-name))) do
+        (my/org-archive-file file)))
+
+(setq org-agenda-include-diary nil)
+
+(defun my-org-kill-by-tag (tag)
+  "Put all entries that matches TAG from current org-file to `kill-ring'."
+  (interactive (list (completing-read "Enter tag: " (org-get-buffer-tags))))
+  (let ( rs (last-command 'kill-region) )
+    (setq rs (org-scan-tags
+              (lambda ()
+                (org-mark-subtree)
+                (list (point) (mark)))
+              '(member tag tags-list) nil))
+    (kill-new "")
+    (dolist (r (reverse rs))            ; Kill from the end so upcoming regions still valid.
+      (apply #'kill-region r))))
+
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+(message "TODO, XXX, FIXME highlight")
+
+(dolist (mode (append my-devel-mode-list my-text-mode-list))
+  (font-lock-add-keywords
+   mode
+   `(
+     ( ,(concat "\\<\\(" (regexp-opt '("TODO" "FIX" "FIXME" "HACK" "XXX")) ":?\\)\\>") 1 'font-lock-warning-face t)
+     ;; 64 times, for highlight C-u C-u C-u <key>
+     ;; ("\\([^[:space:]]\\)\\1\\{63\\}" 0 'my-contrasty-face t)
+     ))
+  )
+
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+(message "fortune")
+(setq fortune-file "~/XXX")
+
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+(message "mail, message")
+
+(setq mail-user-agent 'message-user-agent)
+
+(defun my-compose-mail ()
+  (interactive)
+  (compose-mail nil nil `(("Organization" . ,(getenv "ORGANIZATION")))))
+(global-set-key (kbd "C-x m") #'my-compose-mail)
+
+(setq message-citation-line-format "On %Y-%m-%d, %N wrote:
+")
+(setq message-citation-line-function 'message-insert-formatted-citation-line)
+
+(setq mail-signature t)
+(setq mail-signature-file "~/.signature")
+;; (add-hook 'mail-setup-hook 'fortune-to-signature)
+
+;; (setq mail-from-style 'angles)
+
+(setq mail-personal-alias-file "~/.mailrc")
+;; Initialize from your mail aliases file...
+(setq mail-aliases t)
+(require 'ecomplete)
+(setq message-mail-alias-type '(abbrev ecomplete))
+
+(my--eval-after-load message
+  (require 'mailabbrev)
+  (define-key message-mode-map "\e\t" 'mail-abbrev-complete-alias))
+
+(defun my-message-mode-hook ()
+  (setq fill-column 78)
+  (turn-on-auto-fill)
+  (flyspell-mode 1))
+(add-hook 'message-mode-hook 'my-message-mode-hook)
+
+;; Mark all my messages by "common" string in "Message-Id" field to simplify
+;; lookup for followups to me.
+(setq message-user-fqdn "gavenkoa.example.com")
+
+;; Kill message buffer after mail send. You always can use C-c C-s to preserve it.
+(setq message-kill-buffer-on-exit t)
+
+(defconst my-safe-filename-char-regex "[[:alnum:]-_!.@]"
+  "Safe file names.")
+
+(defun my-clean-filename (filename)
+  (mapconcat
+   (lambda (ch) (or (when (string-match my-safe-filename-char-regex (char-to-string ch)) (char-to-string ch)) "-"))
+   filename "") )
+
+(defun my-message-save ()
+  "Store message in `gnus-article-save-directory' after
+successful sending. It is possible that mail rejected and I lost
+it completely, this func save it for me."
+  (unless (eq major-mode 'message-mode)
+    (error "Attempt to call my-message-save in non message-mode buffer"))
+  (make-directory gnus-article-save-directory t)
+  (let ( (buf (current-buffer))
+         (field-to (my-clean-filename (or (message-fetch-field "Newsgroups") (message-fetch-field "To"))))
+         (field-subject (my-clean-filename (message-fetch-field "Subject")))
+         file )
+    (when (> (length field-to) 32)
+      (setq field-to (substring field-to 0 32)))
+    (when (> (length field-subject) 64)
+      (setq field-subject (substring field-subject 0 64)))
+    (setq file (concat gnus-article-save-directory "/" (format-time-string "%F_%H-%M-%S") "_" field-to "_" field-subject))
+    (with-temp-file file
+      (insert-buffer buf)
+      )) )
+(add-hook 'message-sent-hook 'my-message-save)
+
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+(message "smtp, smtpmail")
+
+(when (and (not (eq system-type 'gnu/linux)) (boundp 'smtpmail-smtp-server))
+  (require 'smtpmail)
+  (setq
+   ;; If you use the default mail user agent.
+   send-mail-function 'smtpmail-send-it
+   ;; If you use Message or Gnus.
+   message-send-mail-function 'smtpmail-send-it
+   )
+  )
+;; (setq smtpmail-debug-verb t)
+;; (setq smtpmail-debug-info t)
+
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+(message "gnus, mh-e")
+
+;; (setq gnus-verbose 10)
+
+(setq gnus-site-init-file "~/.gnus.el")
+
+(setq
+ gnus-read-newsrc-file nil
+ gnus-save-newsrc-file nil
+ gnus-backup-startup-file t
+ gnus-use-dribble-file t
+ gnus-save-killed-list t
+ )
+
+(defun my-kill-gnus ()
+  "Kill Gnus when exiting Emacs."
+  (let ( (gnus-interactive-exit nil) )
+    (gnus-group-exit)
+    ))
+(my--eval-after-load gnus
+  (add-hook 'kill-emacs-hook 'my-kill-gnus))
+
+(my--eval-after-load gnus-art
+  (setq gnus-visible-headers (concat gnus-visible-headers "\\|^Archived-At:\\|^List-URL:")))
+
+;; Store gnus specific files to '~/.gnus'.
+(setq
+ gnus-directory "~/.gnus"
+ gnus-agent-directory "~/.gnus/agent/"
+ gnus-article-save-directory "~/.gnus/saved"
+ gnus-kill-files-directory "~/.gnus/scores"
+ gnus-cache-directory "~/.gnus/cache"
+ mail-source-directory "~/.gnus/mail"
+ message-directory "~/.gnus/mail"
+ message-auto-save-directory "~/.gnus/autosave"
+ ;; message-signature-directory
+ mailcap-download-directory  "~/.gnus/mailcap"
+ nnml-directory "~/.gnus/nnml-mail"
+ spam-directory "~/.gnus/spam/"
+ smime-certificate-directory "~/.gnus/certs/"
+ nnfolder-directory "~/.gnus/archive"
+ nnfolder-active-file "~/.gnus/archive/active"
+ )
+
+;; Remove gnus-ignored-newsgroups to show all GMail folders.
+(setq gnus-ignored-newsgroups "some-non-existing")
+
+(my--eval-after-load gnus
+  (require 'spam)
+  (spam-initialize)
+  (setq gnus-spam-process-newsgroups
+        '(("^gmane\\." ((spam spam-use-gmane))))))
+
+(setq
+ gnus-novice-user nil
+ gnus-expert-user nil
+ gnus-interactive-catchup t
+ gnus-interactive-exit t
+ )
+
+(setq
+ gnus-read-active-file nil
+ gnus-check-new-newsgroups nil
+ gnus-check-bogus-newsgroups nil
+ )
+
+(setq nntp-connection-timeout 10)
+
+(setq gnus-large-newsgroup 800)
+(setq gnus-large-ephemeral-newsgroup 600)
+(setq gnus-group-listing-limit 1000)
+
+(setq
+ gnus-group-goto-unread t
+ gnus-summary-next-group-on-exit nil
+ )
+
+(setq
+ gnus-permanently-visible-groups ".*"
+ gnus-topic-display-empty-topics t)
+
+;; (setq 'gnus-use-cache t)
+(setq gnus-use-long-file-name t)
+(setq gnus-cache-remove-articles '(read))
+
+;; If you're spooling in overlapping mbox folders, you probably want to delete
+;; all messages with duplicate message IDs.
+(setq nnmail-treat-duplicates 'delete)
+
+;; To disable html part of a message:
+;; (setq mm-discouraged-alternatives '("text/html" "text/richtext"))
+;; I manage to open link in external browser and fix navigation command so pretty ok with HTML parts.
+(setq mm-discouraged-alternatives '("text/richtext"))
+(setq mm-text-html-renderer 'w3m)
+
+(eval-when-compile
+  (ignore-errors
+    ;; w3m-anchor is macros in newer Emacs, need definition during byte-compilation.
+    (require 'w3m-util)))
+
+(defun my-w3m-view-url ()
+  (interactive)
+  (browse-url (w3m-anchor)))
+
+(my--eval-after-load w3m
+  (define-key w3m-minor-mode-map (kbd "RET") #'my-w3m-view-url)
+  (define-key w3m-minor-mode-map (kbd "S-RET") #'w3m-safe-view-this-url)
+  (define-key w3m-minor-mode-map (kbd "<left>") #'backward-char)
+  (define-key w3m-minor-mode-map (kbd "<right>") #'forward-char)
+  (define-key w3m-minor-mode-map (kbd "<up>") #'previous-line)
+  (define-key w3m-minor-mode-map (kbd "<down>") #'next-line))
+
+(add-hook 'gnus-group-mode-hook 'gnus-topic-mode)
+
+(my--eval-after-load gnus
+  (gnus-demon-add-handler 'gnus-demon-scan-news 10 t))
+
+;; Show prefix and 'To' field instead 'From' for my mails.
+(setq gnus-summary-to-prefix (if window-system "▒ " "==> "))
+(setq gnus-summary-newsgroup-prefix (if window-system "▒ " "==> "))
+(setq gnus-ignored-from-addresses (list (regexp-quote user-mail-address) (regexp-quote user-full-name)))
+
+(setq gnus-posting-styles
+      '((".*"
+         (organization (getenv "ORGANIZATION"))
+         (signature-file "~/.signature"))))
+
+(gnus-add-configuration
+ '(article (vertical 1.0 (summary .30 point) (article 1.0))))
+
+(setq gnus-summary-display-arrow t)
+
+;; `gnus-summary-line-format',
+;; `gnus-server-line-format', `gnus-topic-line-format',
+;; `gnus-group-mode-line-format', `gnus-summary-mode-line-format',
+;; `gnus-article-mode-line-format', `gnus-server-mode-line-format',
+;; `gnus-summary-pick-line-format'.
+
+(when window-system
+  (setq
+   gnus-sum-thread-tree-root "● "
+   gnus-sum-thread-tree-false-root " ○ "
+   gnus-sum-thread-tree-indent " "
+   gnus-sum-thread-tree-single-indent "⚇ "
+   gnus-sum-thread-tree-leaf-with-other "├► "
+   gnus-sum-thread-tree-single-leaf "└► "
+   gnus-sum-thread-tree-vertical "│"
+   ))
+
+(setq gnus-user-date-format-alist '((t . "%Y-%m-%d %H:%M")))
+(setq gnus-summary-line-format "%U%R%z %&user-date; %B %[%-22,22f%] %s\n")
+(setq gnus-summary-mode-line-format "Gnus: %p %Z")
+
+(setq gnus-treat-date-user-defined 'head)
+(setq gnus-article-time-format "%Y-%m-%d %T%z %a")
+(setq gnus-article-date-headers '(combined-lapsed user-defined))
+
+;; Remember when I visit group last time.
+(add-hook 'gnus-select-group-hook 'gnus-group-set-timestamp)
+
+(defun gnus-user-format-function-d (header)
+  (let ((time (gnus-group-timestamp gnus-tmp-group)))
+    (if (and time (time-less-p (time-subtract (current-time) time) (seconds-to-time (* 3600 24 7 30 2))))
+        (format-time-string "%Y-%m-%d %H:%M" time)
+      "")))
+
+;; %d (or with user defined format %ud) shown when I visit group last time in
+;; %*Group* buffer.
+(setq gnus-group-line-format "%M%S%p%P%6y:%B%(%-50,50G%)%3O %ud\n")
+
+;; gnus-visible-headers gnus-extra-headers
+(setq
+ gnus-sorted-header-list
+ '(
+   "^From:"
+   "^Subject:"
+   "^Summary:"
+   "^Keywords:"
+   "^Newsgroups:"
+   "^Followup-To:"
+   "^To:"
+   "^Cc:"
+   "^Organization:"
+   "^Date:"
+   "^User-Agent:"
+   "^X-Mailer:"
+   "^X-Newsreader:"
+   ))
+
+(setq
+ gnus-show-threads t
+ gnus-thread-sort-functions '(gnus-thread-sort-by-date gnus-thread-sort-by-total-score)
+ gnus-summary-thread-gathering-function 'gnus-gather-threads-by-subject
+ gnus-summary-gather-subject-limit 'fuzzy
+ gnus-thread-hide-killed t
+ gnus-thread-ignore-subject t
+ )
+
+;; gnus-summary-mark-below gnus-summary-default-score gnus-summary-default-high-score gnus-summary-default-low-score
+
+;; Scoring.
+(setq
+ gnus-use-scoring t
+ gnus-save-score t
+ gnus-score-expiry-days 60
+ ;; gnus-decay-scores t
+ gnus-score-decay-constant 3
+ )
+
+(setq gnus-score-interactive-default-score 100)
+
+;; These variables are local to each summary buffer and usually set by the
+;; score file: gnus-summary-mark-below, gnus-summary-expunge-below, gnus-thread-expunge-below
+
+(setq gnus-use-adaptive-scoring t)
+;; I use 100 for replay to me and 200 for essential mails, and -50 for bad mails.
+(setq gnus-default-adaptive-score-alist
+      '(
+        (gnus-unread-mark)
+        (gnus-ticked-mark (followup 100))
+        (gnus-dormant-mark (followup 100))
+        ;; (gnus-read-mark (followup -50))
+        ;; (gnus-catchup-mark (subject -50))
+        (gnus-del-mark (followup -50))
+        (gnus-killed-mark (followup -50))
+        (gnus-kill-file-mark (from -9999))
+        ))
+
+;; Increase the score for followups to a sent article.
+(my--eval-after-load gnus-score
+  ;; (add-hook 'message-sent-hook 'gnus-score-followup-article)
+  (add-hook 'message-sent-hook 'gnus-score-followup-thread))
+
+(defvar my-gnus-summary-kill-same-subject-min-len 8
+  "Minimal length of subject string to ignore this subject.")
+(defun my-gnus-summary-kill-same-subject (&optional unmark)
+  "Add negative scores for all articles with same subject."
+  (interactive "P")
+  (when (or (not (integerp unmark)) (< 0 unmark))
+    (let ( (subj (gnus-simplify-subject-fuzzy (gnus-summary-article-subject))) )
+      (when (<= (length subj) my-gnus-summary-kill-same-subject-min-len)
+        (gnus-summary-score-entry
+         "subject" subj
+         's (- gnus-score-interactive-default-score) (current-time-string)))))
+  (gnus-summary-kill-same-subject unmark))
+(my--eval-after-load gnus-sum
+  (define-key gnus-summary-mode-map (kbd "C-k") #'my-gnus-summary-kill-same-subject))
+
+(defun my-gnus.mark-thread-as-read ()
+  "Mark unmarked articles in current thread as read and move to
+next thread without selecting article."
+  (interactive)
+  (gnus-summary-top-thread)
+  (catch 'exit
+    (while t
+      (when (eq (gnus-summary-article-mark (gnus-summary-article-number)) gnus-unread-mark)
+        (gnus-summary-mark-article (gnus-summary-article-number) gnus-del-mark))
+      (when (or (not (gnus-summary-search-forward)) (eq (gnus-summary-thread-level) 0))
+        (throw 'exit nil)) )))
+(my--eval-after-load gnus-sum
+  (define-key gnus-summary-mode-map (kbd "H-k") #'my-gnus.mark-thread-as-read))
+
+(defun my-gnus-thread-score-function (&rest scores)
+  "If any followup have positive score assign greater available
+score to thread, else assign lesser available score."
+  (let ( (max (apply 'max scores)) (min (apply 'min scores)) )
+    (if (< 0 max) max min)))
+(setq gnus-thread-score-function #'my-gnus-thread-score-function)
+(defun my-gnus-thread-total-score ()
+  "Helper to debug `gnus-thread-score-function' function."
+  (interactive)
+  (message
+   (int-to-string
+    (gnus-thread-total-score
+     (gnus-id-to-thread (mail-header-id (gnus-summary-article-header)))))))
+
+;; Especially highlight my message and replays to me.
+(my--eval-after-load gnus-sum
+  (defface my-gnus-own-unread-face nil
+    "Use this face to display own postings in Summary Buffer")
+  (copy-face 'gnus-summary-high-unread-face 'my-gnus-own-unread-face)
+  (set-face-background 'my-gnus-own-unread-face "linen")
+  (add-to-list 'gnus-summary-highlight
+               '((and (> score 190) (eq mark gnus-unread-mark)) . my-gnus-own-unread-face))
+  (defface my-gnus-own-ancient-face nil
+    "Use this face to display own postings in Summary Buffer")
+  (copy-face 'gnus-summary-high-ancient-face 'my-gnus-own-ancient-face)
+  (set-face-background 'my-gnus-own-ancient-face "linen")
+  (add-to-list 'gnus-summary-highlight
+               '((and (> score 190) (eq mark gnus-ancient-mark)) . my-gnus-own-ancient-face))
+  (defface my-gnus-own-ticked-face nil
+    "Use this face to display own postings in Summary Buffer")
+  (copy-face 'gnus-summary-high-ticked-face 'my-gnus-own-ticked-face)
+  (set-face-background 'my-gnus-own-ticked-face "linen")
+  (add-to-list 'gnus-summary-highlight
+               '((and (> score 190) (or (eq mark gnus-dormant-mark) (eq mark gnus-ticked-mark))) . my-gnus-own-ticked-face))
+  (defface my-gnus-fup-face nil
+    "Use this face to display direct fups to my postings.")
+  (copy-face 'gnus-summary-high-unread-face 'my-gnus-fup-face)
+  (set-face-background 'my-gnus-fup-face "honeydew")
+  (add-to-list 'gnus-summary-highlight
+               '((and (<= 90 score) (<= score 110) (eq mark gnus-unread-mark)) . my-gnus-fup-face)) )
+
+;; (setq gnus-home-score-file
+;;       ;; All groups that match the regexp `"\\.emacs"'
+;;       '(("\\.emacs" "emacs.SCORE")
+;;         ;; All the comp groups in one score file
+;;         ("^comp" "comp.SCORE")))
+
+;; Make C-Up, C-Down more like across paragraph moving.
+(my--eval-after-load gnus
+  (define-key gnus-summary-mode-map [(meta up)] '(lambda() (interactive) (scroll-other-window -1)))
+  (define-key gnus-summary-mode-map [(meta down)] '(lambda() (interactive) (scroll-other-window 1)))
+  (define-key gnus-summary-mode-map [(control down)] 'gnus-summary-next-thread)
+  (define-key gnus-summary-mode-map [(control up)] 'gnus-summary-prev-thread))
+
+;; (setq imap-log t)
+
+;; (setq mail-user-agent 'mh-e-user-agent)
+
+(custom-set-faces
+ '(gnus-summary-cancelled ((t (:foreground "plum" :background nil))))
+ '(gnus-signature-face ((t (:foreground "grey"))))
+ )
+
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+(message "bbdb")
+
+(setq
+ bbdb-offer-save 1
+ bbdb-use-pop-up t
+ bbdb-electric-p t
+ bbdb-popup-target-lines  1
+ )
+
+(setq bbdb-complete-name-full-completion t)
+(setq bbdb-completion-type 'primary-or-name)
+(setq bbdb-complete-name-allow-cycling t)
+
+(setq bbdb-file "~/.gnus/bbdb")
+
+;; (bbdb-initialize 'gnus 'message)
+;; (bbdb-insinuate-message)
+;; (add-hook 'gnus-startup-hook 'bbdb-insinuate-gnus)
+
+
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+(message "jabber")
+
+(setq jabber-history-dir (concat user-emacs-directory ".jabber"))
+
+(autoload 'jabber-connect-all "jabber")
+
+(setq
+ jabber-history-enabled t
+ jabber-history-muc-enabled t
+ jabber-use-global-history nil
+ jabber-backlog-number 40
+ jabber-backlog-days 30
+ jabber-alert-presence-message-function (lambda (who oldstatus newstatus statustext) nil)
+ )
+
+(my--eval-after-load jabber
+  ;; Redefine standard binding for sending message form RET to C-RET.
+  (define-key jabber-chat-mode-map (kbd "RET") 'newline)
+  (define-key jabber-chat-mode-map [C-return] 'jabber-chat-buffer-send)
+  ;; fsm used in emacs jabber
+  (when (featurep 'fsm)
+    (setq fsm-debug nil))               ; Disable *fsm-debug* buffer.
+  ;; Handle Emacs exit.
+  (add-hook 'kill-emacs-hook 'jabber-disconnect))
+
+(setq my-chat-prompt "[%t] %n>\n")
+(setq
+ jabber-chat-foreign-prompt-format my-chat-prompt
+ jabber-chat-local-prompt-format my-chat-prompt
+ jabber-groupchat-prompt-format my-chat-prompt
+ jabber-muc-private-foreign-prompt-format "[%t] %g/%n>\n")
+
+(let ( (mgs-list '("Я тутачки, а где Вы меня ожидали?"
+                   "Software Development == Church Development. Step 1. Build it. Step 2. Pray."
+                   "Great books aren't written – they're rewritten."
+                   "А любит Б, Б любит С, что делать A? Найти другую Б!")) )
+  (random t)
+  (setq jabber-default-show (nth (random (length mgs-list)) mgs-list))
+  (setq jabber-default-status (nth (random (length mgs-list)) mgs-list))
+  )
+
+(defvar my-jabber-users nil
+  "Assoc list of jabber user group. Keys are strings, values are lists of JIDs.")
+
+(defun my-jabber-send (group)
+  "GROUP is keys from `my-jabber-users'"
+  (interactive
+   (list (completing-read "Select group: " my-jabber-users))
+   )
+  (let (
+        (msg (if (use-region-p)
+                 (buffer-substring (region-beginning) (region-end))
+               (buffer-string)))
+        (jc (jabber-read-account))
+        )
+    (deactivate-mark)
+    (mapc
+     (lambda (user)
+       (jabber-send-message jc user "" msg "normal")
+       )
+     (cdr (assoc group my-jabber-users))
+     )
+    )
+  )
+
+(global-set-key (kbd "C-x C-j C-s") 'my-jabber-send)
+
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+(message "rcirc")
+
+;; Turn on logging everything to a special buffer, for debugging.
+;; (setq rcirc-debug-flag t)
+
+(add-hook 'rcirc-mode-hook (lambda () (rcirc-track-minor-mode 1)))
+(setq rcirc-time-format "%H:%M ")
+(defun rcirc-handler-301 (process cmd sender args)
+  "/away message handler.")
+
+(setq rcirc-default-server "irc.freenode.net")
+(setq rcirc-default-port 6667)
+(setq rcirc-default-nick user-nick)
+(setq rcirc-default-user-full-name user-full-name)
+
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+(message "erc")
+
+;; (add-to-list 'erc-modules 'notify)
+;; (setq erc-notify-list '(""))
+
+;; Take off noise message.
+(setq erc-track-exclude-types '("JOIN" "PART" "QUIT" "NICK" "MODE"))
+
+(setq erc-current-nick-highlight-type 'nick-or-keyword)
+(setq erc-track-use-faces t)
+
+(setq erc-server-coding-system 'utf-8)
+(setq erc-encoding-coding-alist
+      '(
+        ("^icq-" . cp1251)
+        ("#debian-russian" . koi8-r)
+        ))
+
+;; (setq erc-autojoin-channels-alist '(("freenode.net" "#emacs")))
+
+(setq
+ erc-server-auto-reconnect t
+ erc-server-reconnect-timeout 60
+ erc-server-reconnect-attempts 2)
+
+(setq
+ erc-log-channels-directory "~/.emacs.d/.irc"
+ erc-log-file-coding-system 'utf-8-unix)
+(my--eval-after-load erc
+  (require 'erc-log)
+  (mkdir erc-log-channels-directory t))
+
+;; Kill buffers for channels after /part
+;; (setq erc-kill-buffer-on-part t)
+;; Kill buffers for private queries after quitting the server
+;; (setq erc-kill-queries-on-quit t)
+;; Kill buffers for server messages after quitting the server
+;; (setq erc-kill-server-buffer-on-quit t)
+
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+(message "devel, programming")
+
+(which-func-mode 1)
+
+(add-to-list 'auto-mode-alist '("\\.cu$" . c-mode))
+
+(defun my--c++-header-file-p ()
+  "Return non-nil, if in a C++ header."
+  (and (string-match "\\.h$"
+                     (or (buffer-file-name)
+                         (buffer-name)))
+       (save-excursion
+         (re-search-forward "\\_<class\\_>" nil t))))
+
+(when (>= emacs-major-version 22)
+  (add-to-list 'magic-mode-alist '(my--c++-header-file-p . c++-mode))
+  )
+
+(setq-default comment-style (quote indent))
+(setq-default comment-column 44)
+(setq-default comment-fill-column my-fill-column)
+
+(mapc (lambda (hook) (add-hook hook (lambda () (setq fill-column my-fill-column)) ))
+      (append my-devel-mode-hook-list my-text-mode-hook-list))
+
+(mapc (lambda (mode) (add-hook (my-mode2hook mode) #'hs-minor-mode))
+      '(c-mode c++-mode java-mode js-mode lisp-mode emacs-lisp-mode))
+
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+(message "diff, patch, ediff, emerge")
+
+(setq diff-switches "-u")
+
+(setq ediff-diff-options "")
+(setq ediff-custom-diff-options "-u")
+(setq ediff-window-setup-function 'ediff-setup-windows-plain)
+(setq ediff-split-window-function 'split-window-vertically)
+
+;; Disable: sometimes it take a long time to process large hunks.
+;; Use C-c C-b on hunk by own.
+;; (defun my-diff-auto-refine-mode-on () (diff-auto-refine-mode 1))
+;; (add-hook 'diff-mode-hook 'my-diff-auto-refine-mode-on)
+
+(when window-system
+  (my--eval-after-load diff-mode
+    (set-face-foreground 'diff-added-face "DarkGreen")
+    (set-face-foreground 'diff-removed-face "DarkRed")
+    (set-face-background 'diff-refine-change "LightBlue1")))
+
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+(message "vc-mode, VCS, version control, cvs, svn, mercurial, hg, bazaar, bzr, git, fossil")
+
+;; `-b' switch to ignore changes in whitespaces.
+;; (setq vc-git-diff-switches "-b")
+;; (setq vc-diff-switches "-b")
+
+(defun my-vc-root-diff (prefix)
+  "Same as `vc-root-diff' but for Hg with C-u show latest MQ patch and
+with C-u C-u show MQ patch and local changes."
+  (interactive "P")
+  (when (eq 'non-hg-mq
+            (catch 'break
+              (unless (and prefix (eq (vc-deduce-backend) 'Hg))
+                (throw 'break 'non-hg-mq))
+              (let* ( (rootdir (vc-call-backend 'Hg 'root default-directory)) (default-directory rootdir) )
+                (unless (eq (vc-hg-command nil t rootdir "log" "-r" "qtip") 0)
+                  (throw 'break 'non-hg-mq))
+                (cond
+                 ((equal prefix '(4))
+                  (vc-diff-internal t (list 'Hg (list rootdir)) "qparent" "qtip"))
+                 ((equal prefix '(16))
+                  (vc-diff-internal t (list 'Hg (list rootdir)) "qparent" nil)) ))))
+    (call-interactively 'vc-root-diff nil) ))
+
+(global-set-key (kbd "C-x v D") 'my-vc-root-diff)
+
+(when (equal window-system 'w32)
+  (modify-coding-system-alist 'process "cvs" '(cp1251-dos . cp1251-dos))
+  (modify-coding-system-alist 'process "svn" '(cp1251 . cp1251))
+  (setq vc-svn-checkin-switches '("--encoding" "UTF-8"))
+  )
+
+(when window-system
+  (setq
+   vc-annotate-very-old-color "#0b5b20"
+   vc-annotate-background "white"
+   vc-annotate-color-map
+   '(
+     (20 .  "#EE0000")
+     (40 .  "#E0800D")
+     (60 .  "#D3001A")
+     (80 .  "#C68027")
+     (100 . "#B90034")
+     (120 . "#AB8042")
+     (140 . "#9E004F")
+     (160 . "#91805C")
+     (180 . "#840069")
+     (200 . "#778077")
+     (220 . "#690084")
+     (240 . "#5C8091")
+     (260 . "#4F009E")
+     (280 . "#4280AB")
+     (300 . "#3400B9")
+     (320 . "#2780C6")
+     (340 . "#1A00D3")
+     (360 . "#0D80E0")))
+  )
+
+(defun my-log-edit-mode-hook ()
+  (setq fill-column 78)
+  )
+(add-hook 'log-edit-mode-hook 'my-log-edit-mode-hook t)
+
+(eval-after-load 'log-edit
+  '(remove-hook 'log-edit-hook 'log-edit-insert-message-template))
+
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+(message "psvn")
+
+(setq svn-status-verbose t)
+(setq svn-status-hide-unmodified t)
+
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+(message "DVC")
+
+(when (featurep 'dvc-emacs)
+  (setq dvc-tips-enabled nil)
+  )
+
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+(message "indenting")
+
+(setq standard-indent 4)
+(setq c-basic-offset 4)
+(setq sh-basic-offset 2)
+(setq sgml-basic-offset 4)
+
+(when (fboundp 'electric-indent-mode)
+  (electric-indent-mode -1))
+
+;; TAB (tab settings)
+(setq-default tab-width 4)
+(setq-default indent-tabs-mode nil)     ; spaces instead of tabs by default
+(setq tab-always-indent t)
+(setq c-tab-always-indent t)
+(let ( (line-width 400) i )
+  (setq i (* (ceiling line-width 4) 4))
+  (setq tab-stop-list nil)
+  (while (>= i 0)
+    (setq tab-stop-list (cons i tab-stop-list))
+    (setq i (- i 4))))
+
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+(message "compile")
+
+;; Prompt for compilation command.
+(setq compilation-read-command 1)
+(setq compile-auto-highlight t)
+(setq compile-command "mymake ")
+(when (eq system-type 'berkeley-unix)
+  (setq compile-command "gmake "))
+;; With '1' compilation window shall scroll down, with `first-error' stops scrolling at the first error.
+(setq compilation-scroll-output 1)
+(setq compilation-ask-about-save t)
+
+;; Show error in EN locale to easy search how fix problem in docs and Internet.
+;; (setq compilation-environment '("LANG=C"))
+
+(my--eval-after-load compile
+  ;; My funny error messages.
+  (add-to-list 'compilation-error-regexp-alist-alist '(nant "^\\( +\\[csc\\] \\|\\)\\(.*\\)(\\([0-9]*\\),\\([0-9]*\\)):" 2 3 4))
+  (add-to-list 'compilation-error-regexp-alist 'nant)
+  (add-to-list 'compilation-error-regexp-alist-alist '(msvc "^ *\\(.*\\)(\\([0-9]*\\)) +:" 1 2))
+  (add-to-list 'compilation-error-regexp-alist 'msvc)
+  (add-to-list 'compilation-error-regexp-alist-alist '(keil "^\"?\\([^\"]*\\)\"?,\\([0-9]*\\) .*\\[.*\\]: " 1 2))
+  (add-to-list 'compilation-error-regexp-alist 'keil)
+  (add-to-list 'compilation-error-regexp-alist-alist '(maven "\\[ERROR\\] \\(.*\\.java\\):\\[\\([0-9]+\\),\\([0-9]+\\)\\]" 1 2 3))
+  (add-to-list 'compilation-error-regexp-alist 'maven)
+  (add-to-list 'compilation-error-regexp-alist-alist '(asciidoc "^asciidoc: \\(?:ERROR\\|WARNING\\): \\([^\n:]+\\): line \\([0-9]+\\):" 1 2))
+  (add-to-list 'compilation-error-regexp-alist 'asciidoc)
+  (when (boundp 'compilation-mode-font-lock-keywords)
+    (add-to-list 'compilation-mode-font-lock-keywords '("\\(/[Oo][Uu][Tt]:[^[:blank:]]+\\)" . 1))
+    (add-to-list 'compilation-mode-font-lock-keywords '("[[:blank:]]\\(/F[oe][^[:blank:]]+\\)" . 1))))
+
+(ignore-errors
+  (require 'ansi-color)
+  (defun my-colorize-compilation-buffer ()
+    (when (eq major-mode 'compilation-mode)
+      (ansi-color-apply-on-region compilation-filter-start (point-max))))
+  (add-hook 'compilation-filter-hook 'my-colorize-compilation-buffer))
+
+(defvar my-comint-send-hist-list nil
+  "History list for `my-comint-send-string'."
+  )
+(defun my-comint-send-string (string)
+  "Send string to comint buffers. Useful for *compilation* read-only buffer.
+Automaticaly append final newline."
+  (interactive
+   (list (read-string "Type string: " nil 'my-comint-send-hist-list))
+   )
+  (comint-send-string (get-buffer-process (current-buffer)) (concat string "\n"))
+  )
+(my--eval-after-load compile
+  (define-key compilation-mode-map [C-return] 'my-comint-send-string))
+
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+(message "scons")
+
+(add-to-list 'auto-mode-alist '("SConstruct\\'" . python-mode))
+(add-to-list 'auto-mode-alist '("SConscript\\'" . python-mode))
+
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+(message "gdb, gud")
+;; Use C-x SPACE to set breakpoint in source file.
+
+(setq gdb-show-main t)                  ; See also (gdb-many-windows)
+
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+(message "completion, abbrev")
+
+(setq completion-ignore-case t)
+
+(setq abbrev-file-name (concat user-emacs-directory ".abbrev"))
+;; (quietly-read-abbrev-file)
+;; (setq default-abbrev-mode t)
+;; (setq save-abbrevs t)
+
+(global-set-key (kbd "M-/") 'hippie-expand)
+
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+(message "TAGS, etags, ctags, GNU GLOBAL")
+
+;; One of 'tags-table-list' or 'tags-file-name' control which TAGS files to
+;; use.
+
+(ignore-errors
+  (require 'etags-table)
+  (setq etags-table-search-up-depth 8)
+  (require 'etags-select)
+  (global-set-key "\M-." 'etags-select-find-tag)
+  )
+
+(setq tags-add-tables t)
+
+(defvar my-ido-tag-history nil
+  "History of tags selected using `my-ido-complete-tag'.")
+(defun my-ido-complete-tag (&optional substr)
+  "Find a tag using ido."
+  (tags-completion-table)
+  (let ( tag-names )
+    (mapatoms (lambda (x) (push (symbol-name x) tag-names)) tags-completion-table)
+    (ido-completing-read "Tag: " tag-names nil t substr 'my-ido-tag-history)))
+(defun my-complete-tag (prefix point)
+  (interactive "P\nd")
+  (if prefix
+      (funcall #'complete-tag)
+    (let ( (bounds (find-tag-default-bounds)) tag )
+      (if (or (not bounds) (< point (car bounds)) (< (cdr bounds) point))
+          (setq tag (my-ido-complete-tag))
+        (setq tag (my-ido-complete-tag (buffer-substring (car bounds) (cdr bounds))))
+        (delete-region (car bounds) (cdr bounds)))
+      (insert tag))))
+
+(global-set-key [M-return] #'my-complete-tag)
+
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+(message "CEDET, semantic, SRecord")
+
+;; For debug use 'semantic-debug-idle-function' and 'semantic-debug-idle-work-function'.
+
+(eval-and-compile
+  (when (or
+         (and (= emacs-major-version 23) (>= emacs-minor-version 2))
+         (>= emacs-major-version 24) )
+    (require 'cedet)
+    (require 'mode-local)))
+
+(when (featurep 'cedet)
+  (require 'semantic)
+
+  (global-semantic-idle-scheduler-mode 1)
+  (global-semantic-idle-summary-mode 1)
+  (global-semantic-idle-completions-mode -1)
+  (global-semantic-mru-bookmark-mode 1)
+  ;; (setq semantic-stickyfunc-sticky-classes '(function type variable include package))
+  (global-semantic-stickyfunc-mode -1)
+  (global-semantic-highlight-func-mode 1)
+  (global-semantic-decoration-mode 1)
+  (global-semantic-idle-local-symbol-highlight-mode 1)
+
+  (setq semantic-idle-scheduler-idle-time 10)
+  (setq semantic-idle-scheduler-work-idle-time 60)
+  (setq semantic-idle-scheduler-max-buffer-size 100000)
+  ;; (setq semantic-idle-work-parse-neighboring-files-flag nil)
+
+  ;; semantic-dependency-system-include-path, semantic-customize-system-include-path
+
+  ;; file local project unloaded system recursive
+  (setq-mode-local c-mode semanticdb-find-default-throttle '(file local))
+  (add-hook 'c-mode-hook (lambda nil (semantic-add-system-include "~/.emacs.d/include" 'c-mode)))
+  (add-hook 'c-mode-hook (lambda nil (semantic-add-system-include "~/.emacs.d/include" 'c++-mode)))
+  (global-semanticdb-minor-mode 1)
+
+  (ignore-errors
+    (global-cedet-m3-minor-mode 1))
+
+  (semantic-mode 1)
+  (global-ede-mode 1)
+
+  (require 'srecode)
+  (defvar srecode-map-load-path nil)
+  (add-to-list 'srecode-map-load-path (locate-user-emacs-file "srecode/"))
+  (global-srecode-minor-mode 1)
+  (add-hook 'prog-mode-hook 'srecode-minor-mode)
+
+  (defun my-srecode-reload-templates ()
+    "Reload all templates under `srecode-map-load-path'. Useful
+during template developing."
+    (interactive)
+    (setq srecode-mode-table-list nil
+          srecode-current-map nil)
+    (srecode-map-update-map) )
+
+  (ignore-errors
+    (cedet-ectag-version-check)
+    (semantic-load-enable-primary-ectags-support))
+  (ignore-errors
+    (cedet-gnu-global-version-check)
+    (require 'cedet-global)
+    (semanticdb-enable-gnu-global-databases 'c-mode)
+    (semanticdb-enable-gnu-global-databases 'c++-mode))
+
+  (ignore-errors
+    (require 'cedet-java))
+
+  (setq project-linux-build-directory-default 'same
+        project-linux-architecture-default "x86")
+
+  ;; (require 'semantic/db-javap)
+
+  ;; (add-to-list 'ede-locate-setup-options 'ede-locate-idutils)
+  ;; (add-to-list 'ede-locate-setup-options 'ede-locate-global)
+
+  ;; (ignore-errors (require 'cedet-idutils))
+
+  (defun my-c-mode-cedet-hook ()
+    ;; (local-set-key [C-return] 'semantic-complete-symbol)
+    ;; (local-set-key [C-return] 'semantic-complete-analyze-inline)
+    (local-set-key "." 'semantic-complete-self-insert)
+    (local-set-key ">" 'semantic-complete-self-insert))
+  (add-hook 'c-mode-common-hook 'my-c-mode-cedet-hook)
+
+  (ignore-errors
+    (require 'semantic/ia)
+    (define-key semantic-mode-map (kbd "C-c , .") 'semantic-ia-fast-jump)
+    (define-key semantic-mode-map (kbd "C-c , d") 'semantic-ia-show-doc)
+    (define-key semantic-mode-map (kbd "C-c , D") 'semantic-ia-show-summary)
+    (define-key semantic-mode-map (kbd "C-c , ?") 'semantic-ia-complete-symbol-menu)
+    ;; (define-key semantic-mode-map [(control return)] 'semantic-ia-complete-symbol)
+    ;; (define-key semantic-mode-map (kbd "C-c , C") 'semantic-ia-describe-class)
+    ;; semantic-decoration-include-visit
+    ;; semantic-analyze-proto-impl-toggle
+    )
+
+  ;; END OF: (when (featurep 'cedet) ...)
+  )
+
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+(message "imenu")
+
+(require 'imenu)
+
+(defun my-imenu-to-menubar ()
+  "Force imenu building when (menu-bar-mode -1)."
+  (when imenu-generic-expression
+    (imenu-add-menubar-index)
+    (run-hooks 'menu-bar-update-hook) ))
+(mapc (lambda (hook) (add-hook hook 'my-imenu-to-menubar))
+      my-devel-mode-hook-list)
+
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+(message "windows inf files for driver installin")
+
+(add-to-list 'auto-mode-alist '("\\.inf\\'" . conf-mode))
+
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+(message "fvwm-mode")
+
+(my--eval-after-load fvwm-mode
+  (setq fvwm-fvwmcommand-path (executable-find "FvwmCommand")))
+
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+(message "makefile, make")
+
+(add-to-list 'auto-mode-alist '("\\(Makefile\\|Makefile\\..+\\)\\'" . makefile-gmake-mode) t)
+
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+(message "asm, assembler")
+
+;; (setq-default asm-comment-char 59)
+(add-hook 'asm-mode-hook '(lambda () (setq comment-start "/*") (setq comment-end "*/")) t)
+
+(add-to-list 'auto-mode-alist '("\\.\\([sS]79\\|[sS]\\)\\'" . asm-mode))
+
+;; (add-hook 'asm-mode-hook '(lambda () (local-unset-key ":")))
+;; (add-hook 'asm-mode-hook '(lambda () (local-set-key ":" ":")))
+
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+(message "linker")
+
+(when (fboundp 'iar-linker-config-mode)
+  (add-to-list 'auto-mode-alist '("\\.icf\\'" . iar-linker-config-mode))
+  )
+(when (fboundp 'iar4-linker-config-mode)
+  (add-to-list 'auto-mode-alist '("\\.xcl\\'" . iar4-linker-config-mode))
+  )
+
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+(message "c-mode, cc-mode, c++-mode")
+
+;; Minor mode that highlights suspicious C and C++ constructions.
+(global-cwarn-mode 1)
+
+(setq c-echo-syntactic-information-p t)
+
+(defun my-c-mode-common-hook ()
+  ;; Automatically inserte newlines after special characters such as brace, comma, semi-colon, and colon.
+  (c-toggle-auto-newline -1)
+  ;; Delete all preceding whitespace by DEL.
+  (c-toggle-hungry-state -1)
+  ;; Auto indent after typing colon according to `c-hanging-colons-alist'.
+  (c-toggle-electric-state 1)
+  )
+(add-hook 'c-mode-common-hook 'my-c-mode-common-hook)
+
+(defconst my-c-style
+  '((c-tab-always-indent . t)
+    (c-comment-only-line-offset . 4)
+    (c-hanging-braces-alist
+     . (
+        (brace-list-open)
+        (substatement-open after)
+        ))
+    (c-hanging-colons-alist
+     . (
+        (access-label after)
+        (case-label after)
+        (inher-intro)
+        (label after)
+        (member-init-intro before)
+        ))
+    (c-cleanup-list
+     . (
+        defun-close-semi
+        empty-defun-braces
+        scope-operator
+        ))
+    (c-offsets-alist
+     . (
+        (access-label . -)
+        (arglist-intro . ++)
+        (arglist-cont-nonempty . ++)
+        (arglist-close . ++)
+        (block-open . 0)
+        (case-label . 0)
+        (cpp-define-intro . 0)
+        (comment-intro . 0)
+        (func-decl-cont . ++)
+        (inexpr-class . 0)
+        (inline-open . 0)
+        (knr-argdecl-intro . -)
+        (label . 0)
+        (statement-block-intro . +)
+        (statement-cont . ++)
+        (substatement-open . 0)
+        (inextern-lang . 0)
+        ))
+    ;; Certain syntactic errors are reported (like wrong indent).
+    (c-report-syntactic-errors . t)
+    ;; Echo syntactic information on TAB in message buffer.
+    (c-echo-syntactic-information-p . t))
+  "My C Programming Style")
+
+(defun my-c-mode-style-hook ()
+  (c-add-style "my" my-c-style t)
+  ;; If set 'c-default-style' before 'c-add-style'
+  ;; "Undefined style: my" error occured from 'c-get-style-variables'.
+  (setq c-default-style
+        '(
+          (java-mode . "my") (c-mode . "my") (csharp-mode . "my") (c++-mode . "my") (objc-mode . "my")
+          (idl-mode . "my")
+          (awk-mode . "awk")
+          (other . "my")
+          ))
+  )
+(add-hook 'c-mode-common-hook 'my-c-mode-style-hook)
+
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+(message "python, python-mode")
+
+(setq python-indent 4)
+
+(defvar my/python-eldoc-setup-code
+  "def __PYDOC_get_full_help(obj):
+    try:
+        import inspect
+        try:
+            str_type = basestring
+        except NameError:
+            str_type = str
+        if isinstance(obj, str_type):
+            obj = eval(obj, globals())
+        doc = inspect.getdoc(obj)
+        if not doc and callable(obj):
+            target = None
+            if inspect.isclass(obj) and hasattr(obj, '__init__'):
+                target = obj.__init__
+                objtype = 'class'
+            else:
+                target = obj
+                objtype = 'def'
+            if target:
+                args = inspect.formatargspec(
+                    *inspect.getargspec(target)
+                )
+                name = obj.__name__
+                doc = '{objtype} {name}{args}'.format(
+                    objtype=objtype, name=name, args=args
+                )
+    except:
+        doc = ''
+    return doc"
+  "Python code to setup documentation retrieval.")
+
+(defvar my/python-eldoc-string-code "__PYDOC_get_full_help('''%s''')"
+  "Python code used to get a string with the documentation of an object.")
+
+(defvar my/python-eldoc-string-code2 "help(%s); pass"
+  "Python code used to get a string with the documentation of an object.")
+
+;; For built-in python.el
+(my--eval-after-load python
+  (add-to-list 'python-shell-setup-codes 'my/python-eldoc-setup-code) ; Used inside (python-shell-send-setup-code)
+  (defun my/python-eldoc-at-point (&optional symbol)
+    "Show full docs for symbol at point."
+    (interactive
+     (let ((symbol (python-info-current-symbol t))
+           (enable-recursive-minibuffers t))
+       (list (read-string (if symbol
+                              (format "Describe symbol (default %s): " symbol)
+                            "Describe symbol: ")
+                          nil nil symbol))))
+    (let ( (python-eldoc-string-code my/python-eldoc-string-code)
+           (python-eldoc-setup-code my/python-eldoc-setup-code) )
+      (switch-to-buffer (get-buffer-create "*Python-doc*"))
+      (read-only-mode -1)
+      (buffer-disable-undo)
+      (erase-buffer)
+      (insert (python-eldoc--get-doc-at-point symbol))
+      (goto-char (point-min))
+      (when (re-search-forward "^u?['\"]" (line-end-position) t)
+        (replace-match ""))
+      (while (re-search-forward "\\\\n" nil t)
+        (replace-match "\n"))
+      (goto-char (point-min))
+      (while (re-search-forward "\\\\'" nil t)
+        (replace-match "['\"]"))
+      (goto-char (point-max))
+      (when (eq ?' (char-before))
+        (delete-char -1))
+      (read-only-mode 1)
+      (goto-char (point-min))))
+  (define-key python-mode-map "\C-c\C-d" 'my/python-eldoc-at-point)
+  (defun my/python-eldoc-at-point2 (&optional symbol)
+    "Show full docs for symbol at point."
+    (interactive
+     (let ((symbol (python-info-current-symbol t))
+           (enable-recursive-minibuffers t))
+       (list (read-string (if symbol
+                              (format "Describe symbol (default %s): " symbol)
+                            "Describe symbol: ")
+                          nil nil symbol))))
+    (let ( )
+      (switch-to-buffer (get-buffer-create "*Python-doc*"))
+      (read-only-mode -1)
+      (buffer-disable-undo)
+      (erase-buffer)
+      (insert (python-shell-send-string-no-output (format my/python-eldoc-string-code2 symbol) (python-shell-get-process)))
+      (goto-char (point-min))
+      (when (re-search-forward "^u?'" (line-end-position) t)
+        (replace-match ""))
+      (while (re-search-forward "\\\\n" nil t)
+        (replace-match "\n"))
+      (goto-char (point-min))
+      (while (re-search-forward "\\\\'" nil t)
+        (replace-match "'"))
+      (goto-char (point-max))
+      (when (eq ?' (char-before))
+        (delete-char -1))
+      (read-only-mode 1)
+      (goto-char (point-min))))
+  (define-key python-mode-map "\C-c\C-g" 'my/python-eldoc-at-point2)
+
+  (defun my-python/send-paragraph ()
+    (interactive)
+    (save-excursion
+      (mark-paragraph)
+      (python-shell-send-region (point) (mark))))
+  (define-key python-mode-map [?\C-c ?\C-h] 'my-python/send-paragraph))
+
+(defgroup my/python nil
+  "My Python extentions in Emacs."
+  :group 'python)
+
+(defvar my/python-pylint-command "pylint"
+  "Command to run pylint executable.")
+(defvar my/python-pylint-args "-f parseable"
+  "Arguments to pass to pylint executable.")
+
+(defvar my/python-pep8-command "pep8"
+  "Command to run pep8 executable.")
+(defvar my/python-pep8-args ""
+  "Arguments to pass to pep8 executable.")
+
+(defvar my/python-pyflakes-command "pyflakes"
+  "Command to run pyflakes executable.")
+(defvar my/python-pyflakes-args ""
+  "Arguments to pass to pyflakes executable.")
+
+(defvar my/python-checker-alist
+  '((pylint . (my/python-pylint-command my/python-pylint-args))
+    (pep8 . (my/python-pep8-command my/python-pep8-args))
+    (pyflakes . (my/python-pyflakes-command my/python-pyflakes-args)))
+  "Known Python source code checkers.")
+
+(defcustom my/python-default-checker 'pyflakes
+  "Default Python source code checker. See `my/python-checker-alist' for full alist."
+  :group 'my/python
+  :type (cons 'choice (mapcar (lambda (e) (cons 'const e)) my/python-checker-alist)))
+
+(defvar my/python-check-history nil)
+
+(defun my/python-check (&optional checker)
+  (interactive
+   (list
+    (completing-read "Select cheker: " (mapcar (lambda (e) (car e)) my/python-checker-alist) nil t (symbol-name my/python-default-checker) 'my/python-check-history)))
+  (let ( entry )
+    (unless (setq entry (cdr (assoc (intern-soft checker) my/python-checker-alist)))
+      (error "Unknown checker..."))
+    (compilation-start (format "%s %s %s" (symbol-value (car entry)) (symbol-value (cadr entry)) (shell-quote-argument (buffer-file-name))))))
+
+(my--eval-after-load python
+  (define-key python-mode-map [?\C-c ?\C-v] #'my/python-check))
+
+;; For 3rd party python-mode.el.
+(my--eval-after-load python-mode
+  (when (and (boundp 'py-version) (equal py-version "5.1.0"))
+    ;; (py-toggle-shells 'cpython)
+    (setq-default py-which-shell py-python-command))
+  (when (boundp 'py-version)
+    (define-key python-mode-map [C-backspace] 'backward-kill-word)
+    (define-key python-mode-map [?\C-c ?p] 'py-execute-paragraph)
+    (define-key python-mode-map [?\C-c ?r] 'py-execute-region)
+    (define-key inferior-python-mode-map "\C-c\C-f" 'python-describe-symbol)))
+
+;; Enable "M-/", "C-c g", "C-c d", "C-c f" shortcuts.
+(setq ropemacs-enable-shortcuts t)
+(ignore-errors
+  ;; (require 'pymacs)
+  ;; (pymacs-load "ropemacs" "rope-")
+  )
+;; Automatically save project python buffers before refactorings
+(setq ropemacs-confirm-saving 'nil)
+
+(defun my-python-add-to-path (path)
+  (interactive (list (read-directory-name "Enter new path for PYTHONPATH: ")))
+  (when (featurep 'cygwin-mount)
+    (setq path (my-dos2cygwin-path path)))
+  (python-send-string (format "import sys; sys.path.append(\"%s\")" (expand-file-name path))) )
+
+(defun my-python-django-fix (path)
+  "XXX not work on Cygwin + naive Emacs."
+  (interactive (list (read-directory-name "Enter new path for PYTHONPATH: ")))
+  (when (featurep 'cygwin-mount)
+    (setq path (my-dos2cygwin-path path))
+    )
+  (let ((file (concat path "manage.py")))
+    (if (file-exists-p file)
+        (python-send-string (format "import os; os.chdir(\"%s\"); execfile(\"%s\")" path file))
+      (error (format "file '%s' does not exist" file))
+      )))
+
+;; Disable in flavor of Semantic and perfomance reason.
+;; (when (>= emacs-major-version 22)
+;;   (add-hook 'python-mode-hook 'turn-on-eldoc-mode))
+
+(when (equal window-system 'w32)
+  (add-to-list 'process-coding-system-alist '("python" cp1251-unix . cp1251-unix)))
+
+(add-to-list 'auto-mode-alist '("/requirements.txt\\'" . conf-mode))
+
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+(message "perl, cperl")
+
+;; Use cperl instead perl mode.
+(mapc
+ (lambda (pair)
+   (if (eq (cdr pair) 'perl-mode)
+       (setcdr pair 'cperl-mode)))
+ (append auto-mode-alist interpreter-mode-alist))
+;; Don't show all man page. I set man switches to "-a"...
+(add-hook
+ 'cperl-mode-hook
+ '(lambda ()
+    (make-local-variable 'Man-switches)
+    (setq Man-switches nil)))
+
+;; Expands for keywords such as foreach, while, etc...
+(setq cperl-electric-keywords t)
+
+(setq
+ cperl-indent-level 2
+ cperl-close-paren-offset -2
+ cperl-continued-statement-offset 2
+ cperl-indent-parens-as-block t
+ cperl-tab-always-indent t)
+
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+(message "r, ess-mode")
+
+(setq ess-indent-offset 2)
+
+(my--eval-after-load ess-inf
+  (define-key inferior-ess-mode-map [home] 'comint-bol))
+
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+(message "SML, Standard ML")
+
+(my--eval-after-load sml
+  (define-key sml-mode-map (kbd "C-c C-p") 'sml-send-function))
+
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+(message "javascript, js")
+
+(if (>= emacs-major-version 23)
+    (add-to-list 'auto-mode-alist '("\\.js$" . js-mode))
+  (add-to-list 'auto-mode-alist '("\\.js$" . javascript-generic-mode))
+  )
+
+(my--eval-after-load js
+  (modify-syntax-entry ?$ "w" js-mode-syntax-table))
+
+(setq js-indent-level 4)
+;; js-curly-indent-offset, js-expr-indent-offset, js-paren-indent-offset, 	js-square-indent-offset, js-switch-indent-offset
+
+;; BUG: all single char comments do not stop highlighting on end of line but
+;; go to end of buffer. To fix use code:
+;; (setq auto-mode-alist (rassq-delete-all 'js-mode auto-mode-alist))
+;; (add-to-list 'auto-mode-alist '("\\.js$" . c++-mode))
+
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+(message "bat file, batch")
+
+;; loaded from 'generic-x.el'
+
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+(message "csharp, c-sharp")
+
+(autoload 'csharp-mode "csharp-mode" "Major mode for editing C# code." t)
+(add-to-list 'auto-mode-alist '("\\.cs$" . csharp-mode))
+
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+(message "java")
+
+(when (fboundp 'subword-mode)
+  (add-hook 'java-mode-hook #'subword-mode))
+
+(add-hook 'java-mode-hook #'auto-revert-mode)
+
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+(message "Pascal")
+
+(setq
+ pascal-indent-level 4
+ pascal-case-indent 2
+ pascal-auto-newline t
+ pascal-tab-always-indent t
+ ;; pascal-toggle-completions t
+ ;; pascal-auto-lineup nil
+ pascal-auto-endcomments t)
+
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+(message "ECB")
+
+(setq ecb-tip-of-the-day nil)
+
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+(message "nsis-mode")
+
+(when (fboundp 'nsis-mode)
+  (add-to-list 'auto-mode-alist '("\\.\\(nsi\\|nsh\\)\\'" . nsis-mode))
+  )
+
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+(message "wesnoth-mode")
+
+(ignore-errors
+  (require 'wesnoth-mode)
+  (add-to-list 'auto-mode-alist '("wesnoth.*\\.cfg\\'" . wesnoth-mode)) )
+
+(setq wesnoth-base-indent 2)
+
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+(message "css")
+
+(setq css-indent-offset 4)
+
+;; (package-install 'css-eldoc)
+
+(my--eval-after-load css-mode
+  (when (fboundp 'css-eldoc-enable)
+    (css-eldoc-enable)))
+
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+(message "htmlize")
+
+(setq
+ htmlize-html-charset "utf-8"
+ htmlize-output-type 'inline-css
+ htmlize-html-major-mode 'html-mode
+ htmlize-convert-nonascii-to-entities nil)
+
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+(message "html")
+
+(defun my-html-charref-escape-region (start end)
+  (interactive "r")
+  (save-excursion
+    (save-restriction
+      (narrow-to-region start end)
+      (goto-char (point-min))
+      (replace-string "&" "&amp;")
+      (goto-char (point-min))
+      (replace-string "<" "&lt;")
+      (goto-char (point-min))
+      (replace-string ">" "&gt;")
+      )))
+
+(defun my-html-charref-from-char (char)
+  (format "&#%d;" char)
+  )
+
+(defun my-html-charref-from-string (string)
+  (let ((res ""))
+    (mapc
+     (lambda (char) (setq res (concat res (my-html-charref-from-char char))))
+     string)
+    res
+    ) )
+
+(defun my-html-charref-escape-region2 (begin end &optional prefix)
+  (interactive "r\nP")
+  (if prefix
+      (save-excursion
+        (goto-char begin)
+        (insert (my-html-charref-from-string (delete-and-extract-region begin end))))
+    (my-html-charref-from-string (buffer-substring begin end))
+    ))
+
+(defun my-html-charref-to-string (html)
+  (let (str)
+    (with-temp-buffer
+      (insert html)
+      (goto-char (point-min))
+      (while (search-forward-regexp "&\\(?:#\\([[:digit:]]+\\)\\|\\(lt\\|gt\\|amp\\)\\);" nil t)
+        (setq str (or (match-string 1) (match-string 2)))
+        (cond
+         ((equal str "lt")
+          (replace-match "<" t t))
+         ((equal str "gt")
+          (replace-match ">" t t))
+         ((equal str "amp")
+          (replace-match "&" t t))
+         ((> (string-to-number str) 0)
+          (replace-match (string (string-to-number str 10)) t t))))
+      (buffer-string))))
+
+(defun my-html-charref-unescape-region (begin end &optional prefix)
+  (interactive "r\nP")
+  (if prefix
+      (save-excursion
+        (goto-char begin)
+        (insert (my-html-charref-to-string (delete-and-extract-region begin end))))
+    (my-html-charref-to-string (buffer-substring begin end))
+    ))
+
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+(message "nxml")
+
+(setq nxml-sexp-element-flag t)
+(setq nxml-child-indent 2)
+(setq nxml-attribute-indent 4)
+
+(add-to-list 'auto-mode-alist '("\.pom\\'" . nxml-mode))
+(add-to-list 'auto-mode-alist '("\.xsd\\'" . nxml-mode))
+(add-to-list 'auto-mode-alist '("\.rng\\'" . nxml-mode))
+(add-to-list 'auto-mode-alist '("\.xul\\'" . nxml-mode))
+(add-to-list 'auto-mode-alist '("\.xslt\\'" . nxml-mode))
+(add-to-list 'auto-mode-alist '("\.svg\\'" . nxml-mode))
+(add-to-list 'auto-mode-alist '("\.rss\\'" . nxml-mode))
+(add-to-list 'auto-mode-alist '("\.atom\\'" . nxml-mode))
+
+(my--eval-after-load nxml-mode
+  (define-key nxml-mode-map [C-return] 'nxml-complete))
+
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+(message "relax ng, rng")
+
+(my--eval-after-load rng-loc
+  (add-to-list 'rng-schema-locating-files "~/.emacs.d/rnc/schemas.xml"))
+
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+(message "web-mode")
+
+(setq web-mode-markup-indent-offset 2
+      web-mode-css-indent-offset 2
+      web-mode-code-indent-offset 2
+      web-mode-script-padding 2
+      web-mode-style-padding 2)
+
+(setq web-mode-enable-comment-keywords t)
+
+(ignore-errors (require 'web-mode))
+(when (featurep 'web-mode)
+  (setq web-mode-engine-file-regexps (delq (assoc "jsp" web-mode-engine-file-regexps) web-mode-engine-file-regexps))
+  (mapc (lambda (i) (add-to-list 'web-mode-engine-file-regexps i))
+          '(("jsp" . "\\.tagf?\\'")
+            ("jsp" . "\\.jspf?\\'")))
+  (add-to-list 'auto-mode-alist '("\\.phtml\\'" . web-mode))
+  (add-to-list 'auto-mode-alist '("\\.php\\'" . web-mode))
+  (add-to-list 'auto-mode-alist '("\\.jspf?\\'" . web-mode))
+  (add-to-list 'auto-mode-alist '("/WEB-INF/tags/.*\\.tagf?\\'" . web-mode))
+  (add-to-list 'auto-mode-alist '("\\.as[cp]x\\'" . web-mode))
+  (add-to-list 'auto-mode-alist '("\\.erb\\'" . web-mode))
+  (add-to-list 'auto-mode-alist '("\\.mustache\\'" . web-mode))
+  (add-to-list 'auto-mode-alist '("\\.djhtml\\'" . web-mode))
+  (add-to-list 'auto-mode-alist '("\\.html?\\'" . web-mode)) )
+
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+(message "psgml")
+
+(setq my-html-template
+      '("html"
+        (nil
+         "\n<head>" \n
+         "<meta http-equiv=\"Content-Type\" content=\"text/html; charset=" (read-string "Charset: ") "\">" \n
+         "<title>" (setq str (read-string "Title: ")) "</title>\n"
+         "</head>\n"
+         "<body>\n<h1>" str "</h1>"
+         "\n<address>" \n
+         "<a href=\"mailto:" user-mail-address "\">" (user-full-name) "</a>" \n
+         "</address>" \n
+         "</body>\n"
+         ))
+      )
+
+(setq sgml-set-face t)                  ; for highlighting in sgml
+(my--eval-after-load sgml-mode
+  (unless (featurep 'psgml)
+    (setq html-tag-alist
+          (cons
+           my-html-template
+           (my-filter
+            (lambda (item) (not (equal (car item) "html")))
+            html-tag-alist)))
+    (add-to-list 'html-tag-alist '("script" (\n) ("type" "text/javascript") ))
+    (add-to-list 'html-tag-alist '("style" (\n) ("type" "text/css") )) ))
+
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+(message "jsp")
+
+(define-derived-mode jsp-mode html-mode "JSP"
+  "JSP editing mode. Redefine HTML comment syntax to JSP."
+  (setq comment-start "<%--")
+  (setq comment-end "--%>")
+  (setq comment-start-skip "<[!%]--[ \t]*")
+  (setq comment-end-skip "[ \t]*--[% \t\n]*>")
+  (setq jsp-font-lock-syntactic-keywords
+        '(("\\(<\\)%--" (1 "< b"))
+          ("--%\\(>\\)" (1 "> b"))))
+  (setcdr (assoc 'font-lock-syntactic-keywords font-lock-defaults) 'jsp-font-lock-syntactic-keywords) )
+
+(unless (featurep 'web-mode)
+  (add-to-list 'auto-mode-alist '("\\.jspf?\\'" . jsp-mode)))
+
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+(message "sh, bash")
+
+(add-to-list 'auto-mode-alist '("\\.cygport\\'" . shell-script-mode))
+
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+(message "pg, Proof General")
+
+(setq proof-splash-enable nil)
+;; (setq proof-toolbar-enable nil)
+
+(setq
+ isar-display:show-types t
+ isar-display:show-sorts t
+ isar-display:show-main-goal t
+ isar-display:show-brackets t
+ ;; Too many output, so commented:
+ ;; isar-display:show-consts t
+ )
+
+(my--eval-after-load proof
+  ;; (proof-maths-menu-toggle 1)
+  ;; (unicode-tokens-mode 1)
+  ;; (proof-imenu-toggle 1)
+  )
+(my--eval-after-load isar
+  (define-key isar-mode-map (kbd "C-c C-m") 'proof-goto-point))
+
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+(message "printing")
+
+(setq ps-paper-type 'a4)
+
+;; Use Notepad to print plain text files to the default Windows printer
+;(setq lpr-command "notepad")
+;(setq lpr-headers-switches '("/p"))    ; \ mis-use these
+;(setq lpr-switches nil)                ; / two variables
+;(setq printer-name nil)        ; notepad takes the default
+;(setq lpr-printer-switch "/P") ;; run notepad as batch printer
+;;
+
+;; Printing to file.
+
+;(setq printer-name "~/myprint.txt")
+;(setq ps-printer-name nil)
+;(setq ps-print-header nil)
+
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+(message "SQL")
+
+(setq sql-password "")
+(add-to-list 'auto-mode-alist '("\\.plsql\\'" . sql-mode))
+
+;; Disable placeholders substitution in Oracle SQLi by Emacs itself.
+;; This enable "define" and "&var" syntax.
+(setq sql-oracle-scan-on nil)
+
+(add-hook 'sql-interactive-mode-hook (lambda () (toggle-truncate-lines 1)))
+
+(defun my-sql-explain-paragraph ()
+  "Send the current paragraph to the SQL process with \"explain \" keyword.
+Works at least for MySql/MariaDB."
+  (interactive)
+  (let ((start (save-excursion
+                 (backward-paragraph)
+                 (point)))
+        (end (save-excursion
+               (forward-paragraph)
+               (point))))
+    (sql-send-string (concat "explain " (buffer-substring-no-properties start end)))))
+
+(my--eval-after-load sql
+  (define-key sql-mode-map (kbd "C-c C-e") 'my-sql-explain-paragraph))
+
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+(message "backuping")
+
+(setq
+ make-backup-files t
+ ;; In other case (by renaming) you loose original file creation date.
+ backup-by-copying t
+ backup-directory-alist '(("." . "~/.emacs.d/.backup")) ; don't litter my fs tree
+ delete-old-versions t                         ; delete excess backup versions silently
+ kept-old-versions 1                           ; store first original version
+ kept-new-versions 3                           ; store last 3 version
+ version-control t)                            ; use versioned backups
+
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+(message "auto save")
+
+(setq auto-save-default t)
+;; If nil autosave to different than original to buffer file.
+(setq auto-save-visited-file-name nil)
+(setq auto-save-interval 300)
+;; Note: if you kill unsaved file auto save file not deleted.
+(setq delete-auto-save-files t)
+
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;; Save and restore my buffers every time.
+
+(setq desktop-base-file-name ".emacs.desktop")
+(setq desktop-base-lock-name ".emacs.desktop.lock")
+(when (eq system-type 'cygwin)
+  (setq desktop-base-file-name ".emacs.desktop-cygwin")
+  (setq desktop-base-lock-name ".emacs.desktop-cygwin.lock")
+  )
+(setq desktop-dirname user-emacs-directory)
+
+(when (>= emacs-major-version 22)
+  (require 'desktop)
+  (add-to-list 'desktop-path desktop-dirname)
+  (setq desktop-restore-frames nil)
+  (desktop-save-mode 1)
+  (setq
+   desktop-globals-to-save
+   (append
+    '((file-name-history . 100)
+      (compile-history . 100)
+      (command-history . 100)
+      (extended-command-history . 100)
+      (shell-command-history . 100)
+      (search-ring . 20)
+      (query-replace-history . 100)
+      (regexp-history . 100)
+      (grep-history . 100)
+      (minibuffer-history . 100)
+      tags-file-name
+      register-alist)
+    desktop-globals-to-save))
+  )
+
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+(message "User welcome msg")
+
+(add-hook 'emacs-startup-hook
+          (lambda ()
+            (let ( (mgs-list '("Welcome to emacs, the thermonuclear editor."
+                               "You enter to Out Space. Emacs on."
+                               "Nice day for Emacsing!")) )
+              (message (nth (random (length mgs-list)) mgs-list)))))
+
+(switch-to-buffer "*Messages*")
+(setq default-directory "~/")
+(switch-to-buffer "*scratch*")
+(setq default-directory "~/")
+
+;;; End loading...
+
+;; Local variables:
+;; mode: outline-minor
+;; outline-regexp: "(message \""
+;; End:
