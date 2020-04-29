@@ -8,8 +8,8 @@
 ;; =============================================================================
 ;; Theme
 ;; =============================================================================
-;; (load-theme 'hc-zenburn t)
+(load-theme 'hc-zenburn t)
 ;;(load-theme 'moe-dar)
 ;;(load-theme 'moe-dark t)
 ;; (load-theme 'monokai t)
-(load-theme 'subatomic t)
+;; (load-theme 'subatomic t)

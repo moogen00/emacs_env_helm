@@ -1,0 +1,18 @@
+ls -al
+cd ..
+cd ..
+cd ..
+cd ..
+cd ..
+. build/oaf-init-build-env 
+ls
+cd ..
+gooaf
+ls
+gooaf
+ls
+gooaf
+gooaf
+bash
+ls
+exit

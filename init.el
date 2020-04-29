@@ -26,10 +26,16 @@
 (require 'setup-cedet)
 (require 'setup-editing)
 
+
+;; multi-term
+(require 'multi-term)
+;; (setq multi-term-program "/bin/bash")
+(setq multi-term-program "/usr/bin/zsh")
+
+
 ;; my-keybinding
-(require 'setup-my-binding)
-
-
+(require 'setup-my-config)
+(require 'setup-my-multi-term)
 ;; sr speedbar start
 (require 'sr-speedbar)
 ;; speedbar를 창 왼쪽에 띄운다.
@@ -74,7 +80,7 @@
 
 
 ;; theme
-;; (require 'setup-theme)
+(require 'setup-theme)
 ;; (load-theme 'subatomic t)
 ;; (require 'emacs-color-themes)
 
@@ -85,7 +91,8 @@
  ;; If there is more than one, they won't work right.
  '(package-selected-packages
    (quote
-    (sublime-themes sr-speedbar hc-zenburn-theme subatomic-theme zygospore helm-gtags helm yasnippet ws-butler volatile-highlights use-package undo-tree iedit dtrt-indent counsel-projectile company clean-aindent-mode anzu)))
+    (projectile magit helm-descbinds multi-term shell-switcher sudo-edit sublime-themes sr-speedbar hc-zenburn-theme subatomic-theme zygospore helm-gtags helm yasnippet ws-butler volatile-highlights use-package undo-tree iedit dtrt-indent counsel-projectile company clean-aindent-mode anzu)))
+ '(send-mail-function (quote mailclient-send-it))
  '(subatomic-high-contrast t)
  '(subatomic-more-visible-comment-delimiters t))
 (custom-set-faces
@@ -118,3 +125,31 @@
 (global-set-key [(shift f12)] 'gdb-many-windows)
 ;; shift + f11 키로 gdb의 layout을 변경합니다
 (global-set-key [(shift f11)] 'my-gdb-settings-toggle)
+
+
+(require 'shell-switcher)
+(setq shell-switcher-mode t)
+(setq-default explicit-shell-file-name "/bin/bash")
+(setq-default shell-file-name "/bin/bash")
+
+
+
+;; (setq helm-projectile-fuzzy-match nil)
+;; (require 'helm-projectile)
+;; (helm-projectile-on)
+
+
+(require 'helm-projectile)
+(projectile-global-mode)
+(setq projectile-completion-system 'helm)
+(helm-projectile-on)
+
+
+
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;; PACKAGE: helm-descbinds                      ;;
+;;                                              ;;
+;; GROUP: Convenience -> Helm -> Helm Descbinds ;;
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+(require 'helm-descbinds)
+(helm-descbinds-mode)
